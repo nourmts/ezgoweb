@@ -1,0 +1,116 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos Partenaires{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .car-card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .car-card:hover {
+            transform: translateY(-5px);
+        }
+        .car-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .car-details {
+            padding: 20px;
+        }
+        .price-box {
+            text-align: center;
+            padding: 15px;
+            background: #4a4a4a;
+            color: white;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+        .price-amount {
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .price-period {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        .rating {
+            color: #ff9f43;
+            margin: 10px 0;
+        }
+        .btn-details {
+            background: #4a4a4a;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 15px;
+            transition: background 0.3s;
+            width: 100%;
+            text-align: center;
+        }
+        .btn-details:hover {
+            background: #333;
+            color: white;
+            text-decoration: none;
+        }
+        .garage-info {
+            margin: 15px 0;
+        }
+        .garage-info i {
+            width: 20px;
+            color: #4a4a4a;
+            margin-right: 5px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="text-center mb-5">Nos Partenaires Automobiles</h1>
+    
+    <div class="row">
+        {% for partenaire in partenaires %}
+            <div class="col-md-4">
+                <div class="car-card">
+                    <img src="{{ asset('images/default-garage.jpg') }}" alt="{{ partenaire.nom }}" class="car-image">
+                    <div class="car-details">
+                        <h3>{{ partenaire.nom }}</h3>
+                        <div class="rating">
+                            {% for i in 1..5 %}
+                                <i class="fas fa-star{% if i > 4 %}-half-alt{% endif %}"></i>
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="garage-info">
+                            <p><i class="fas fa-map-marker-alt"></i> {{ partenaire.regions|join(', ') }}</p>
+                            <p><i class="fas fa-tools"></i> {{ partenaire.specialite }}</p>
+                        </div>
+                        
+                        <div class="price-box">
+                            <div class="price-amount">{{ partenaire.tarif|number_format(2, '.', ',') }} DT</div>
+                            <div class="price-period">par jour</div>
+                        </div>
+                        
+                        <a href="{{ path('app_partenaire_show', {'idPartenaire': partenaire.idPartenaire}) }}" class="btn-details">
+                            <i class="fas fa-info-circle"></i> Voir les détails
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://kit.fontawesome.com/your-kit-code.js" crossorigin="anonymous"></script>
+{% endblock %} 
