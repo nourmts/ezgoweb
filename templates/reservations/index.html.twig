@@ -1,0 +1,95 @@
+{% extends 'base_dashboard.html.twig' %}
+
+{% block title %}Liste des Réservations - EzGo Dashboard{% endblock %}
+
+{% block page_title %}Liste des Réservations{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header pb-0">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h6>Liste des Réservations</h6>
+                </div>
+            </div>
+            <div class="card-body px-0 pt-0 pb-2">
+                <div class="table-responsive p-0">
+                    <table class="table align-items-center mb-0">
+                        <thead>
+                            <tr>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Client</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Voiture</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Date</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Statut</th>
+                                <th class="text-secondary opacity-7">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% if reservations is defined and reservations|length > 0 %}
+                            {% for reservation in reservations %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex px-2 py-1">
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="mb-0 text-sm">{{ reservation.nameRes }}</h6>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex px-2 py-1">
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="mb-0 text-sm">
+                                                    {% if reservation.car %}
+                                                        {{ reservation.car.marque }}
+                                                        <small class="text-muted d-block">{{ reservation.car.immatriculation }}</small>
+                                                    {% else %}
+                                                        N/A
+                                                    {% endif %}
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex px-2 py-1">
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="mb-0 text-sm">{{ reservation.dateRes|date('d/m/Y H:i') }}</h6>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-{{ reservation.statut == 'en attente' ? 'warning' : (reservation.statut == 'confirmé' ? 'success' : 'danger') }}">
+                                            {{ reservation.statut|capitalize }}
+                                        </span>
+                                    </td>
+                                    <td class="align-middle">
+                                        <a href="{{ path('app_reservations_show', {'idRes': reservation.id}) }}" class="btn btn-link text-primary px-1 mb-0">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="{{ path('app_reservations_edit', {'idRes': reservation.id}) }}" class="btn btn-link text-info px-1 mb-0">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <form method="post" action="{{ path('app_reservations_delete', {'idRes': reservation.id}) }}" style="display: inline;">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reservation.id) }}">
+                                            <button type="submit" class="btn btn-link text-danger px-1 mb-0" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?');">
+                                                <i class="far fa-trash-alt"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center py-4">
+                                    <p class="text-muted mb-0">Aucune réservation trouvée</p>
+                                </td>
+                            </tr>
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

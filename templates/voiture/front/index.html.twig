@@ -1,0 +1,231 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos Véhicules - EzGo{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .page-header {
+            background: linear-gradient(rgba(51, 51, 51, 0.8), rgba(51, 51, 51, 0.8)), url('{{ asset('assets/images/cars-bg.jpg') }}');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            padding: 80px 0;
+            margin-bottom: 50px;
+        }
+        .car-card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            height: 100%;
+            margin-bottom: 30px;
+            background: var(--white);
+        }
+        .car-card:hover {
+            transform: translateY(-5px);
+        }
+        .car-image {
+            height: 200px;
+            object-fit: cover;
+        }
+        .car-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1;
+        }
+        .filter-section {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+        .form-select:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.25);
+        }
+        .btn-primary {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+        .btn-primary:hover {
+            background-color: #ff5a1f;
+            border-color: #ff5a1f;
+        }
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        .btn-secondary:hover {
+            background-color: #555555;
+            border-color: #555555;
+        }
+        .pagination .page-link {
+            color: var(--accent-color);
+        }
+        .pagination .page-item.active .page-link {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+            color: var(--white);
+        }
+        .badge.bg-success {
+            background-color: #28a745 !important;
+        }
+        .badge.bg-warning {
+            background-color: #ffc107 !important;
+        }
+        .badge.bg-danger {
+            background-color: #dc3545 !important;
+        }
+        .text-muted {
+            color: var(--secondary-color) !important;
+        }
+        .breadcrumb-item a {
+            color: var(--white);
+            text-decoration: none;
+        }
+        .breadcrumb-item a:hover {
+            color: var(--accent-color);
+        }
+        .breadcrumb-item.active {
+            color: rgba(255, 255, 255, 0.8);
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <!-- En-tête de Page -->
+    <section class="page-header">
+        <div class="container">
+            <nav aria-label="fil d'Ariane">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ path('app_home') }}" class="text-white">Accueil</a></li>
+                    <li class="breadcrumb-item active text-white" aria-current="page">Véhicules</li>
+                </ol>
+            </nav>
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h1 class="display-4 fw-bold mb-3">Nos Véhicules</h1>
+                    <p class="lead mb-0">Découvrez notre sélection de véhicules pour tous vos besoins de déplacement.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Filtres -->
+    <section class="py-4">
+        <div class="container">
+            <div class="filter-section">
+                <form method="get" class="row g-3">
+                    <div class="col-md-4">
+                        <label for="etat" class="form-label">État</label>
+                        <select class="form-select" id="etat" name="etat">
+                            <option value="">Tous les états</option>
+                            <option value="disponible" {% if app.request.query.get('etat') == 'disponible' %}selected{% endif %}>Disponible</option>
+                            <option value="maintenance" {% if app.request.query.get('etat') == 'maintenance' %}selected{% endif %}>En Maintenance</option>
+                            <option value="reserve" {% if app.request.query.get('etat') == 'reserve' %}selected{% endif %}>Réservé</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="contrat" class="form-label">Type de Contrat</label>
+                        <select class="form-select" id="contrat" name="contrat">
+                            <option value="">Tous les contrats</option>
+                            <option value="premium" {% if app.request.query.get('contrat') == 'premium' %}selected{% endif %}>Premium</option>
+                            <option value="standard" {% if app.request.query.get('contrat') == 'standard' %}selected{% endif %}>Standard</option>
+                            <option value="economique" {% if app.request.query.get('contrat') == 'economique' %}selected{% endif %}>Économique</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-filter me-2"></i> Filtrer
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Véhicules -->
+    <section class="py-5">
+        <div class="container">
+            {% if voitures|length > 0 %}
+                <div class="row">
+                    {% for voiture in voitures %}
+                        <div class="col-md-6 col-lg-4">
+                            <div class="car-card">
+                                {% if voiture.image %}
+                                    <img src="{{ asset('uploads/cars/' ~ voiture.image) }}" class="card-img-top car-image" alt="{{ voiture.marque }}">
+                                {% else %}
+                                    <img src="{{ asset('assets/images/car-placeholder.jpg') }}" class="card-img-top car-image" alt="{{ voiture.marque }}">
+                                {% endif %}
+                                <span class="badge bg-{{ voiture.etat == 'disponible' ? 'success' : (voiture.etat == 'maintenance' ? 'warning' : 'danger') }} car-badge">
+                                    {{ voiture.etat|capitalize }}
+                                </span>
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ voiture.marque }}</h5>
+                                    <p class="card-text">
+                                        <small class="text-muted">
+                                            <i class="fas fa-hashtag me-1"></i>{{ voiture.immatriculation }}
+                                        </small>
+                                    </p>
+                                    <p class="card-text">
+                                        <span class="badge bg-{{ voiture.contrat == 'premium' ? 'danger' : (voiture.contrat == 'standard' ? 'primary' : 'success') }}">
+                                            {{ voiture.contrat|capitalize }}
+                                        </span>
+                                    </p>
+                                    {% if voiture.etat == 'disponible' %}
+                                        <a href="{{ path('front_voiture_show', {'id': voiture.id}) }}" class="btn btn-primary w-100">
+                                            <i class="fas fa-info-circle me-2"></i> Voir Détails
+                                        </a>
+                                    {% else %}
+                                        <button class="btn btn-secondary w-100" disabled>
+                                            <i class="fas fa-ban me-2"></i> Non Disponible
+                                        </button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <!-- Pagination -->
+                {% if voitures.haveToPaginate is defined and voitures.haveToPaginate %}
+                    <div class="d-flex justify-content-center mt-4">
+                        <nav aria-label="Navigation des pages">
+                            <ul class="pagination">
+                                {% if voitures.currentPage > 1 %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ path('front_voiture_index', {'page': voitures.currentPage - 1}) }}" aria-label="Précédent">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                                
+                                {% for i in 1..voitures.lastPage %}
+                                    <li class="page-item {% if i == voitures.currentPage %}active{% endif %}">
+                                        <a class="page-link" href="{{ path('front_voiture_index', {'page': i}) }}">{{ i }}</a>
+                                    </li>
+                                {% endfor %}
+                                
+                                {% if voitures.currentPage < voitures.lastPage %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ path('front_voiture_index', {'page': voitures.currentPage + 1}) }}" aria-label="Suivant">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="alert alert-info text-center">
+                    <i class="fas fa-info-circle me-2"></i> Aucun véhicule ne correspond à vos critères de recherche.
+                </div>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %} 

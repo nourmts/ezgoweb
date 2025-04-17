@@ -1,0 +1,228 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ voiture.marque }} - Détails - EzGo{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .car-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('{{ asset('assets/images/car-detail-bg.jpg') }}');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 80px 0;
+            margin-bottom: 50px;
+        }
+        .car-image {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .car-image img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+        .car-details {
+            background: #fff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        .car-details h3 {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .detail-item {
+            margin-bottom: 15px;
+        }
+        .detail-item .label {
+            font-weight: 600;
+            color: #555;
+        }
+        .badge {
+            font-size: 0.8rem;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+        }
+        .btn-primary {
+            background-color: #ff4d30;
+            border-color: #ff4d30;
+        }
+        .btn-primary:hover {
+            background-color: #e63e22;
+            border-color: #e63e22;
+        }
+        .btn-outline-primary {
+            color: #ff4d30;
+            border-color: #ff4d30;
+        }
+        .btn-outline-primary:hover {
+            background-color: #ff4d30;
+            border-color: #ff4d30;
+        }
+        .features-list {
+            list-style: none;
+            padding: 0;
+        }
+        .features-list li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+        .features-list li:before {
+            content: '\f00c';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: #ff4d30;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <!-- Section Hero Voiture -->
+    <section class="car-hero">
+        <div class="container">
+            <nav aria-label="fil d'Ariane">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ path('app_home') }}" class="text-white">Accueil</a></li>
+                    <li class="breadcrumb-item"><a href="{{ path('front_voiture_index') }}" class="text-white">Véhicules</a></li>
+                    <li class="breadcrumb-item active text-white" aria-current="page">{{ voiture.marque }}</li>
+                </ol>
+            </nav>
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h1 class="display-4 fw-bold mb-3">{{ voiture.marque }}</h1>
+                    <p class="lead mb-4">Découvrez le confort et les performances de notre véhicule premium.</p>
+                    <span class="badge bg-{{ voiture.etat == 'disponible' ? 'success' : (voiture.etat == 'maintenance' ? 'warning' : 'danger') }} mb-3">
+                        {{ voiture.etat|capitalize }}
+                    </span>
+                </div>
+                <div class="col-lg-4 text-end">
+                    {% if voiture.etat == 'disponible' %}
+                        <a href="{{ path('app_reservations_new', {'id': voiture.id}) }}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-calendar-check me-2"></i> Réserver
+                        </a>
+                    {% else %}
+                        <button class="btn btn-secondary btn-lg" disabled>
+                            <i class="fas fa-ban me-2"></i> Non Disponible
+                        </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Détails Voiture -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="car-image">
+                        {% if voiture.image %}
+                            <img src="{{ asset('uploads/cars/' ~ voiture.image) }}" alt="{{ voiture.marque }}" class="img-fluid">
+                        {% else %}
+                            <img src="{{ asset('assets/images/car-placeholder.jpg') }}" alt="{{ voiture.marque }}" class="img-fluid">
+                        {% endif %}
+                    </div>
+                    
+                    <div class="car-details">
+                        <h3>Détails du Véhicule</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="detail-item">
+                                    <span class="label">Marque:</span>
+                                    <span class="value">{{ voiture.marque }}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="label">Immatriculation:</span>
+                                    <span class="value">{{ voiture.immatriculation }}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="label">État:</span>
+                                    <span class="badge bg-{{ voiture.etat == 'disponible' ? 'success' : (voiture.etat == 'maintenance' ? 'warning' : 'danger') }}">
+                                        {{ voiture.etat|capitalize }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="detail-item">
+                                    <span class="label">Type de Contrat:</span>
+                                    <span class="badge bg-{{ voiture.contrat == 'premium' ? 'danger' : (voiture.contrat == 'standard' ? 'primary' : 'success') }}">
+                                        {{ voiture.contrat|capitalize }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="car-details">
+                        <h3>Équipements</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <ul class="features-list">
+                                    <li>Climatisation</li>
+                                    <li>Bluetooth</li>
+                                    <li>GPS</li>
+                                    <li>Caméra de recul</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="features-list">
+                                    <li>Sièges en cuir</li>
+                                    <li>Régulateur de vitesse</li>
+                                    <li>Port USB</li>
+                                    <li>Verrous de sécurité enfants</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="car-details">
+                        <h3>Réservation</h3>
+                        {% if voiture.etat == 'disponible' %}
+                            <p>Ce véhicule est disponible à la réservation. Cliquez sur le bouton ci-dessous pour le réserver pour vos dates souhaitées.</p>
+                            <a href="{{ path('app_reservations_new', {'id': voiture.id}) }}" class="btn btn-primary w-100 mb-3">
+                                <i class="fas fa-calendar-check me-2"></i> Réserver Maintenant
+                            </a>
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i> Les réservations sont soumises à disponibilité.
+                            </div>
+                        {% else %}
+                            <div class="alert alert-warning">
+                                <i class="fas fa-exclamation-triangle me-2"></i> Ce véhicule n'est actuellement pas disponible à la réservation.
+                            </div>
+                            <p>Veuillez revenir plus tard ou consulter nos autres véhicules disponibles.</p>
+                            <a href="{{ path('front_voiture_index') }}" class="btn btn-outline-primary w-100">
+                                <i class="fas fa-car me-2"></i> Voir Autres Véhicules
+                            </a>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="car-details">
+                        <h3>Besoin d'Aide?</h3>
+                        <p>Des questions sur ce véhicule ou le processus de réservation? Notre équipe est là pour vous aider!</p>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <i class="fas fa-phone text-primary me-2"></i> +33 1 23 45 67 89
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-envelope text-primary me-2"></i> contact@ezgo.fr
+                            </li>
+                            <li>
+                                <i class="fas fa-clock text-primary me-2"></i> Lun-Ven: 9h00 - 18h00
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %} 

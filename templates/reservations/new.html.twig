@@ -1,0 +1,65 @@
+{% extends 'base_dashboard.html.twig' %}
+
+{% block title %}Nouvelle Réservation - EzGo Dashboard{% endblock %}
+
+{% block page_title %}Nouvelle Réservation{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header pb-0">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h6>Créer une Nouvelle Réservation</h6>
+                    <a href="{{ path('app_reservations_index') }}" class="btn btn-secondary btn-sm">
+                        <i class="fas fa-arrow-left"></i> Retour à la Liste
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form_label(form.nameRes, 'Nom du Client') }}
+                                {{ form_widget(form.nameRes, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form.nameRes) }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form_label(form.dateRes, 'Date de Réservation') }}
+                                {{ form_widget(form.dateRes, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form.dateRes) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form_label(form.car, 'Véhicule') }}
+                                {{ form_widget(form.car, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form.car) }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form_label(form.statut, 'Statut') }}
+                                {{ form_widget(form.statut, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form.statut) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Enregistrer la Réservation
+                            </button>
+                        </div>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

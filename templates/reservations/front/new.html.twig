@@ -1,0 +1,167 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle Réservation - EzGo{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .reservation-form {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        .form-header {
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #f8f9fa;
+            padding-bottom: 1rem;
+        }
+        .car-preview {
+            background-color: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+        .car-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .btn-taxi {
+            background-color: #ff4d30;
+            border-color: #ff4d30;
+            color: white;
+        }
+        .btn-taxi:hover {
+            background-color: #e63e23;
+            border-color: #e63e23;
+            color: white;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-control:focus {
+            border-color: #ff4d30;
+            box-shadow: 0 0 0 0.2rem rgba(255, 77, 48, 0.25);
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="hero-content">
+            <div class="container">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ path('app_home') }}">ACCUEIL</a></li>
+                        <li class="breadcrumb-item"><a href="{{ path('front_voiture_index') }}">VÉHICULES</a></li>
+                        <li class="breadcrumb-item"><a href="{{ path('front_voiture_show', {'id': selected_car.id}) }}">{{ selected_car.marque }}</a></li>
+                        <li class="breadcrumb-item active">RÉSERVER</li>
+                    </ol>
+                </nav>
+                <h1 class="display-4 fw-bold">Faire une Réservation</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="car-preview">
+                    <h3 class="h4 mb-4">Véhicule Sélectionné</h3>
+                    {% if selected_car.image %}
+                        <img src="{{ asset('uploads/cars/' ~ selected_car.image) }}" alt="{{ selected_car.marque }}" class="car-image">
+                    {% else %}
+                        <img src="{{ asset('assets/images/default-car.jpg') }}" alt="Véhicule par défaut" class="car-image">
+                    {% endif %}
+                    <h4 class="h5 mt-3">{{ selected_car.marque }}</h4>
+                    <p class="text-muted mb-2">{{ selected_car.immatriculation }}</p>
+                    <p class="mb-0"><strong>Type de Contrat:</strong> {{ selected_car.contrat }}</p>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="reservation-form">
+                    <div class="form-header">
+                        <h2 class="h3 mb-0">Détails de la Réservation</h2>
+                    </div>
+
+                    {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
+                    
+                    <div class="form-group">
+                        {{ form_label(form.nameRes, 'Nom complet') }}
+                        {{ form_widget(form.nameRes, {
+                            'attr': {
+                                'class': 'form-control',
+                                'placeholder': 'Entrez votre nom complet'
+                            }
+                        }) }}
+                        {{ form_errors(form.nameRes) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_label(form.dateRes, 'Date de réservation') }}
+                        {{ form_widget(form.dateRes, {
+                            'attr': {
+                                'class': 'form-control'
+                            }
+                        }) }}
+                        {{ form_errors(form.dateRes) }}
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{{ path('front_voiture_show', {'id': selected_car.id}) }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left"></i> Retour
+                        </a>
+                        <button type="submit" class="btn btn-taxi">
+                            <i class="fas fa-check"></i> Confirmer la Réservation
+                        </button>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .hero-section {
+            position: relative;
+            background-color: #1a1a1a;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), 
+                            url('https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?auto=format&fit=crop&w=1920&q=80');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            min-height: 40vh;
+            margin-top: -76px;
+            padding-top: 76px;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            padding: 4rem 0;
+            color: white;
+        }
+
+        .breadcrumb {
+            background: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .breadcrumb-item a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .breadcrumb-item.active {
+            color: #ff4d30;
+        }
+    </style>
+{% endblock %} 

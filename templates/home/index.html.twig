@@ -1,0 +1,229 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EzGo - Location de Véhicules{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .hero-section {
+            background: linear-gradient(rgba(51, 51, 51, 0.8), rgba(51, 51, 51, 0.8)), url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 80vh;
+            display: flex;
+            align-items: center;
+            color: var(--white);
+        }
+        .feature-box {
+            padding: 2rem;
+            text-align: center;
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            height: 100%;
+        }
+        .feature-box:hover {
+            transform: translateY(-5px);
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+        .car-card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            background: var(--white);
+            height: 100%;
+        }
+        .car-card:hover {
+            transform: translateY(-5px);
+        }
+        .car-image {
+            height: 200px;
+            object-fit: cover;
+        }
+        .section-title {
+            position: relative;
+            margin-bottom: 3rem;
+            color: var(--primary-color);
+        }
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+        .step-box {
+            text-align: center;
+            padding: 2rem;
+            background: var(--white);
+            border-radius: 10px;
+            height: 100%;
+        }
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background-color: var(--accent-color);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-weight: bold;
+        }
+        .contact-form {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+        .form-control:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.25);
+        }
+        .bg-light {
+            background-color: var(--light-bg) !important;
+        }
+        .text-muted {
+            color: var(--secondary-color) !important;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <section class="hero-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h1 class="display-4 fw-bold mb-4">Location de Véhicules Simple et Rapide</h1>
+                    <p class="lead mb-4">Trouvez la voiture parfaite pour vos besoins. Large choix de véhicules à des prix compétitifs.</p>
+                    <a href="#cars" class="btn btn-primary btn-lg">Voir nos Véhicules</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center section-title">Pourquoi Choisir EzGo ?</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <i class="fas fa-car feature-icon"></i>
+                        <h3>Large Choix</h3>
+                        <p>Des véhicules pour tous les besoins et tous les budgets.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <i class="fas fa-euro-sign feature-icon"></i>
+                        <h3>Meilleurs Prix</h3>
+                        <p>Des tarifs transparents et compétitifs sans frais cachés.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <i class="fas fa-headset feature-icon"></i>
+                        <h3>Support 24/7</h3>
+                        <p>Une équipe à votre écoute pour vous accompagner.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="cars" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center section-title">Nos Véhicules Disponibles</h2>
+            <div class="row g-4">
+                {% for voiture in voitures %}
+                    <div class="col-md-4">
+                        <div class="car-card">
+                            {% if voiture.image %}
+                                <img src="{{ asset('uploads/cars/' ~ voiture.image) }}" class="car-image w-100" alt="{{ voiture.modele }}">
+                            {% else %}
+                                <img src="https://via.placeholder.com/300x200?text=Voiture" class="car-image w-100" alt="Image par défaut">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ voiture.modele }}</h5>
+                                <p class="card-text">
+                                    <small class="text-muted">
+                                        <i class="fas fa-car"></i> {{ voiture.marque }}<br>
+                                        <i class="fas fa-hashtag"></i> {{ voiture.immatriculation }}
+                                    </small>
+                                </p>
+                                <a href="{{ path('app_voiture_show', {'id': voiture.id}) }}" class="btn btn-primary w-100">Voir les Détails</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center section-title">Comment ça Marche ?</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="step-box">
+                        <div class="step-number">1</div>
+                        <h3>Choisissez votre Véhicule</h3>
+                        <p>Parcourez notre sélection et trouvez le véhicule qui vous convient.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="step-box">
+                        <div class="step-number">2</div>
+                        <h3>Réservez en Ligne</h3>
+                        <p>Remplissez le formulaire de réservation en quelques clics.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="step-box">
+                        <div class="step-number">3</div>
+                        <h3>Récupérez votre Véhicule</h3>
+                        <p>Venez chercher votre véhicule à notre agence à l'heure convenue.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center section-title">Contactez-nous</h2>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="contact-form">
+                        <form>
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Nom</label>
+                                <input type="text" class="form-control" id="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Message</label>
+                                <textarea class="form-control" id="message" rows="4" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Envoyer</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %} 

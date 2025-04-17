@@ -1,0 +1,87 @@
+{% extends 'base_dashboard.html.twig' %}
+
+{% block title %}Reservation Details - EzGo Dashboard{% endblock %}
+
+{% block body %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header pb-0">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6>Reservation Details</h6>
+                        <div>
+                            <a href="{{ path('app_admin_reservations_edit', {'IdRes': reservation.IdRes}) }}" class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                            <a href="{{ path('app_admin_reservations_index') }}" class="btn btn-secondary btn-sm">
+                                <i class="fas fa-arrow-left"></i> Back to List
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h6 class="text-uppercase text-secondary text-xxs font-weight-bolder">Reservation Information</h6>
+                                    <div class="row mt-3">
+                                        <div class="col-6">
+                                            <p class="text-sm mb-1">Reservation ID</p>
+                                            <h6 class="mb-0">{{ reservation.IdRes }}</h6>
+                                        </div>
+                                        <div class="col-6">
+                                            <p class="text-sm mb-1">Status</p>
+                                            <span class="badge badge-sm bg-{{ reservation.statut == 'pending' ? 'warning' : (reservation.statut == 'confirmed' ? 'success' : 'danger') }}">
+                                                {{ reservation.statut|capitalize }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <p class="text-sm mb-1">Client Name</p>
+                                            <h6 class="mb-0">{{ reservation.NameRes }}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <p class="text-sm mb-1">Reservation Date</p>
+                                            <h6 class="mb-0">{{ reservation.DateRes|date('Y-m-d') }}</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h6 class="text-uppercase text-secondary text-xxs font-weight-bolder">Car Information</h6>
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <p class="text-sm mb-1">Car Model</p>
+                                            <h6 class="mb-0">{{ reservation.IdVoiture.marque }} {{ reservation.IdVoiture.modele }}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-6">
+                                            <p class="text-sm mb-1">Registration Number</p>
+                                            <h6 class="mb-0">{{ reservation.IdVoiture.immatriculation }}</h6>
+                                        </div>
+                                        <div class="col-6">
+                                            <p class="text-sm mb-1">Car Status</p>
+                                            <span class="badge badge-sm bg-{{ reservation.IdVoiture.etat == 'available' ? 'success' : (reservation.IdVoiture.etat == 'maintenance' ? 'warning' : 'danger') }}">
+                                                {{ reservation.IdVoiture.etat|capitalize }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
