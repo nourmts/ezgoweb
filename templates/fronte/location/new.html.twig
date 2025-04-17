@@ -1,0 +1,127 @@
+{% extends 'base_front.html.twig' %}
+
+{% block title %}Nouvelle Location{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow">
+                <div class="card-header bg-white">
+                    <h2 class="card-title mb-0">Nouvelle Location</h2>
+                </div>
+                <div class="card-body">
+                    {% if partenaire %}
+                        <div class="partenaire-info mb-4">
+                            <h4>{{ partenaire.nom }}</h4>
+                            <p><strong>Spécialité:</strong> {{ partenaire.specialite }}</p>
+                            <p><strong>Tarif:</strong> {{ partenaire.tarif }} DT/jour</p>
+                            <hr>
+                        </div>
+                    {% endif %}
+
+                    {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form_label(form.dateDebut) }}
+                                {{ form_widget(form.dateDebut, {'attr': {'class': 'form-control' ~ (form.dateDebut.vars.errors|length ? ' is-invalid' : '')}}) }}
+                                {{ form_errors(form.dateDebut) }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form_label(form.dateFin) }}
+                                {{ form_widget(form.dateFin, {'attr': {'class': 'form-control' ~ (form.dateFin.vars.errors|length ? ' is-invalid' : '')}}) }}
+                                {{ form_errors(form.dateFin) }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form_label(form.service) }}
+                                {{ form_widget(form.service, {'attr': {'class': 'form-control' ~ (form.service.vars.errors|length ? ' is-invalid' : '')}}) }}
+                                {{ form_errors(form.service) }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form_label(form.marque) }}
+                                {{ form_widget(form.marque, {'attr': {'class': 'form-control' ~ (form.marque.vars.errors|length ? ' is-invalid' : '')}}) }}
+                                {{ form_errors(form.marque) }}
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="d-flex justify-content-between">
+                                    <a href="{{ path('app_partenaire_index') }}" class="btn btn-secondary">Retour</a>
+                                    <button type="submit" class="btn btn-primary">Créer la Location</button>
+                                </div>
+                            </div>
+                        </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+.partenaire-info {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 0.25rem;
+}
+
+.partenaire-info h4 {
+    color: #0d6efd;
+    margin-bottom: 1rem;
+}
+
+.btn-primary {
+    background-color: #ff6b6b;
+    border-color: #ff6b6b;
+}
+
+.btn-primary:hover {
+    background-color: #ff5252;
+    border-color: #ff5252;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+}
+
+.card-header {
+    border-bottom: 1px solid #dee2e6;
+    padding: 1.5rem;
+}
+
+.card-title {
+    color: #343a40;
+    font-weight: 600;
+}
+
+.form-control {
+    border-radius: 5px;
+}
+
+.form-control:focus {
+    border-color: #ff6b6b;
+    box-shadow: 0 0 0 0.2rem rgba(255, 107, 107, 0.25);
+}
+</style>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add any necessary JavaScript here
+        });
+    </script>
+{% endblock %}

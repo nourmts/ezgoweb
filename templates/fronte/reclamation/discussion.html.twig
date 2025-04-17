@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Discussion - Réclamation #{{ reclamation.idReclamation }}{% endblock %}
+
+{% block body %}
+<h1>Discussion pour la réclamation #{{ reclamation.idReclamation }}</h1>
+<p>{{ reclamation.reclamation }}</p>
+
+<div class="discussions">
+    <!-- Affichez les discussions ici -->
+    <p>Aucune discussion pour cette réclamation.</p>
+</div>
+
+<form method="post" action="#">
+    <textarea name="message" rows="4" class="form-control" placeholder="Écrivez votre message ici..."></textarea>
+    <button type="submit" class="btn btn-primary mt-2">Envoyer</button>
+</form>
+{% endblock %}

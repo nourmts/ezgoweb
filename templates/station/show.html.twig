@@ -1,0 +1,34 @@
+{% extends 'back/gestion_station.html.twig' %}
+
+{% block title %}Station{% endblock %}
+
+{% block body %}
+    <h1>Station</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>IdS</th>
+                <td>{{ station.idS }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ station.nom }}</td>
+            </tr>
+            <tr>
+                <th>Region</th>
+                <td>{{ station.region }}</td>
+            </tr>
+            <tr>
+                <th>Cordonnes</th>
+                <td>{{ station.cordonnes }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_station_index') }}">back to list</a>
+
+    <a href="{{ path('app_station_edit', {'idS': station.idS}) }}">edit</a>
+
+    {{ include('station/_delete_form.html.twig') }}
+{% endblock %}

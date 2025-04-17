@@ -1,0 +1,49 @@
+{% extends 'back/base.html.twig' %}
+
+{% block title %}Modifier Ticket{% endblock %}
+
+{% block body %}
+    <div class="container-fluid py-4">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-header pb-0">
+                        <h2 class="h4 mb-0">Modifier Ticket</h2>
+                    </div>
+                    <div class="card-body bg-white p-4">
+                        {{ form_start(form, {'attr': {'class': 'form-container'}}) }}
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    {{ form_row(form.bus, {
+                                        'label': 'Bus',
+                                        'attr': {'class': 'form-control'}
+                                    }) }}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    {{ form_row(form.prix, {
+                                        'label': 'Prix',
+                                        'attr': {'class': 'form-control'}
+                                    }) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    {{ form_row(form.dateAchat, {
+                                        'label': 'Date d\'achat',
+                                        'attr': {'class': 'form-control'}
+                                    }) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 text-end">
+                                    <a href="{{ path('app_ticket') }}" class="btn btn-secondary me-2">Retour</a>
+                                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                </div>
+                            </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %} 

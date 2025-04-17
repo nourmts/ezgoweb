@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} Modifier la réclamation{% endblock %}
+
+{% block hero %}
+<section class="hero-wrap hero-wrap-2" style="background-image: url('{{ asset('images/bg_2.jpg') }}');">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row no-gutters slider-text align-items-end justify-content-start">
+      <div class="col-md-9 ftco-animate pb-5">
+        <h1 class="mb-3 bread">Modifier la réclamation</h1>
+        <p class="breadcrumbs"><span class="mr-2"><a href="{{ path('app_homepage') }}">Accueil <i class="fas fa-angle-right"></i></a></span> <span class="mr-2"><a href="{{ path('app_reclamation_index') }}">Réclamations <i class="fas fa-angle-right"></i></a></span> <span>Modifier <i class="fas fa-angle-right"></i></span></p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-warning text-white">
+                <h3 class="mb-0">Modifier la réclamation #{{ reclamation.idReclamation }}</h3>
+            </div>
+            <div class="card-body p-4">
+                {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'bg-light p-4'}}) }}
+                    <div class="form-group">
+                        {{ form_label(form.reclamation, 'Votre réclamation', {'label_attr': {'class': 'font-weight-bold'}}) }}
+                        {{ form_widget(form.reclamation, {'attr': {'class': 'form-control', 'rows': 7}}) }}
+                        {{ form_errors(form.reclamation) }}
+                    </div>
+                    
+                    <div class="form-group">
+                        {{ form_label(form.categorie, 'Catégorie', {'label_attr': {'class': 'font-weight-bold'}}) }}
+                        {{ form_widget(form.categorie, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.categorie) }}
+                    </div>
+                    
+                    <div class="form-group text-center mt-4">
+                        <button type="submit" class="btn btn-warning btn-lg px-5">Mettre à jour</button>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+                <a href="{{ path('app_reclamation_index') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Retour à la liste
+                </a>
+                {{ include('reclamation/_delete_form.html.twig', {'button_class': 'btn btn-danger'}) }}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h4 class="mb-0">Informations</h4>
+            </div>
+            <div class="card-body">
+                <p>Vous pouvez modifier les informations de votre réclamation. Tous les champs sont obligatoires.</p>
+                <p>Une fois vos modifications terminées, cliquez sur "Mettre à jour" pour enregistrer vos changements.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    $(document).ready(function(){
+        // No need for datepicker initialization as date field has been removed
+    });
+</script>
+{% endblock %}

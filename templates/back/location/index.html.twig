@@ -1,0 +1,158 @@
+{% extends 'base_front.html.twig' %}
+
+{% block title %}Nos Locations{% endblock %}
+
+{% block body %}
+    <div class="location-container">
+        <div class="header">
+            <h1>Nos Locations</h1>
+            <div class="btn-group">
+                <a href="{{ path('app_partenaire_index') }}" class="btn-creer">
+                    <i class="fas fa-plus-circle me-2"></i>Créer une Location
+                </a>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Date de début</th>
+                        <th>Date de fin</th>
+                        <th>Service</th>
+                        <th>Marque</th>
+                        <th>Prix Total</th>
+                        <th>Partenaire</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for location in locations %}
+                        <tr>
+                            <td>{{ location.idLocation }}</td>
+                            <td>{{ location.dateDebut|date('d/m/Y') }}</td>
+                            <td>{{ location.dateFin|date('d/m/Y') }}</td>
+                            <td>{{ location.service }}</td>
+                            <td>{{ location.marque }}</td>
+                            <td>{{ location.prixTotal }} DT</td>
+                            <td>{{ location.partenaire.nom }}</td>
+                            <td class="action-buttons">
+                                <a href="{{ path('app_location_show', {'idLocation': location.idLocation}) }}" class="btn btn-info btn-sm">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{{ path('app_location_edit', {'idLocation': location.idLocation}) }}" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form method="post" action="{{ path('app_location_delete', {'idLocation': location.idLocation}) }}" style="display: inline-block" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette location?');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ location.idLocation) }}">
+                                    <button class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="8" class="text-center">Aucune location trouvée</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .location-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 {
+            font-size: 2rem;
+            margin: 0;
+            color: #000;
+        }
+        .btn-creer {
+            background: #ff6b35;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        .btn-creer:hover {
+            background: #ff8c5a;
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .table th, .table td {
+            padding: 1rem;
+            border-bottom: 1px solid #dee2e6;
+            text-align: left;
+        }
+        .table th {
+            font-weight: 600;
+            color: #495057;
+            background-color: #f8f9fa;
+        }
+        .table tr:hover {
+            background-color: #f8f9fa;
+        }
+        .action-buttons {
+            white-space: nowrap;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .action-buttons .btn {
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        .action-buttons .btn:hover {
+            transform: translateY(-2px);
+        }
+        .btn-info {
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+            color: white;
+        }
+        .btn-warning {
+            background-color: #ffc107;
+            border-color: #ffc107;
+            color: #000;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            color: white;
+        }
+        .text-center {
+            text-align: center;
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+{% endblock %}
