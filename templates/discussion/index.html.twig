@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Discussion{% endblock %}
+
+{% block body %}
+<h1>Discussion pour la réclamation #{{ reclamation.idReclamation }}</h1>
+<p>{{ reclamation.reclamation }}</p>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <strong>État de la réclamation : </strong>
+        <span class="badge {% if reclamation.etat == 'traité' %}bg-success{% elseif reclamation.etat == 'en cours' %}bg-warning{% else %}bg-danger{% endif %}">
+            {{ reclamation.etat }}
+        </span>
+        
+        {% if is_granted('ROLE_ADMIN') and reclamation.etat != 'traité' %}
+            <a href="{{ path('reclamation_marquer_traite', {id: reclamation.idReclamation}) }}" class="btn btn-success btn-sm float-end">
+                Marquer comme traité
+            </a>
+        {% endif %}
+    </div>
+</div>
+
+{% for message in app.flashes('success') %}
+    <div class="alert alert-success">{{ message }}</div>
+{% endfor %}
+{% for message in app.flashes('error') %}
+    <div class="alert alert-danger">{{ message }}</div>
+{% endfor %}
+
+<div class="discussions">
+  {% for discussion in discussions %}
+    <div class="discussion">
+      <p><strong>{{ discussion.auteur }}</strong> ({{ discussion.date|date('d/m/Y H:i') }}):</p>
+      <p>{{ discussion.message }}</p>
+    </div>
+  {% else %}
+    <p>Aucun message pour cette réclamation.</p>
+  {% endfor %}
+</div>
+
+<form method="post" action="{{ path('app_discussion', {idReclamation: reclamation.idReclamation}) }}">
+  <textarea name="message" rows="4" class="form-control" placeholder="Écrivez votre message ici..."></textarea>
+  <button type="submit" class="btn btn-primary mt-2">Envoyer</button>
+</form>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.start-discussion').forEach(button => {
+            button.addEventListener('click', function () {
+                const id = this.dataset.id;
+
+                fetch(`/reclamation/${id}/start`, {
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Content-Type': 'application/json'
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Réclamation mise à jour à 'en cours'.");
+                        // Rediriger vers l'interface de discussion
+                        window.location.href = `/reclamation/${id}/discussion`;
+                    } else {
+                        alert(data.message || "Erreur lors de la mise à jour.");
+                    }
+                })
+                .catch(() => alert("Erreur lors de la mise à jour."));
+            });
+        });
+    });
+</script>
+{% endblock %}

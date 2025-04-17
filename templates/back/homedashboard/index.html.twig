@@ -1,0 +1,324 @@
+{% extends 'back/baseback.html.twig' %}
+
+{% block title %}Accueil du Dashboard{% endblock %}
+
+{% block current_page %}Tableau de bord{% endblock %}
+{% block page_title %}Tableau de bord{% endblock %}
+
+{% block hero %}
+ <div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <div class="card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Réclamations totales</p>
+                    <h5 class="font-weight-bolder mb-0">
+                      {{ reclamations|length }}
+                    </h5>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                    <i class="fas fa-clipboard-list text-lg opacity-10" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <div class="card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Réclamations en cours</p>
+                    <h5 class="font-weight-bolder mb-0">
+                      {{ reclamations|filter(r => r.etat == 'en cours')|length }}
+                    </h5>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon icon-shape bg-gradient-warning shadow text-center border-radius-md">
+                    <i class="fas fa-spinner text-lg opacity-10" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <div class="card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Réclamations traitées</p>
+                    <h5 class="font-weight-bolder mb-0">
+                      {{ reclamations|filter(r => r.etat == 'traité')|length }}
+                    </h5>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon icon-shape bg-gradient-success shadow text-center border-radius-md">
+                    <i class="fas fa-check text-lg opacity-10" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6">
+          <div class="card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Nouvelles réclamations</p>
+                    <h5 class="font-weight-bolder mb-0">
+                      {{ reclamations|filter(r => r.etat == 'non traité')|length }}
+                    </h5>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon icon-shape bg-gradient-danger shadow text-center border-radius-md">
+                    <i class="fas fa-exclamation-circle text-lg opacity-10" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Liste des réclamations -->
+      <div class="row mt-4">
+        <div class="col-12">
+          <div class="card mb-4">
+            <div class="card-header pb-0">
+              <div class="d-flex justify-content-between">
+                <h6>Liste des réclamations</h6>
+                <div>
+                  <input type="text" id="searchInput" class="form-control form-control-sm" placeholder="Rechercher...">
+                </div>
+              </div>
+            </div>
+            <div class="card-body px-0 pt-0 pb-2">
+              <div class="table-responsive p-0">
+                <table class="table align-items-center mb-0" id="reclamationsTable">
+                  <thead>
+                    <tr>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Catégorie</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Réclamation</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">État</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Date</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for reclamation in reclamations %}
+                    <tr>
+                      <td>
+                        <div class="d-flex px-2 py-1">
+                          <div class="d-flex flex-column justify-content-center">
+                            <h6 class="mb-0 text-sm">#{{ reclamation.idReclamation }}</h6>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <p class="text-xs font-weight-bold mb-0">{{ reclamation.categorie|default('Non définie') }}</p>
+                      </td>
+                      <td>
+                        <p class="text-xs text-secondary mb-0">{{ reclamation.reclamation|length > 50 ? reclamation.reclamation|slice(0, 50) ~ '...' : reclamation.reclamation }}</p>
+                      </td>
+                      <td>
+                        <span class="badge badge-sm {% if reclamation.etat == 'traité' %}bg-gradient-success{% elseif reclamation.etat == 'en cours' %}bg-gradient-warning{% else %}bg-gradient-danger{% endif %}">
+                          {{ reclamation.etat }}
+                        </span>
+                      </td>
+                      <td>
+                        <p class="text-xs text-secondary mb-0">{{ reclamation.date ? reclamation.date|date('d/m/Y') : 'N/A' }}</p>
+                      </td>
+                      <td class="align-middle text-center">
+                        <button class="btn btn-link text-secondary mb-0 view-discussion" data-id="{{ reclamation.idReclamation }}" title="Voir les discussions">
+                          <i class="fas fa-comments"></i>
+                        </button>
+                        {% if reclamation.etat == 'nouvelle' %}
+                        <button class="btn btn-link text-secondary mb-0 start-discussion" data-id="{{ reclamation.idReclamation }}" title="Démarrer la discussion">
+                          <i class="fas fa-play text-success"></i>
+                        </button>
+                        {% endif %}
+                        <button class="btn btn-link text-danger mb-0 delete-reclamation" data-id="{{ reclamation.idReclamation }}" data-bs-toggle="modal" data-bs-target="#deleteModal" title="Supprimer">
+                          <i class="fas fa-trash text-danger"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                      <td colspan="6" class="text-center py-5">
+                        <p class="text-secondary mb-0">Aucune réclamation trouvée</p>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+  <!-- Modal de confirmation de suppression -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Confirmer la suppression</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        </div>
+        <div class="modal-body">
+          Êtes-vous sûr de vouloir supprimer cette réclamation ? Cette action est irréversible.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Annuler</button>
+          <button type="button" class="btn bg-gradient-danger" id="confirmDelete">Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    let reclamationIdToDelete = null;
+    let csrfToken = '{{ csrf_token("delete_reclamation") }}';
+
+    // Gestionnaire pour le bouton de suppression
+    document.querySelectorAll('.delete-reclamation').forEach(button => {
+      button.addEventListener('click', function () {
+        reclamationIdToDelete = this.dataset.id;
+      });
+    });
+
+    // Confirmation de suppression
+    document.getElementById('confirmDelete').addEventListener('click', function () {
+      if (reclamationIdToDelete) {
+        fetch(`/reclamation/delete/${reclamationIdToDelete}`, {
+          method: 'DELETE',
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            _token: csrfToken
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            // Recharger la page après la suppression
+            window.location.reload();
+          } else {
+            alert(data.message || "Erreur lors de la suppression.");
+          }
+        })
+        .catch(error => {
+          console.error('Erreur:', error);
+          alert("Erreur lors de la suppression. Veuillez réessayer.");
+        });
+      }
+
+      // Fermer le modal
+      const modal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+      modal.hide();
+    });
+
+    // Gestionnaire pour le bouton "Voir les discussions" qui met en cours et redirige
+    document.querySelectorAll('.view-discussion').forEach(button => {
+      button.addEventListener('click', function() {
+        const id = this.dataset.id;
+        const reclamationState = this.closest('tr').querySelector('.badge').textContent.trim();
+        
+        // Si la réclamation n'est pas déjà en cours, on la met en cours
+        if (reclamationState !== 'en cours' && reclamationState !== 'traité') {
+          fetch(`/back/reclamation/${id}/start`, {
+            method: 'POST',
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest',
+              'Content-Type': 'application/json'
+            }
+          })
+          .then(response => response.json())
+          .then(data => {
+            // Rediriger vers l'interface de discussion
+            window.location.href = `/back/reclamation/${id}/discussion`;
+          })
+          .catch(error => {
+            console.error('Erreur:', error);
+            // Rediriger quand même en cas d'erreur
+            window.location.href = `/back/reclamation/${id}/discussion`;
+          });
+        } else {
+          // Si déjà en cours ou traité, juste rediriger
+          window.location.href = `/back/reclamation/${id}/discussion`;
+        }
+      });
+    });
+
+    // Gestionnaire pour le bouton "Démarrer la discussion"
+    document.querySelectorAll('.start-discussion').forEach(button => {
+      button.addEventListener('click', function () {
+        const id = this.dataset.id;
+
+        fetch(`/back/reclamation/${id}/start`, {
+          method: 'POST',
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'application/json'
+          },
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            // Rediriger vers l'interface de discussion
+            window.location.href = `/back/reclamation/${id}/discussion`;
+          } else {
+            alert(data.message || "Erreur lors de la mise à jour.");
+          }
+        })
+        .catch(() => alert("Erreur lors de la mise à jour."));
+      });
+    });
+
+    // Fonctionnalité de recherche dans le tableau
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+      const searchValue = this.value.toLowerCase();
+      const table = document.getElementById('reclamationsTable');
+      const rows = table.getElementsByTagName('tr');
+
+      for (let i = 1; i < rows.length; i++) {
+        let found = false;
+        const cells = rows[i].getElementsByTagName('td');
+        
+        for (let j = 0; j < cells.length; j++) {
+          const cellValue = cells[j].textContent || cells[j].innerText;
+          if (cellValue.toLowerCase().indexOf(searchValue) > -1) {
+            found = true;
+            break;
+          }
+        }
+        
+        rows[i].style.display = found ? '' : 'none';
+      }
+    });
+  });
+</script>
+{% endblock %}
