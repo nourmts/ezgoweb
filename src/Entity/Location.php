@@ -47,6 +47,9 @@ class Location
     #[Assert\NotNull(message: "Un partenaire doit être sélectionné")]
     private ?Partenaire $partenaire = null;
 
+    #[ORM\Column(type: Types::BOOLEAN, nullable: false, options: ["default" => false])]
+    private bool $confirmed = false;
+
     // Getters et Setters
 
     public function getIdLocation(): ?int
@@ -117,6 +120,17 @@ class Location
     public function setPartenaire(?Partenaire $partenaire): static
     {
         $this->partenaire = $partenaire;
+        return $this;
+    }
+
+    public function isConfirmed(): bool
+    {
+        return $this->confirmed;
+    }
+
+    public function setConfirmed(bool $confirmed): static
+    {
+        $this->confirmed = $confirmed;
         return $this;
     }
 

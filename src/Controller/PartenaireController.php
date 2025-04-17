@@ -14,6 +14,14 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/partenaire')]
 class PartenaireController extends AbstractController
 {
+    #[Route('/front', name: 'app_partenaire_front', methods: ['GET'])]
+    public function front(PartenaireRepository $partenaireRepository): Response
+    {
+        return $this->render('partenaire/front.html.twig', [
+            'partenaires' => $partenaireRepository->findAll(),
+        ]);
+    }
+
     #[Route('/', name: 'app_partenaire_index', methods: ['GET'])]
     public function index(PartenaireRepository $partenaireRepository): Response
     {

@@ -17,12 +17,6 @@ framework:
     php_errors:
         log: true
 
-    assets:
-        enabled: true
-        packages:
-            app:
-                base_path: '/assets'
-
 when@test:
     framework:
         test: true

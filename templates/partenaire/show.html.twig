@@ -4,6 +4,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         .garage-details {
             background: #fff;
@@ -13,270 +14,219 @@
             overflow: hidden;
         }
         .garage-header {
-            position: relative;
-            height: 300px;
-            background: #4a4a4a;
+            background: #ff6b35;
             color: white;
-            padding: 40px;
-            display: flex;
-            align-items: flex-end;
-        }
-        .garage-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.6;
+            padding: 2rem;
+            position: relative;
         }
         .garage-title {
-            position: relative;
-            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .garage-title i {
+            font-size: 2.5rem;
         }
         .garage-title h1 {
             font-size: 2.5rem;
-            margin-bottom: 10px;
+            margin: 0;
         }
-        .rating {
-            color: #ff9f43;
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-        }
-        .garage-content {
-            padding: 40px;
-        }
-        .info-section {
-            margin-bottom: 30px;
-        }
-        .info-section h3 {
-            color: #4a4a4a;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #ff9f43;
-            padding-bottom: 10px;
-            display: inline-block;
-        }
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        .info-item {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-        }
-        .info-item i {
-            color: #4a4a4a;
-            margin-right: 10px;
-            width: 20px;
-        }
-        .price-box {
-            background: #4a4a4a;
-            color: white;
-            padding: 30px;
-            border-radius: 8px;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .price-amount {
-            font-size: 3rem;
-            font-weight: bold;
-        }
-        .price-period {
+        .garage-subtitle {
             font-size: 1.2rem;
             opacity: 0.9;
         }
-        .btn-rent {
-            background: #ff9f43;
-            color: white;
-            padding: 15px 40px;
-            border-radius: 4px;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 1.2rem;
-            transition: background 0.3s;
+        .info-section {
+            padding: 2rem;
+            border-bottom: 1px solid #eee;
         }
-        .btn-rent:hover {
-            background: #f39c12;
-            color: white;
-            text-decoration: none;
+        .info-section:last-child {
+            border-bottom: none;
         }
-        .btn-back {
-            background: #4a4a4a;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 4px;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 20px;
-            transition: background 0.3s;
-        }
-        .btn-back:hover {
-            background: #333;
-            color: white;
-            text-decoration: none;
-        }
-        .card {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-            margin-top: 2rem;
-        }
-        .card-header {
-            background-color: white;
-            border-bottom: 1px solid #dee2e6;
-            padding: 1.5rem;
-        }
-        .card-title {
-            color: #343a40;
-            font-weight: 600;
-            margin-bottom: 0;
-        }
-        .card-body {
-            padding: 1.5rem;
-        }
-        .partenaire-details p {
-            margin-bottom: 0.75rem;
-            font-size: 1.1rem;
-        }
-        .services-section, .marques-section {
-            background-color: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 8px;
+        .info-section h3 {
+            color: #2d3436;
             margin-bottom: 1.5rem;
-        }
-        .services-section h4, .marques-section h4 {
-            color: #0d6efd;
-            margin-bottom: 1rem;
-        }
-        .price-box {
-            background-color: #ff6b6b;
-            color: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-        .price-box h4 {
-            margin-bottom: 0.5rem;
-            color: white;
-        }
-        .price {
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 0;
-        }
-        .period {
-            font-size: 1rem;
-            opacity: 0.8;
-        }
-        .btn-primary {
-            background-color: #ff6b6b;
-            border-color: #ff6b6b;
-            flex: 1;
-            padding: 0.75rem 1.5rem;
-        }
-        .btn-primary:hover {
-            background-color: #ff5252;
-            border-color: #ff5252;
-        }
-        .btn-secondary {
-            background-color: #6c757d;
-            border-color: #6c757d;
-            flex: 1;
-            padding: 0.75rem 1.5rem;
-        }
-        .btn-secondary:hover {
-            background-color: #5a6268;
-            border-color: #5a6268;
-        }
-        .action-buttons {
             display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .info-section h3 i {
+            color: #ff6b35;
+        }
+        .info-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        .info-item i {
+            color: #ff6b35;
+            width: 20px;
+        }
+        .service-list, .marque-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
-            margin-top: 1.5rem;
         }
         .service-item, .marque-item {
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.5rem 0;
+            padding: 0.75rem;
+            background: #f8f9fa;
+            border-radius: 4px;
         }
         .service-item i, .marque-item i {
             color: #28a745;
+        }
+        .price-box {
+            background: #fff3ef;
+            border-left: 4px solid #ff6b35;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+        .price-title {
+            color: #ff6b35;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .price-amount {
+            font-size: 2.5rem;
+            color: #2d3436;
+            font-weight: bold;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .btn-rent {
+            background: #ff6b35;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-rent:hover {
+            background: #ff8c5a;
+            transform: translateY(-2px);
+            color: white;
+            text-decoration: none;
+        }
+        .btn-back {
+            background: #6c757d;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-back:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+            color: white;
+            text-decoration: none;
         }
     </style>
 {% endblock %}
 
 {% block body %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 mx-auto">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">{{ partenaire.nom }}</h2>
+<div class="container py-5">
+    <div class="garage-details">
+        <div class="garage-header">
+            <div class="garage-title">
+                <i class="fas fa-building"></i>
+                <h1>{{ partenaire.nom }}</h1>
+            </div>
+            <div class="garage-subtitle">{{ partenaire.specialite }}</div>
+        </div>
+
+        <div class="info-section">
+            <h3>
+                <i class="fas fa-info-circle"></i>
+                Informations de contact
+            </h3>
+            <div class="info-list">
+                <div class="info-item">
+                    <i class="fas fa-phone"></i>
+                    <span>{{ partenaire.telephone }}</span>
                 </div>
-                <div class="card-body">
-                    <div class="info-section">
-                        <h4>Informations</h4>
-                        <ul class="info-list">
-                            <li><strong>Spécialité:</strong> {{ partenaire.specialite }}</li>
-                            {% if partenaire.telephone is defined %}
-                                <li><strong>Téléphone:</strong> {{ partenaire.telephone }}</li>
-                            {% endif %}
-                            {% if partenaire.email is defined %}
-                                <li><strong>Email:</strong> {{ partenaire.email }}</li>
-                            {% endif %}
-                        </ul>
-                    </div>
-
-                    <div class="info-section">
-                        <h4>Services disponibles</h4>
-                        <div class="service-list">
-                            {% if partenaire.services is not empty %}
-                                {% for service in partenaire.services %}
-                                    <div class="service-item">
-                                        <i class="fas fa-check-circle"></i>
-                                        <span>{{ service }}</span>
-                                    </div>
-                                {% endfor %}
-                            {% else %}
-                                <p>Aucun service disponible</p>
-                            {% endif %}
-                        </div>
-                    </div>
-
-                    <div class="info-section">
-                        <h4>Marques disponibles</h4>
-                        <div class="marque-list">
-                            {% if partenaire.marquesDisponibles is not empty %}
-                                {% for marque in partenaire.marquesDisponibles %}
-                                    <div class="marque-item">
-                                        <i class="fas fa-car"></i>
-                                        <span>{{ marque }}</span>
-                                    </div>
-                                {% endfor %}
-                            {% else %}
-                                <p>Aucune marque disponible</p>
-                            {% endif %}
-                        </div>
-                    </div>
-
-                    <div class="price-box">
-                        <h4>Tarif journalier</h4>
-                        <p class="price">{{ partenaire.tarif }} DT<span class="period">/jour</span></p>
-                    </div>
-
-                    <div class="action-buttons">
-                        <a href="{{ path('app_location_new', {'idPartenaire': partenaire.idPartenaire}) }}" class="btn btn-primary">
-                            <i class="fas fa-car me-2"></i>Louer maintenant
-                        </a>
-                        <a href="{{ path('app_partenaire_index') }}" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left me-2"></i>Retour
-                        </a>
-                    </div>
+                <div class="info-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>{{ partenaire.email }}</span>
                 </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h3>
+                <i class="fas fa-cogs"></i>
+                Services disponibles
+            </h3>
+            <div class="service-list">
+                {% for service in partenaire.services %}
+                    <div class="service-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>{{ service }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h3>
+                <i class="fas fa-car"></i>
+                Marques disponibles
+            </h3>
+            <div class="marque-list">
+                {% for marque in partenaire.marquesDisponibles %}
+                    <div class="marque-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>{{ marque }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="info-section">
+            <div class="price-box">
+                <h3 class="price-title">
+                    <i class="fas fa-tag"></i>
+                    Tarif journalier
+                </h3>
+                <div class="price-amount">{{ partenaire.tarif }} DT</div>
+            </div>
+
+            <div class="action-buttons">
+                <a href="{{ path('app_location_new', {'idPartenaire': partenaire.idPartenaire}) }}" class="btn-rent">
+                    <i class="fas fa-calendar-plus"></i>
+                    <span>Réserver maintenant</span>
+                </a>
+                <a href="{{ path('app_partenaire_index') }}" class="btn-back">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Retour à la liste</span>
+                </a>
             </div>
         </div>
     </div>

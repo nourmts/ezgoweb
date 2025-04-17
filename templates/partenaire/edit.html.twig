@@ -88,6 +88,9 @@
     <div class="page-header d-flex justify-content-between align-items-center">
         <h1>Modifier le Partenaire</h1>
         <div class="d-flex gap-2">
+            <button type="submit" form="edit_partenaire_form" class="btn btn-submit">
+                <i class="fas fa-save me-2"></i>Mettre à jour
+            </button>
             <a href="{{ path('app_partenaire_index') }}" class="btn btn-cancel">
                 <i class="fas fa-arrow-left me-2"></i>Retour
             </a>
@@ -95,7 +98,9 @@
         </div>
     </div>
 
-    {{ include('partenaire/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+    {{ form_start(form, {'attr': {'id': 'edit_partenaire_form'}}) }}
+    {{ include('partenaire/_form.html.twig') }}
+    {{ form_end(form) }}
 </div>
 {% endblock %}
 

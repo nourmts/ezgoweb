@@ -47,14 +47,32 @@ class LocationController extends AbstractController
             $entityManager->persist($location);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Location créée avec succès');
-            return $this->redirectToRoute('app_location_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_location_confirm', ['idLocation' => $location->getIdLocation()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('location/new.html.twig', [
             'location' => $location,
             'form' => $form,
             'partenaire' => $partenaire
+        ]);
+    }
+
+    #[Route('/{idLocation}/confirm', name: 'app_location_confirm', methods: ['GET', 'POST'])]
+    public function confirm(Request $request, Location $location, EntityManagerInterface $entityManager): Response
+    {
+        if ($request->isMethod('POST')) {
+            if ($request->request->get('action') === 'confirm') {
+                $location->setConfirmed(true);
+                $entityManager->flush();
+                
+                return $this->render('location/success.html.twig', [
+                    'location' => $location
+                ]);
+            }
+        }
+
+        return $this->render('location/confirm.html.twig', [
+            'location' => $location
         ]);
     }
 
@@ -88,8 +106,7 @@ class LocationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $location->calculatePrixTotal();
             $entityManager->flush();
-            $this->addFlash('success', 'Location modifiée avec succès');
-            return $this->redirectToRoute('app_location_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_location_confirm', ['idLocation' => $location->getIdLocation()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('location/edit.html.twig', [
