@@ -50,6 +50,10 @@ class Location
     #[ORM\Column(type: Types::BOOLEAN, nullable: false, options: ["default" => false])]
     private bool $confirmed = false;
 
+    #[ORM\ManyToOne(targetEntity: CodePromo::class)]
+    #[ORM\JoinColumn(name: 'code_promo', referencedColumnName: 'id', nullable: true)]
+    private ?CodePromo $codePromo = null;
+
     // Getters et Setters
 
     public function getIdLocation(): ?int
@@ -134,12 +138,31 @@ class Location
         return $this;
     }
 
+    public function getCodePromo(): ?CodePromo
+    {
+        return $this->codePromo;
+    }
+
+    public function setCodePromo(?CodePromo $codePromo): static
+    {
+        $this->codePromo = $codePromo;
+        return $this;
+    }
+
     public function calculatePrixTotal(): void
     {
         if ($this->dateDebut && $this->dateFin && $this->partenaire) {
             $interval = $this->dateDebut->diff($this->dateFin);
-            $days = $interval->days + 1; // Including both start and end days
-            $this->prixTotal = $days * $this->partenaire->getTarif();
+            $days = $interval->days + 1; // Inclut le premier et le dernier jour
+            $prixBase = $days * $this->partenaire->getTarif();
+            
+            // Appliquer la réduction si un code promo est présent
+            if ($this->codePromo) {
+                $reduction = $prixBase * ($this->codePromo->getPourcentage() / 100);
+                $prixBase -= $reduction;
+            }
+
+            $this->prixTotal = $prixBase;
         } else {
             $this->prixTotal = 0.0;
         }

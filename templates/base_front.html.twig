@@ -7,21 +7,22 @@
         
         {% block stylesheets %}
             <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
-            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
             <style>
                 /* Navbar Styles */
                 .ftco_navbar {
-                    position: absolute;
+                    position: fixed;
                     top: 0;
                     left: 0;
                     right: 0;
                     z-index: 1000;
                     padding: 20px 0;
+                    transition: all 0.3s ease;
                 }
                 .ftco-navbar-light {
-                    background: transparent !important;
-                    position: absolute;
+                    background: #000 !important;
+                    position: fixed;
                     left: 0;
                     right: 0;
                     z-index: 3;
@@ -49,10 +50,35 @@
                 .ftco-navbar-light .navbar-nav > .nav-item.active > .nav-link {
                     color: #ff6b35;
                 }
+                .main-content {
+                    padding-top: 100px;
+                }
+                .alert {
+                    margin-bottom: 1rem;
+                    border: none;
+                    border-radius: 8px;
+                    padding: 1rem 1.5rem;
+                }
+                .alert-success {
+                    background-color: #d4edda;
+                    color: #155724;
+                }
+                .alert-danger {
+                    background-color: #f8d7da;
+                    color: #721c24;
+                }
+                .alert-warning {
+                    background-color: #fff3cd;
+                    color: #856404;
+                }
+                .alert-info {
+                    background-color: #d1ecf1;
+                    color: #0c5460;
+                }
                 @media (max-width: 991.98px) {
                     .ftco-navbar-light {
                         background: #000 !important;
-                        position: relative;
+                        position: fixed;
                         top: 0;
                         padding: 10px 0;
                     }
@@ -72,7 +98,7 @@
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
             <div class="container">
-                <a class="navbar-brand" href="{{ path('app_index') }}">Auto<span>road</span></a>
+                <a class="navbar-brand" href="{{ path('app_index') }}">Ez<span>Go</span></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -83,7 +109,7 @@
                             <a href="{{ path('app_index') }}" class="nav-link">Accueil</a>
                         </li>
                         <li class="nav-item {% if app.request.get('_route') starts with 'app_partenaire' %}active{% endif %}">
-                            <a href="{{ path('app_partenaire_index') }}" class="nav-link">Partenaires</a>
+                            <a href="{{ path('app_partenaire_front') }}" class="nav-link">Partenaires</a>
                         </li>
                         <li class="nav-item {% if app.request.get('_route') starts with 'app_location' %}active{% endif %}">
                             <a href="{{ path('app_location_index') }}" class="nav-link">Locations</a>
@@ -97,22 +123,46 @@
         </nav>
         <!-- END nav -->
 
-        {% block body %}{% endblock %}
+        <div class="main-content">
+            {# Flash messages #}
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="container mt-3">
+                        <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+            {% block body %}{% endblock %}
+        </div>
 
         {% block javascripts %}
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
             <script>
-                $(window).scroll(function() {
-                    if ($(this).scrollTop() > 100) {
-                        $('.ftco-navbar-light').addClass('scrolled');
-                        $('.ftco-navbar-light').css('background', '#000 !important');
-                    } else {
-                        $('.ftco-navbar-light').removeClass('scrolled');
-                        $('.ftco-navbar-light').css('background', 'transparent !important');
-                    }
+                $(document).ready(function() {
+                    // Gestion de la navbar au scroll
+                    $(window).scroll(function() {
+                        if ($(this).scrollTop() > 100) {
+                            $('.ftco-navbar-light').addClass('scrolled');
+                            $('.ftco-navbar-light').css('background', '#000 !important');
+                        } else {
+                            $('.ftco-navbar-light').removeClass('scrolled');
+                            $('.ftco-navbar-light').css('background', '#000 !important');
+                        }
+                    });
+
+                    // Auto-hide des alertes après 5 secondes
+                    setTimeout(function() {
+                        $('.alert').fadeOut('slow');
+                    }, 5000);
                 });
             </script>
         {% endblock %}
     </body>
-</html> 
+</html>

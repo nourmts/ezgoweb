@@ -124,9 +124,13 @@ class Partenaire
     #[ORM\OneToMany(mappedBy: 'partenaire', targetEntity: Location::class, orphanRemoval: true)]
     private Collection $locations;
 
+    #[ORM\OneToMany(mappedBy: 'partenaire', targetEntity: Rating::class)]
+    private Collection $ratings;
+
     public function __construct()
     {
         $this->locations = new ArrayCollection();
+        $this->ratings = new ArrayCollection();
         $this->regions = [];
     }
 
@@ -285,7 +289,6 @@ class Partenaire
             $this->locations->add($location);
             $location->setPartenaire($this);
         }
-
         return $this;
     }
 
@@ -296,7 +299,90 @@ class Partenaire
                 $location->setPartenaire(null);
             }
         }
-
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Rating>
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    public function addRating(Rating $rating): static
+    {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings->add($rating);
+            $rating->setPartenaire($this);
+        }
+        return $this;
+    }
+
+    public function removeRating(Rating $rating): static
+    {
+        if ($this->ratings->removeElement($rating)) {
+            if ($rating->getPartenaire() === $this) {
+                $rating->setPartenaire(null);
+            }
+        }
+        return $this;
+    }
+
+    public function getAverageRating(): float
+    {
+        if ($this->ratings->isEmpty()) {
+            return 0.0;
+        }
+
+        $total = 0;
+        foreach ($this->ratings as $rating) {
+            $total += $rating->getNote();
+        }
+
+        return round($total / $this->ratings->count(), 1);
+    }
+
+    public function getRatingCount(int $stars): int
+    {
+        return $this->ratings->filter(fn(Rating $rating) => $rating->getNote() === (float)$stars)->count();
+    }
+
+    public function getRatingPercentage(int $stars): float
+    {
+        if ($this->ratings->isEmpty()) {
+            return 0.0;
+        }
+
+        return ($this->getRatingCount($stars) / $this->ratings->count()) * 100;
+    }
+
+    public function getSatisfactionRate(): float
+    {
+        if ($this->ratings->isEmpty()) {
+            return 0.0;
+        }
+
+        $satisfiedCount = $this->ratings->filter(fn(Rating $rating) => $rating->getNote() >= 4)->count();
+        return ($satisfiedCount / $this->ratings->count()) * 100;
+    }
+
+    public function getLikesCount(): int
+    {
+        return $this->ratings->filter(fn(Rating $rating) => $rating->getIsLike() === true)->count();
+    }
+
+    public function getDislikesCount(): int
+    {
+        return $this->ratings->filter(fn(Rating $rating) => $rating->getIsLike() === false)->count();
+    }
+
+    public function getLikeRatio(): float
+    {
+        $total = $this->ratings->count();
+        if ($total === 0) {
+            return 0.0;
+        }
+        return ($this->getLikesCount() / $total) * 100;
     }
 }

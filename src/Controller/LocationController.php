@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Location;
 use App\Entity\Partenaire;
+use App\Entity\CodePromo;
 use App\Form\LocationType;
 use App\Repository\LocationRepository;
+use App\Repository\CodePromoRepository;
 use App\Repository\PartenaireRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,7 +27,7 @@ class LocationController extends AbstractController
     }
 
     #[Route('/new/{idPartenaire}', name: 'app_location_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, ?Partenaire $partenaire = null): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, CodePromoRepository $codePromoRepository, ?Partenaire $partenaire = null): Response
     {
         if (!$partenaire) {
             $this->addFlash('error', 'Partenaire non trouvé');
@@ -43,6 +45,40 @@ class LocationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Récupération du code promo saisi
+            $codePromoText = $form->get('codePromoText')->getData();
+            
+            if ($codePromoText) {
+                $codePromo = $codePromoRepository->findByCode($codePromoText);
+                
+                if ($codePromo) {
+                    // Vérifier si le code promo est valide (date d'expiration et nombre d'utilisations)
+                    $dateExpiration = $codePromo->getDateExpiration();
+                    $utilisationsMax = $codePromo->getUtilisationsMax();
+                    $utilisations = $codePromo->getUtilisations();
+                    
+                    $isValid = true;
+                    
+                    if ($dateExpiration && $dateExpiration < new \DateTime()) {
+                        $isValid = false;
+                        $this->addFlash('error', 'Ce code promo a expiré');
+                    }
+                    
+                    if ($utilisationsMax !== null && $utilisations >= $utilisationsMax) {
+                        $isValid = false;
+                        $this->addFlash('error', 'Ce code promo a atteint son nombre maximum d\'utilisations');
+                    }
+                    
+                    if ($isValid) {
+                        $location->setCodePromo($codePromo);
+                        $codePromo->setUtilisations($utilisations + 1);
+                        $this->addFlash('success', 'Code promo appliqué avec succès !');
+                    }
+                } else {
+                    $this->addFlash('error', 'Code promo invalide');
+                }
+            }
+
             $location->calculatePrixTotal();
             $entityManager->persist($location);
             $entityManager->flush();

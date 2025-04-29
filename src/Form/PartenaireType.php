@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class PartenaireType extends AbstractType
 {
@@ -29,10 +30,19 @@ class PartenaireType extends AbstractType
             ->add('telephone', TelType::class, [
                 'label' => 'Téléphone',
                 'attr' => [
-                    'placeholder' => '+216XXXXXXXX',
-                    'class' => 'form-control'
+                    'class' => 'form-control',
+                    'placeholder' => '+216 XXXXXXXX',
+                    'maxlength' => '12',
+                    'pattern' => '\+216[0-9]{8}',
+                    'data-prefix' => '+216'
                 ],
-                'help' => 'Format tunisien : +216XXXXXXXX'
+                'help' => 'Format: +216 suivi des 8 chiffres (exemple: +21612345678)',
+                'constraints' => [
+                    new Regex([
+                        'pattern' => '/^\+216[0-9]{8}$/',
+                        'message' => 'Le numéro doit commencer par +216 suivi de 8 chiffres'
+                    ])
+                ]
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Email',

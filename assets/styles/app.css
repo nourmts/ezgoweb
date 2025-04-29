@@ -1,3 +1,165 @@
-body {
-    background-color: skyblue;
+/* Style général de la grille des partenaires */
+.partner-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+}
+
+/* Carte partenaire */
+.partner-card {
+    background: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* En-tête de la carte */
+.partner-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+/* Section services */
+.partner-services ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.partner-services li {
+    padding: 0.3rem 0;
+}
+
+/* Section régions */
+.partner-regions {
+    color: #666;
+    margin: 1rem 0;
+}
+
+/* Section prix et actions */
+.partner-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+}
+
+.price {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* Boutons */
+.btn-reserver {
+    background: #4CAF50;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.btn-noter {
+    background: #FFC107;
+    color: #333;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-left: 0.5rem;
+}
+
+/* Liste des partenaires en mode liste */
+.partners-list {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Élément de partenaire en liste */
+.partner-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 15px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    flex-wrap: wrap;
+}
+
+/* Contenu principal dans un partenaire en liste */
+.partner-main {
+    flex: 1;
+    min-width: 250px;
+}
+
+/* Section rating */
+.partner-rating {
+    text-align: center;
+    margin: 10px 20px;
+    color: #FFD700;
+    font-size: 1rem;
+}
+
+.partner-rating .text-muted {
+    color: #ccc !important;
+}
+
+/* Style des étoiles */
+.stars {
+    color: #FFD700;
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.stars .text-secondary {
+    color: #e0e0e0 !important;
+}
+
+/* Badges de services */
+.partner-services .badge {
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+/* Bouton noter compact pour la liste */
+.rate-btn {
+    padding: 3px 10px;
+    font-size: 0.8rem;
+}
+
+/* Ajoutez ces styles */
+.star-rating {
+    --star-size: 2rem;
+    --star-color: #ccc;
+    --star-active-color: #ffc700;
+}
+
+.star-rating label {
+    font-size: var(--star-size);
+    color: var(--star-color);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.star-rating input:checked ~ label,
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: var(--star-active-color);
+}
+
+.rating-item {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #eee;
+    border-radius: 5px;
+}
+
+.rating-stars {
+    color: gold;
+    font-size: 1.2rem;
 }

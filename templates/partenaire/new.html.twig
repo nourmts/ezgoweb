@@ -254,18 +254,66 @@
     {{ parent() }}
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
-        $(document).ready(function() {
-            // Initialize Select2 for single select
-            $('.select2').select2({
-                theme: 'bootstrap-5',
-                width: '100%'
-            });
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gestion du numéro de téléphone
+            const phoneInput = document.querySelector('.phone-input');
+            if (phoneInput) {
+                // Fonction pour formater le numéro de téléphone
+                function formatPhoneNumber(value) {
+                    // Si le champ est vide, ajoute le préfixe
+                    if (value === '') {
+                        return '+216';
+                    }
+                    
+                    // Si l'utilisateur supprime le préfixe, le remet
+                    if (!value.startsWith('+216')) {
+                        value = '+216' + value.replace('+216', '');
+                    }
+                    
+                    // Supprime tous les caractères non numériques après le préfixe
+                    let prefix = value.substring(0, 4); // '+216'
+                    let numbers = value.substring(4).replace(/\D/g, '');
+                    
+                    // Limite à 8 chiffres après le préfixe
+                    if (numbers.length > 8) {
+                        numbers = numbers.slice(0, 8);
+                    }
+                    
+                    return prefix + numbers;
+                }
+                
+                // Applique le formatage lors de la saisie
+                phoneInput.addEventListener('input', function(e) {
+                    e.target.value = formatPhoneNumber(e.target.value);
+                });
+                
+                // Applique le formatage lors de la perte de focus
+                phoneInput.addEventListener('blur', function(e) {
+                    e.target.value = formatPhoneNumber(e.target.value);
+                });
+                
+                // Applique le formatage initial si nécessaire
+                if (phoneInput.value && !phoneInput.value.startsWith('+216')) {
+                    phoneInput.value = formatPhoneNumber(phoneInput.value);
+                }
+            }
 
-            // Initialize Select2 for multiple select
-            $('.select2-multiple').select2({
+            // Initialisation de Select2
+            $('.select2-regions').select2({
                 theme: 'bootstrap-5',
-                width: '100%',
-                closeOnSelect: false
+                placeholder: 'Sélectionnez les régions'
+            });
+            $('.select2-marques').select2({
+                theme: 'bootstrap-5',
+                placeholder: 'Sélectionnez les marques'
+            });
+            $('.select2-langues').select2({
+                theme: 'bootstrap-5',
+                placeholder: 'Sélectionnez les langues'
+            });
+            $('.select2-services').select2({
+                theme: 'bootstrap-5',
+                placeholder: 'Sélectionnez les services'
             });
         });
     </script>

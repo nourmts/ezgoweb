@@ -17,6 +17,35 @@ framework:
     php_errors:
         log: true
 
+    asset_mapper:
+        enabled: true
+        paths:
+            - assets/
+        public_prefix: /assets
+        excluded_patterns:
+            - '*.map'
+            - '*.scss'
+            - '*.sass'
+            - '*.less'
+            - '*.styl'
+            - '*.ts'
+            - '*.jsx'
+            - '*.tsx'
+            - '*.vue'
+            - '*.svg'
+            - '*.ico'
+            - '*.png'
+            - '*.jpg'
+            - '*.jpeg'
+            - '*.gif'
+            - '*.webp'
+            - '*.woff'
+            - '*.woff2'
+            - '*.ttf'
+            - '*.eot'
+            - '*.otf'
+        missing_import_mode: strict
+
 when@test:
     framework:
         test: true

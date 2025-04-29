@@ -8,6 +8,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -33,6 +34,12 @@ class LocationType extends AbstractType
                 'attr' => [
                     'class' => 'form-control'
                 ]
+            ])
+            ->add('codePromoText', TextType::class, [
+                'label' => 'Code promo (optionnel)',
+                'required' => false,
+                'mapped' => false, // Ne pas lier directement à l'entité
+                'attr' => ['class' => 'form-control']
             ]);
 
         if (!$options['hide_partenaire']) {

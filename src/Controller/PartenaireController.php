@@ -18,7 +18,7 @@ class PartenaireController extends AbstractController
     public function front(PartenaireRepository $partenaireRepository): Response
     {
         return $this->render('partenaire/front.html.twig', [
-            'partenaires' => $partenaireRepository->findAll(),
+            'partenaires' => $partenaireRepository->findAllWithRatings(),
         ]);
     }
 

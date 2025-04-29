@@ -1,127 +1,304 @@
 {% extends 'base_front.html.twig' %}
 
-{% block title %}Nouvelle Location{% endblock %}
+{% block title %}Nouvelle Location - EzGo{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .location-section {
+            padding: 2rem 0;
+        }
+        .location-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        .location-header {
+            background: #ff6b35;
+            color: white;
+            padding: 1.5rem;
+        }
+        .location-header h2 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+        .partner-info {
+            background: #fff3ef;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+        .partner-info h3 {
+            color: #ff6b35;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+        .partner-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .partner-detail {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .partner-detail i {
+            color: #ff6b35;
+            width: 20px;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #495057;
+        }
+        .form-control {
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+            padding: 0.75rem 1rem;
+        }
+        .form-control:focus {
+            border-color: #ff6b35;
+            box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.25);
+        }
+        .btn-primary {
+            background: #ff6b35;
+            border-color: #ff6b35;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+        }
+        .btn-primary:hover {
+            background: #ff8c5a;
+            border-color: #ff8c5a;
+        }
+        .btn-secondary {
+            background: #6c757d;
+            border-color: #6c757d;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+        }
+        .btn-secondary:hover {
+            background: #5a6268;
+            border-color: #5a6268;
+        }
+        .invalid-feedback {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            background-color: rgba(220, 53, 69, 0.05);
+            border-left: 3px solid #dc3545;
+            border-radius: 4px;
+        }
+        .card-body {
+            padding: 2rem !important;
+        }
+        
+        /* Styles pour les champs de date */
+        input[type="date"] {
+            color: #495057;
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            color: #ff6b35;
+            cursor: pointer;
+        }
+        
+        /* Styles pour améliorer la lisibilité des placeholders */
+        ::placeholder {
+            color: #adb5bd !important;
+            opacity: 1;
+        }
+        
+        /* Styles pour les boutons avec icônes */
+        .btn i {
+            margin-right: 0.5rem;
+        }
+        
+        /* Styles améliorés pour les champs select */
+        .form-select,
+        select.form-control {
+            display: block;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #212529;
+            background-color: #fff;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 16px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            appearance: none;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075);
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+        .form-select:focus,
+        select.form-control:focus {
+            border-color: #ff6b35;
+            outline: 0;
+            box-shadow: 0 0 0 0.25rem rgba(255, 107, 53, 0.25);
+        }
+
+        .form-select option,
+        select.form-control option {
+            padding: 10px;
+            font-size: 1rem;
+            color: #212529;
+            background-color: #fff;
+        }
+
+        /* Style pour le conteneur du select */
+        .select-container {
+            position: relative;
+            background-color: #fff;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Style pour l'icône à gauche */
+        .select-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+            pointer-events: none;
+        }
+
+        /* Ajustement du padding pour le texte avec icône */
+        .select-with-icon {
+            padding-left: 2.5rem !important;
+        }
+    </style>
+{% endblock %}
 
 {% block body %}
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-md-8 mx-auto">
-            <div class="card shadow">
-                <div class="card-header bg-white">
-                    <h2 class="card-title mb-0">Nouvelle Location</h2>
+    <div class="container">
+        <div class="location-section">
+            <div class="location-card">
+                <div class="location-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2>Nouvelle Location</h2>
+                        <div>
+                            <a href="{{ path('app_partenaire_front') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Retour
+                            </a>
+                        </div>
+                    </div>
                 </div>
+
                 <div class="card-body">
                     {% if partenaire %}
-                        <div class="partenaire-info mb-4">
-                            <h4>{{ partenaire.nom }}</h4>
-                            <p><strong>Spécialité:</strong> {{ partenaire.specialite }}</p>
-                            <p><strong>Tarif:</strong> {{ partenaire.tarif }} DT/jour</p>
-                            <hr>
+                        <div class="partner-info">
+                            <h3>Informations du Partenaire</h3>
+                            <div class="partner-details">
+                                <div class="partner-detail">
+                                    <i class="fas fa-user"></i>
+                                    <span>{{ partenaire.nom }}</span>
+                                </div>
+                                <div class="partner-detail">
+                                    <i class="fas fa-tools"></i>
+                                    <span>{{ partenaire.specialite }}</span>
+                                </div>
+                                <div class="partner-detail">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>{{ partenaire.regions|join(', ') }}</span>
+                                </div>
+                                <div class="partner-detail">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                    <span>{{ partenaire.tarif }} DT/jour</span>
+                                </div>
+                            </div>
                         </div>
                     {% endif %}
 
                     {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
                         <div class="row">
-                            <div class="col-md-6 mb-3">
-                                {{ form_label(form.dateDebut) }}
-                                {{ form_widget(form.dateDebut, {'attr': {'class': 'form-control' ~ (form.dateDebut.vars.errors|length ? ' is-invalid' : '')}}) }}
-                                {{ form_errors(form.dateDebut) }}
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                {{ form_label(form.dateFin) }}
-                                {{ form_widget(form.dateFin, {'attr': {'class': 'form-control' ~ (form.dateFin.vars.errors|length ? ' is-invalid' : '')}}) }}
-                                {{ form_errors(form.dateFin) }}
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                {{ form_label(form.service) }}
-                                {{ form_widget(form.service, {'attr': {'class': 'form-control' ~ (form.service.vars.errors|length ? ' is-invalid' : '')}}) }}
-                                {{ form_errors(form.service) }}
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                {{ form_label(form.marque) }}
-                                {{ form_widget(form.marque, {'attr': {'class': 'form-control' ~ (form.marque.vars.errors|length ? ' is-invalid' : '')}}) }}
-                                {{ form_errors(form.marque) }}
-                            </div>
-                        </div>
-
-                        <div class="row mt-4">
-                            <div class="col-12">
-                                <div class="d-flex justify-content-between">
-                                    <a href="{{ path('app_partenaire_index') }}" class="btn btn-secondary">Retour</a>
-                                    <button type="submit" class="btn btn-primary">Créer la Location</button>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(form.dateDebut) }}
+                                    {{ form_widget(form.dateDebut) }}
+                                    {{ form_errors(form.dateDebut) }}
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(form.dateFin) }}
+                                    {{ form_widget(form.dateFin) }}
+                                    {{ form_errors(form.dateFin) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        {% if form.service is defined %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ form_label(form.service) }}
+                                        {{ form_widget(form.service) }}
+                                        {{ form_errors(form.service) }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ form_label(form.marque) }}
+                                        {{ form_widget(form.marque) }}
+                                        {{ form_errors(form.marque) }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <div class="form-group mb-0">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-check"></i> Créer la Location
+                            </button>
                         </div>
                     {{ form_end(form) }}
                 </div>
             </div>
         </div>
     </div>
-</div>
-{% endblock %}
-
-{% block stylesheets %}
-<style>
-.partenaire-info {
-    background-color: #f8f9fa;
-    padding: 1rem;
-    border-radius: 0.25rem;
-}
-
-.partenaire-info h4 {
-    color: #0d6efd;
-    margin-bottom: 1rem;
-}
-
-.btn-primary {
-    background-color: #ff6b6b;
-    border-color: #ff6b6b;
-}
-
-.btn-primary:hover {
-    background-color: #ff5252;
-    border-color: #ff5252;
-}
-
-.btn-secondary {
-    background-color: #6c757d;
-    border-color: #6c757d;
-}
-
-.card {
-    border: none;
-    border-radius: 10px;
-}
-
-.card-header {
-    border-bottom: 1px solid #dee2e6;
-    padding: 1.5rem;
-}
-
-.card-title {
-    color: #343a40;
-    font-weight: 600;
-}
-
-.form-control {
-    border-radius: 5px;
-}
-
-.form-control:focus {
-    border-color: #ff6b6b;
-    box-shadow: 0 0 0 0.2rem rgba(255, 107, 107, 0.25);
-}
-</style>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Add any necessary JavaScript here
+            // Validation des dates
+            const dateDebut = document.querySelector('#location_dateDebut');
+            const dateFin = document.querySelector('#location_dateFin');
+
+            if (dateDebut && dateFin) {
+                dateDebut.addEventListener('change', function() {
+                    dateFin.min = this.value;
+                });
+
+                dateFin.addEventListener('change', function() {
+                    if (this.value < dateDebut.value) {
+                        this.value = dateDebut.value;
+                    }
+                });
+            }
         });
     </script>
 {% endblock %}

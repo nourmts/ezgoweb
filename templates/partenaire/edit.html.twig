@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier le Partenaire{% endblock %}
+{% block title %}Modifier le partenaire{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -23,6 +23,9 @@
             color: white !important;
             border: none;
             padding: 1rem 1.25rem;
+        }
+        .form-group {
+            margin-bottom: 1rem;
         }
         .form-control, .form-select {
             border-radius: 5px;
@@ -80,31 +83,111 @@
             background: #c82333;
             color: white;
         }
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .action-buttons form {
+            margin: 0;
+        }
     </style>
 {% endblock %}
 
 {% block body %}
-<div class="form-container">
-    <div class="page-header d-flex justify-content-between align-items-center">
-        <h1>Modifier le Partenaire</h1>
-        <div class="d-flex gap-2">
-            <button type="submit" form="edit_partenaire_form" class="btn btn-submit">
-                <i class="fas fa-save me-2"></i>Mettre à jour
-            </button>
-            <a href="{{ path('app_partenaire_index') }}" class="btn btn-cancel">
-                <i class="fas fa-arrow-left me-2"></i>Retour
-            </a>
-            {{ include('partenaire/_delete_form.html.twig') }}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h1>Modifier le partenaire</h1>
+                        <div class="action-buttons">
+                            <button type="submit" form="edit_partenaire_form" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Mettre à jour
+                            </button>
+                            
+                            <a href="{{ path('app_partenaire_index') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Retour
+                            </a>
+
+                            {{ include('partenaire/_delete_form.html.twig') }}
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        {{ include('partenaire/_form.html.twig', {'is_edit_form': true}) }}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-    {{ form_start(form, {'attr': {'id': 'edit_partenaire_form'}}) }}
-    {{ include('partenaire/_form.html.twig') }}
-    {{ form_end(form) }}
-</div>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     <script src="https://kit.fontawesome.com/your-kit-code.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gestion du numéro de téléphone
+            const phoneInput = document.querySelector('.phone-input');
+            if (phoneInput) {
+                // Fonction pour formater le numéro de téléphone
+                function formatPhoneNumber(value) {
+                    // Si le champ est vide, ajoute le préfixe
+                    if (value === '') {
+                        return '+216';
+                    }
+                    
+                    // Si l'utilisateur supprime le préfixe, le remet
+                    if (!value.startsWith('+216')) {
+                        value = '+216' + value.replace('+216', '');
+                    }
+                    
+                    // Supprime tous les caractères non numériques après le préfixe
+                    let prefix = value.substring(0, 4); // '+216'
+                    let numbers = value.substring(4).replace(/\D/g, '');
+                    
+                    // Limite à 8 chiffres après le préfixe
+                    if (numbers.length > 8) {
+                        numbers = numbers.slice(0, 8);
+                    }
+                    
+                    return prefix + numbers;
+                }
+                
+                // Applique le formatage lors de la saisie
+                phoneInput.addEventListener('input', function(e) {
+                    e.target.value = formatPhoneNumber(e.target.value);
+                });
+                
+                // Applique le formatage lors de la perte de focus
+                phoneInput.addEventListener('blur', function(e) {
+                    e.target.value = formatPhoneNumber(e.target.value);
+                });
+                
+                // Applique le formatage initial si nécessaire
+                if (phoneInput.value && !phoneInput.value.startsWith('+216')) {
+                    phoneInput.value = formatPhoneNumber(phoneInput.value);
+                }
+            }
+
+            // Initialisation de Select2
+            $('.select2-regions').select2({
+                theme: 'bootstrap-5',
+                placeholder: 'Sélectionnez les régions'
+            });
+            $('.select2-marques').select2({
+                theme: 'bootstrap-5',
+                placeholder: 'Sélectionnez les marques'
+            });
+            $('.select2-langues').select2({
+                theme: 'bootstrap-5',
+                placeholder: 'Sélectionnez les langues'
+            });
+            $('.select2-services').select2({
+                theme: 'bootstrap-5',
+                placeholder: 'Sélectionnez les services'
+            });
+        });
+    </script>
 {% endblock %}

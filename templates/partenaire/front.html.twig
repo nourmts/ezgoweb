@@ -1,9 +1,11 @@
 {% extends 'base_front.html.twig' %}
 
-{% block title %}Nos Partenaires - Autoroad{% endblock %}
+{% block title %}Nos Partenaires - EzGo{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('css/rating.css') }}">
     <style>
         .partners-section {
             padding: 100px 0;
@@ -49,6 +51,27 @@
             color: #666;
             margin-bottom: 15px;
         }
+        .partner-services {
+            margin: 15px 0;
+        }
+        .service-tag {
+            display: inline-block;
+            padding: 5px 10px;
+            background: #e9ecef;
+            border-radius: 15px;
+            margin: 0 5px 5px 0;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .regions-list {
+            margin: 10px 0;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .regions-list i {
+            color: #ff6b35;
+            margin-right: 5px;
+        }
         .partner-meta {
             display: flex;
             justify-content: space-between;
@@ -74,35 +97,96 @@
             background: #ff8c5a;
             color: white;
         }
-        .partner-services {
-            margin: 15px 0;
+        .rating-section {
+            padding: 15px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
         }
-        .service-tag {
-            display: inline-block;
-            padding: 5px 10px;
-            background: #e9ecef;
-            border-radius: 15px;
-            margin: 0 5px 5px 0;
-            font-size: 0.9rem;
-            color: #666;
+        .star-rating {
+            display: inline-flex;
+            flex-direction: row-reverse;
+            font-size: 1.5em;
         }
-        .regions-list {
-            margin: 10px 0;
-            font-size: 0.9rem;
-            color: #666;
+        .star-rating input {
+            display: none;
         }
-        .regions-list i {
-            color: #ff6b35;
-            margin-right: 5px;
+        .star-rating label {
+            cursor: pointer;
+            padding: 0 0.1em;
+            color: #ddd;
+            transition: color 0.2s;
+        }
+        .star-rating label:hover,
+        .star-rating label:hover ~ label,
+        .star-rating input:checked ~ label {
+            color: #ffd700;
+        }
+        .rating-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            min-width: 60px;
         }
     </style>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/rating.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ratings = document.querySelectorAll('.star-rating');
+            
+            ratings.forEach(rating => {
+                const stars = rating.querySelectorAll('input');
+                const partnerId = rating.dataset.partenaire;
+                const ratingValue = rating.parentElement.querySelector('.rating-value');
+                
+                stars.forEach(star => {
+                    // Mise à jour au survol
+                    star.parentElement.addEventListener('mouseover', function() {
+                        ratingValue.textContent = star.value + '.0';
+                    });
+                    
+                    // Retour à la valeur initiale quand on quitte la zone des étoiles
+                    rating.addEventListener('mouseleave', function() {
+                        const checkedStar = rating.querySelector('input:checked');
+                        ratingValue.textContent = (checkedStar ? checkedStar.value : '0') + '.0';
+                    });
+                    
+                    // Mise à jour au clic
+                    star.addEventListener('change', function() {
+                        const value = this.value;
+                        ratingValue.textContent = value + '.0';
+                        
+                        // Envoi de la note au serveur
+                        fetch(`/rating/add/${partnerId}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: `rating=${value}`
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                ratingValue.textContent = data.newRating;
+                            }
+                        });
+                    });
+                });
+            });
+        });
+    </script>
 {% endblock %}
 
 {% block body %}
     <div class="partners-section">
         <div class="container">
             <div class="section-title">
-                <h2>Nos Partenaires</h2>
+                <h2>Nos Partenaires EzGo</h2>
                 <p>Découvrez notre réseau de partenaires de confiance</p>
             </div>
             <div class="row">
@@ -112,7 +196,7 @@
                             <div class="partner-info">
                                 <h3>{{ partenaire.nom }}</h3>
                                 <p>{{ partenaire.specialite }}</p>
-                                
+
                                 <div class="partner-services">
                                     {% for service in partenaire.services %}
                                         <span class="service-tag">{{ service }}</span>
@@ -125,15 +209,29 @@
                                         {{ region }}{% if not loop.last %}, {% endif %}
                                     {% endfor %}
                                 </div>
-                            </div>
-                            
-                            <div class="partner-meta">
-                                <div class="partner-price">
-                                    {{ partenaire.tarif }} DT/jour
+
+                                <div class="rating-section">
+                                    <span class="rating-value">{{ partenaire.averageRating|number_format(1) }}</span>
+                                    <div class="star-rating" data-partenaire="{{ partenaire.idPartenaire }}">
+                                        {% for i in 5..1 %}
+                                            <input type="radio" id="star{{ i }}_{{ partenaire.idPartenaire }}" 
+                                                   name="rating_{{ partenaire.idPartenaire }}" value="{{ i }}"
+                                                   {% if i == partenaire.averageRating|round %}checked{% endif %}>
+                                            <label for="star{{ i }}_{{ partenaire.idPartenaire }}">
+                                                <i class="fas fa-star"></i>
+                                            </label>
+                                        {% endfor %}
+                                    </div>
                                 </div>
-                                <a href="{{ path('app_location_new', {'idPartenaire': partenaire.idPartenaire}) }}" class="btn-details">
-                                    Réserver
-                                </a>
+
+                                <div class="partner-meta">
+                                    <div class="partner-price">
+                                        {{ partenaire.tarif }} DT/jour
+                                    </div>
+                                    <a href="{{ path('app_location_new', {'idPartenaire': partenaire.idPartenaire}) }}" class="btn-details">
+                                        Réserver
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -141,4 +239,4 @@
             </div>
         </div>
     </div>
-{% endblock %} 
+{% endblock %}

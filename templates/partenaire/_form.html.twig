@@ -1,55 +1,58 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_front.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <style>
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        .form-control {
-            display: block;
-            width: 100%;
-            padding: 0.375rem 0.75rem;
-            font-size: 1rem;
-            line-height: 1.5;
-            color: #495057;
-            background-color: #fff;
-            border: 1px solid #ced4da;
-            border-radius: 0.25rem;
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-        }
-        .form-control:focus {
-            color: #495057;
-            background-color: #fff;
-            border-color: #80bdff;
-            outline: 0;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-        }
-    </style>
-{% endblock %}
+{% block title %}Nos Partenaires EzGo{% endblock %}
 
 {% block body %}
-    {{ form_start(form) }}
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Nom</label>
-                {{ form_widget(form.nom, {'attr': {'class': 'form-control', 'placeholder': 'Nom du partenaire'}}) }}
+<section class="partners-section">
+    <h1>Nos Partenaires EzGo</h1>
+    <p class="subtitle">Découvrez notre réseau de partenaires de confiance</p>
+
+    <div class="partner-grid">
+        {% for partenaire in partenaires %}
+        <div class="partner-card">
+            <div class="partner-header">
+                <h2>{{ partenaire.nom }}</h2>
+                
+                {# Affichage des étoiles #}
+                <div class="partner-rating">
+                    {% set averageRating = partenaire.getAverageRating() %}
+                    {% for i in 1..5 %}
+                        <i class="fas fa-star {{ i <= averageRating ? 'text-warning' : 'text-muted' }}"></i>
+                    {% endfor %}
+                    <span>({{ partenaire.ratings|length }} avis)</span>
+                </div>
             </div>
-            <div class="form-group">
-                <label>Spécialité</label>
-                {{ form_widget(form.specialite, {'attr': {'class': 'form-control'}}) }}
+
+            <div class="partner-services">
+                <ul>
+                    {% for service in partenaire.getServices() %}
+                        <li>{{ service }}</li>
+                    {% endfor %}
+                </ul>
             </div>
-            <div class="form-group">
-                <label>Tarif (DT)</label>
-                {{ form_widget(form.tarif, {'attr': {'class': 'form-control', 'placeholder': 'Ex: 50.00'}}) }}
+
+            <div class="partner-regions">
+                <i class="fas fa-map-marker-alt"></i>
+                {{ partenaire.getRegions()|join(', ') }}
             </div>
-            <div class="form-group">
-                <label>Régions</label>
-                {{ form_widget(form.regions, {'attr': {'class': 'form-control', 'multiple': true, 'data-placeholder': 'Sélectionnez une ou plusieurs régions'}}) }}
-                <small class="form-text text-muted">Maintenez Ctrl (Windows) ou Cmd (Mac) pour sélectionner plusieurs régions</small>
+
+            <div class="partner-price">
+                <strong>{{ partenaire.tarif }} DT/jour</strong>
+                <a href="{{ path('app_location_new', {'idPartenaire': partenaire.idPartenaire}) }}" 
+                   class="btn btn-reserver">
+                   Réserver
+                </a>
+                
+                {# Bouton de notation #}
+                {% if is_granted('ROLE_USER') %}
+                <a href="{{ path('app_partenaire_rate', {'idPartenaire': partenaire.idPartenaire}) }}" 
+                   class="btn btn-noter">
+                   <i class="fas fa-star"></i> Noter
+                </a>
+                {% endif %}
             </div>
         </div>
+        {% endfor %}
     </div>
-    {{ form_end(form) }}
+</section>
 {% endblock %}
