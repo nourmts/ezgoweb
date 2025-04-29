@@ -10,6 +10,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\Choice;
 
 class VoitureType extends AbstractType
 {
@@ -49,27 +52,57 @@ class VoitureType extends AbstractType
             ->add('immatriculation', TextType::class, [
                 'label' => 'Immatriculation',
                 'attr' => [
-                    'placeholder' => 'XXX-TUN-XXX',
-                    'pattern' => '[A-Z0-9]{3}-TUN-[A-Z0-9]{3}',
-                    'title' => 'Format: XXX-TUN-XXX (lettres majuscules et chiffres uniquement)'
+                    'placeholder' => 'XXX-TUN-XXX'
+                ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez entrer un numéro d\'immatriculation'
+                    ]),
+                    new Regex([
+                        'pattern' => '/^[A-Z0-9]{3}-TUN-[A-Z0-9]{3}$/',
+                        'message' => 'Le format doit être XXX-TUN-XXX (lettres majuscules et chiffres uniquement)'
+                    ])
                 ]
             ])
             ->add('marque', ChoiceType::class, [
                 'label' => 'Marque',
                 'choices' => self::CAR_BRANDS,
                 'placeholder' => 'Sélectionnez une marque',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez sélectionner une marque'
+                    ])
+                ],
                 'attr' => ['class' => 'form-select']
             ])
             ->add('etat', ChoiceType::class, [
                 'label' => 'État',
                 'choices' => self::CAR_STATES,
                 'placeholder' => 'Sélectionnez un état',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez sélectionner un état'
+                    ]),
+                    new Choice([
+                        'choices' => array_values(self::CAR_STATES),
+                        'message' => 'Veuillez sélectionner un état valide'
+                    ])
+                ],
                 'attr' => ['class' => 'form-select']
             ])
             ->add('contrat', ChoiceType::class, [
                 'label' => 'Type de Contrat',
                 'choices' => self::CONTRACT_TYPES,
                 'placeholder' => 'Sélectionnez un type de contrat',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez sélectionner un type de contrat'
+                    ]),
+                    new Choice([
+                        'choices' => array_values(self::CONTRACT_TYPES),
+                        'message' => 'Veuillez sélectionner un type de contrat valide'
+                    ])
+                ],
                 'attr' => ['class' => 'form-select']
             ])
             ->add('image', FileType::class, [

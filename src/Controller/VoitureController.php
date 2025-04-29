@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use App\Repository\ReservationsRepository;
 
 #[Route('/')]
 class VoitureController extends AbstractController
@@ -35,6 +36,18 @@ class VoitureController extends AbstractController
     {
         return $this->render('voiture/front/show.html.twig', [
             'voiture' => $voiture,
+        ]);
+    }
+
+    #[Route('/statistics', name: 'front_voiture_statistics')]
+    public function frontStatistics(ReservationsRepository $reservationsRepository): Response
+    {
+        $mostReservedCars = $reservationsRepository->findMostReservedCars();
+        $reservationStats = $reservationsRepository->findReservationStats();
+
+        return $this->render('voiture/front/statistics.html.twig', [
+            'mostReservedCars' => $mostReservedCars,
+            'reservationStats' => $reservationStats,
         ]);
     }
 
@@ -143,30 +156,40 @@ class VoitureController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/cars/{id}', name: 'app_voiture_delete', methods: ['POST'])]
+    #[Route('/admin/cars/{id}/delete', name: 'app_voiture_delete', methods: ['POST'])]
     public function delete(Request $request, Voiture $voiture, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$voiture->getId(), $request->request->get('_token'))) {
-            // Check if car has reservations
-            if (!$voiture->getReservations()->isEmpty()) {
-                $this->addFlash('error', 'Cannot delete this car because it has existing reservations. Please delete the reservations first.');
-                return $this->redirectToRoute('app_voiture_index');
-            }
-
-            // Delete the image file if exists
-            if ($voiture->getImage()) {
-                $imagePath = $this->getParameter('cars_directory').'/'.$voiture->getImage();
-                if (file_exists($imagePath)) {
-                    unlink($imagePath);
-                }
-            }
-
-            $entityManager->remove($voiture);
-            $entityManager->flush();
-
-            $this->addFlash('success', 'Car has been deleted successfully.');
+        // Check if car has reservations
+        if (!$voiture->getReservations()->isEmpty()) {
+            $this->addFlash('error', 'Cannot delete this car because it has existing reservations. Please delete the reservations first.');
+            return $this->redirectToRoute('app_voiture_index');
         }
 
+        // Delete the image file if exists
+        if ($voiture->getImage()) {
+            $imagePath = $this->getParameter('cars_directory').'/'.$voiture->getImage();
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+        }
+
+        $entityManager->remove($voiture);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Car has been deleted successfully.');
+
         return $this->redirectToRoute('app_voiture_index');
+    }
+
+    #[Route('/admin/statistics', name: 'app_voiture_statistics')]
+    public function statistics(ReservationsRepository $reservationsRepository): Response
+    {
+        $mostReservedCars = $reservationsRepository->findMostReservedCars();
+        $reservationStats = $reservationsRepository->findReservationStats();
+
+        return $this->render('voiture/statistics.html.twig', [
+            'mostReservedCars' => $mostReservedCars,
+            'reservationStats' => $reservationStats,
+        ]);
     }
 }

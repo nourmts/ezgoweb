@@ -1,95 +1,160 @@
 {% extends 'base_dashboard.html.twig' %}
 
-{% block title %}Liste des Réservations - EzGo Dashboard{% endblock %}
-
-{% block page_title %}Liste des Réservations{% endblock %}
+{% block title %}Réservations{% endblock %}
 
 {% block body %}
-<div class="row">
-    <div class="col-12">
-        <div class="card mb-4">
-            <div class="card-header pb-0">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h6>Liste des Réservations</h6>
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Liste des Réservations</h1>
+            <a href="{{ path('app_admin_reservations_new') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Nouvelle Réservation
+            </a>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="mb-3">
+                    <div class="input-group">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Rechercher une réservation...">
+                        <button class="btn btn-outline-secondary" type="button" id="searchButton">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <div class="card-body px-0 pt-0 pb-2">
-                <div class="table-responsive p-0">
-                    <table class="table align-items-center mb-0">
+
+                <div class="table-responsive">
+                    <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Client</th>
-                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Voiture</th>
-                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Date</th>
-                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Statut</th>
-                                <th class="text-secondary opacity-7">Actions</th>
+                                <th>Client</th>
+                                <th>Véhicule</th>
+                                <th>Date de Réservation</th>
+                                <th>État</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
-                        {% if reservations is defined and reservations|length > 0 %}
+                        <tbody id="reservationsTableBody">
                             {% for reservation in reservations %}
                                 <tr>
+                                    <td>{{ reservation.nameRes }}</td>
+                                    <td>{{ reservation.car.marque }} - {{ reservation.car.immatriculation }}</td>
+                                    <td>{{ reservation.dateRes|date('d/m/Y') }}</td>
                                     <td>
-                                        <div class="d-flex px-2 py-1">
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="mb-0 text-sm">{{ reservation.nameRes }}</h6>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex px-2 py-1">
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="mb-0 text-sm">
-                                                    {% if reservation.car %}
-                                                        {{ reservation.car.marque }}
-                                                        <small class="text-muted d-block">{{ reservation.car.immatriculation }}</small>
-                                                    {% else %}
-                                                        N/A
-                                                    {% endif %}
-                                                </h6>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex px-2 py-1">
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="mb-0 text-sm">{{ reservation.dateRes|date('d/m/Y H:i') }}</h6>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-{{ reservation.statut == 'en attente' ? 'warning' : (reservation.statut == 'confirmé' ? 'success' : 'danger') }}">
-                                            {{ reservation.statut|capitalize }}
+                                        <span class="badge bg-{{ reservation.statut == 'confirmé' ? 'success' : (reservation.statut == 'annulé' ? 'danger' : 'warning') }}">
+                                            {{ reservation.statut }}
                                         </span>
                                     </td>
-                                    <td class="align-middle">
-                                        <a href="{{ path('app_reservations_show', {'idRes': reservation.id}) }}" class="btn btn-link text-primary px-1 mb-0">
+                                    <td>
+                                        <a href="{{ path('app_reservations_show', {'idRes': reservation.idRes}) }}" class="btn btn-sm btn-info">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                        <a href="{{ path('app_reservations_edit', {'idRes': reservation.id}) }}" class="btn btn-link text-info px-1 mb-0">
+                                        <a href="{{ path('app_reservations_edit', {'idRes': reservation.idRes}) }}" class="btn btn-sm btn-warning">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <form method="post" action="{{ path('app_reservations_delete', {'idRes': reservation.id}) }}" style="display: inline;">
-                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reservation.id) }}">
-                                            <button type="submit" class="btn btn-link text-danger px-1 mb-0" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?');">
-                                                <i class="far fa-trash-alt"></i>
+                                        <a href="{{ path('app_reservations_pdf', {'idRes': reservation.idRes}) }}" class="btn btn-sm btn-success">
+                                            <i class="fas fa-file-pdf"></i>
+                                        </a>
+                                        <form method="post" action="{{ path('app_reservations_delete', {'idRes': reservation.idRes}) }}" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?');">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reservation.idRes) }}">
+                                            <button class="btn btn-sm btn-danger">
+                                                <i class="fas fa-trash"></i>
                                             </button>
                                         </form>
                                     </td>
                                 </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="5" class="text-center">Aucune réservation trouvée</td>
+                                </tr>
                             {% endfor %}
-                        {% else %}
-                            <tr>
-                                <td colspan="5" class="text-center py-4">
-                                    <p class="text-muted mb-0">Aucune réservation trouvée</p>
-                                </td>
-                            </tr>
-                        {% endif %}
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-</div>
+
+    {% block javascripts %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const searchInput = document.getElementById('searchInput');
+                const searchButton = document.getElementById('searchButton');
+                const tableBody = document.getElementById('reservationsTableBody');
+                let searchTimeout;
+
+                function performSearch() {
+                    const searchTerm = searchInput.value.trim();
+                    console.log('Searching for:', searchTerm);
+                    
+                    fetch(`/admin/reservations/search?q=${encodeURIComponent(searchTerm)}`)
+                        .then(response => {
+                            console.log('Response status:', response.status);
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log('Received data:', data);
+                            tableBody.innerHTML = '';
+                            
+                            if (data.error) {
+                                tableBody.innerHTML = '<tr><td colspan="5" class="text-center text-danger">' + data.error + '</td></tr>';
+                                return;
+                            }
+                            
+                            if (data.length === 0) {
+                                tableBody.innerHTML = '<tr><td colspan="5" class="text-center">Aucune réservation trouvée</td></tr>';
+                                return;
+                            }
+
+                            data.forEach(reservation => {
+                                console.log('Processing reservation:', reservation);
+                                const row = document.createElement('tr');
+                                row.innerHTML = `
+                                    <td>${reservation.nameRes || 'N/A'}</td>
+                                    <td>${reservation.car ? reservation.car.marque + ' - ' + reservation.car.immatriculation : 'N/A'}</td>
+                                    <td>${reservation.dateRes ? new Date(reservation.dateRes).toLocaleDateString() : 'N/A'}</td>
+                                    <td>
+                                        <span class="badge bg-${reservation.statut === 'confirmé' ? 'success' : (reservation.statut === 'annulé' ? 'danger' : 'warning')}">
+                                            ${reservation.statut || 'N/A'}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/reservations/${reservation.idRes}" class="btn btn-sm btn-info">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="/admin/reservations/${reservation.idRes}/edit" class="btn btn-sm btn-warning">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="/admin/reservations/${reservation.idRes}/pdf" class="btn btn-sm btn-success">
+                                            <i class="fas fa-file-pdf"></i>
+                                        </a>
+                                        <form method="post" action="/admin/reservations/${reservation.idRes}/delete" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?');">
+                                            <button class="btn btn-sm btn-danger">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                `;
+                                tableBody.appendChild(row);
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            tableBody.innerHTML = '<tr><td colspan="5" class="text-center text-danger">Une erreur est survenue lors de la recherche</td></tr>';
+                        });
+                }
+
+                // Debounce the search to avoid too many requests
+                function debounceSearch() {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(performSearch, 300); // Wait 300ms after last keypress
+                }
+
+                searchInput.addEventListener('input', debounceSearch);
+                searchButton.addEventListener('click', performSearch);
+            });
+        </script>
+    {% endblock %}
 {% endblock %} 

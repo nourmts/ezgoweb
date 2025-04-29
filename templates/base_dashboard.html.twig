@@ -162,11 +162,19 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if app.request.attributes.get('_route') starts with 'app_reservations_' %}active{% endif %}" href="{{ path('app_reservations_index') }}">
+                    <a class="nav-link {{ app.request.get('_route') starts with 'app_reservations' ? 'active' : '' }}" href="{{ path('app_reservations_index') }}">
                         <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="fas fa-calendar-check text-dark text-sm opacity-10"></i>
+                            <i class="fas fa-calendar-check text-dark opacity-10"></i>
                         </div>
                         <span class="nav-link-text ms-1">Réservations</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ app.request.get('_route') starts with 'app_calendar' ? 'active' : '' }}" href="{{ path('app_calendar') }}">
+                        <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="fas fa-calendar-alt text-dark opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Calendrier</span>
                     </a>
                 </li>
             </ul>
@@ -246,11 +254,19 @@
         <script src="{{ asset('soft-ui-dashboard/assets/js/soft-ui-dashboard.min.js') }}?v=1.0.7"></script>
         <script>
             var win = navigator.platform.indexOf('Win') > -1;
-            if (win && document.querySelector('#sidenav-scrollbar')) {
+            var sidenavScrollbar = document.querySelector('#sidenav-scrollbar');
+            if (win && sidenavScrollbar) {
                 var options = {
                     damping: '0.5'
                 }
-                Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+                Scrollbar.init(sidenavScrollbar, options);
+            }
+            // Patch for navbarColorOnResize error
+            function navbarColorOnResize() {
+                var navbar = document.querySelector('.navbar');
+                if (navbar && navbar.classList) {
+                    // original logic here if needed
+                }
             }
         </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

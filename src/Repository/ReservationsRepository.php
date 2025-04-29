@@ -76,4 +76,59 @@ class ReservationsRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function search(string $searchTerm): array
+    {
+        try {
+            error_log('Starting search with term: ' . $searchTerm);
+            
+            $qb = $this->createQueryBuilder('r');
+            $qb->select('r')
+               ->where('r.nameRes LIKE :searchTerm')
+               ->setParameter('searchTerm', '%' . $searchTerm . '%');
+            
+            $query = $qb->getQuery();
+            $sql = $query->getSQL();
+            $params = $query->getParameters()->toArray();
+            
+            error_log('Generated SQL: ' . $sql);
+            error_log('Parameters: ' . print_r($params, true));
+            
+            $result = $query->getResult();
+            error_log('Found ' . count($result) . ' results');
+            
+            return $result;
+        } catch (\Exception $e) {
+            error_log('Repository search error: ' . $e->getMessage());
+            error_log('Stack trace: ' . $e->getTraceAsString());
+            throw $e;
+        }
+    }
+
+    /**
+     * @return array Returns an array of the most reserved cars
+     */
+    public function findMostReservedCars(): array
+    {
+        return $this->createQueryBuilder('r')
+            ->select('c.marque as carBrand, COUNT(r.id) as reservationCount')
+            ->join('r.car', 'c')
+            ->groupBy('c.marque')
+            ->orderBy('reservationCount', 'DESC')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return array Returns an array of reservation statistics by status
+     */
+    public function findReservationStats(): array
+    {
+        return $this->createQueryBuilder('r')
+            ->select('r.statut as status', 'COUNT(r.id) as count')
+            ->groupBy('r.statut')
+            ->getQuery()
+            ->getResult();
+    }
 } 

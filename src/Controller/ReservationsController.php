@@ -11,7 +11,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class ReservationsController extends AbstractController
 {
@@ -31,9 +34,65 @@ class ReservationsController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/reservations/{idRes}', name: 'app_reservations_show', methods: ['GET'])]
-    public function show(int $idRes, ReservationsRepository $reservationsRepository): Response
+    #[Route('/admin/reservations/search', name: 'app_reservations_search', methods: ['GET'])]
+    public function search(Request $request, ReservationsRepository $reservationsRepository): JsonResponse
     {
+        try {
+            $searchTerm = $request->query->get('q', '');
+            error_log('Search request received with term: ' . $searchTerm);
+            
+            if (empty($searchTerm)) {
+                error_log('Empty search term, returning empty array');
+                return new JsonResponse([]);
+            }
+
+            try {
+                $reservations = $reservationsRepository->search($searchTerm);
+                error_log('Found ' . count($reservations) . ' reservations');
+            } catch (\Exception $e) {
+                error_log('Error in repository search: ' . $e->getMessage());
+                error_log('Stack trace: ' . $e->getTraceAsString());
+                throw $e;
+            }
+            
+            if (empty($reservations)) {
+                error_log('No reservations found');
+                return new JsonResponse([]);
+            }
+
+            $data = [];
+            foreach ($reservations as $reservation) {
+                try {
+                    $car = $reservation->getCar();
+                    $data[] = [
+                        'idRes' => $reservation->getIdRes(),
+                        'nameRes' => $reservation->getNameRes(),
+                        'dateRes' => $reservation->getDateRes() ? $reservation->getDateRes()->format('Y-m-d') : null,
+                        'statut' => $reservation->getStatut(),
+                        'car' => $car ? [
+                            'marque' => $car->getMarque(),
+                            'immatriculation' => $car->getImmatriculation()
+                        ] : null
+                    ];
+                } catch (\Exception $e) {
+                    error_log('Error processing reservation ' . $reservation->getIdRes() . ': ' . $e->getMessage());
+                    continue;
+                }
+            }
+
+            error_log('Returning ' . count($data) . ' processed reservations');
+            return new JsonResponse($data);
+        } catch (\Exception $e) {
+            error_log('Search error: ' . $e->getMessage());
+            error_log('Stack trace: ' . $e->getTraceAsString());
+            return new JsonResponse(['error' => 'Une erreur est survenue lors de la recherche: ' . $e->getMessage()], 500);
+        }
+    }
+
+    #[Route('/admin/reservations/{idRes}', name: 'app_reservations_show', methods: ['GET'])]
+    public function show(string $idRes, ReservationsRepository $reservationsRepository): Response
+    {
+        $idRes = (int) $idRes;
         $reservation = $reservationsRepository->find($idRes);
         
         if (!$reservation) {
@@ -135,8 +194,16 @@ class ReservationsController extends AbstractController
         return $this->redirectToRoute('front_voiture_index');
     }
 
+    #[Route('/reservations/{id}/confirmation', name: 'app_reservations_confirmation', methods: ['GET'])]
+    public function confirmation(Reservations $reservation): Response
+    {
+        return $this->render('reservations/front/confirmation.html.twig', [
+            'reservation' => $reservation,
+        ]);
+    }
+
     #[Route('/reservations/new/{id}', name: 'app_reservations_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, int $id, VoitureRepository $voitureRepository, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, VoitureRepository $voitureRepository, int $id): Response
     {
         $voiture = $voitureRepository->find($id);
         
@@ -155,7 +222,7 @@ class ReservationsController extends AbstractController
         $reservation->setStatut('en attente');
         
         $form = $this->createForm(ReservationsType::class, $reservation, [
-            'hide_car' => true // Add this option to hide the car field
+            'hide_car' => true
         ]);
         $form->handleRequest($request);
 
@@ -166,7 +233,7 @@ class ReservationsController extends AbstractController
                 $entityManager->flush();
 
                 $this->addFlash('success', 'Votre réservation a été créée avec succès.');
-                return $this->redirectToRoute('front_voiture_index');
+                return $this->redirectToRoute('app_reservations_confirmation', ['id' => $reservation->getId()]);
             } catch (\Exception $e) {
                 $this->addFlash('error', 'Une erreur est survenue lors de la création de votre réservation. Veuillez réessayer.');
             }
@@ -207,5 +274,47 @@ class ReservationsController extends AbstractController
             'reservation' => $reservation,
             'form' => $form->createView(),
         ]);
+    }
+
+    #[Route('/admin/reservations/{idRes}/pdf', name: 'app_reservations_pdf', methods: ['GET'])]
+    public function generatePdf(int $idRes, ReservationsRepository $reservationsRepository): Response
+    {
+        $reservation = $reservationsRepository->find($idRes);
+        
+        if (!$reservation) {
+            throw $this->createNotFoundException('La réservation demandée n\'existe pas.');
+        }
+
+        // Configure Dompdf according to your needs
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+        $pdfOptions->set('isHtml5ParserEnabled', true);
+        $pdfOptions->set('isPhpEnabled', true);
+
+        // Instantiate Dompdf with our options
+        $dompdf = new Dompdf($pdfOptions);
+
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('reservations/pdf/confirmation.html.twig', [
+            'reservation' => $reservation
+        ]);
+
+        // Load HTML to Dompdf
+        $dompdf->loadHtml($html);
+
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser (force download)
+        $output = $dompdf->output();
+        
+        $response = new Response($output);
+        $response->headers->set('Content-Type', 'application/pdf');
+        $response->headers->set('Content-Disposition', 'attachment; filename="confirmation-reservation-' . $reservation->getIdRes() . '.pdf"');
+
+        return $response;
     }
 } 
