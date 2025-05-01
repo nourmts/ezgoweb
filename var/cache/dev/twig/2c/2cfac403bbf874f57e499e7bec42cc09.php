@@ -325,19 +325,24 @@ class __TwigTemplate_0e39be134ce43a6c15434a6dcf19466d extends Template
                     <div class=\"d-flex justify-content-between align-items-center\">
                         <h6>Reservation Details</h6>
                         <div>
-                            <a href=\"";
+                <a href=\"";
         // line 213
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_admin_reservations_edit", ["IdRes" => CoreExtension::getAttribute($this->env, $this->source, (isset($context["reservation"]) || array_key_exists("reservation", $context) ? $context["reservation"] : (function () { throw new RuntimeError('Variable "reservation" does not exist.', 213, $this->source); })()), "IdRes", [], "any", false, false, false, 213)]), "html", null, true);
-        yield "\" class=\"btn btn-warning btn-sm\">
-                                <i class=\"fas fa-edit\"></i> Edit
-                            </a>
-                            <a href=\"";
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reservations_pdf", ["idRes" => CoreExtension::getAttribute($this->env, $this->source, (isset($context["reservation"]) || array_key_exists("reservation", $context) ? $context["reservation"] : (function () { throw new RuntimeError('Variable "reservation" does not exist.', 213, $this->source); })()), "idRes", [], "any", false, false, false, 213)]), "html", null, true);
+        yield "\" class=\"btn btn-success\">
+                    <i class=\"fas fa-file-pdf\"></i> Télécharger PDF
+                </a>
+                <a href=\"";
         // line 216
-        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_admin_reservations_index");
-        yield "\" class=\"btn btn-secondary btn-sm\">
-                                <i class=\"fas fa-arrow-left\"></i> Back to List
-                            </a>
-                        </div>
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reservations_edit", ["idRes" => CoreExtension::getAttribute($this->env, $this->source, (isset($context["reservation"]) || array_key_exists("reservation", $context) ? $context["reservation"] : (function () { throw new RuntimeError('Variable "reservation" does not exist.', 216, $this->source); })()), "idRes", [], "any", false, false, false, 216)]), "html", null, true);
+        yield "\" class=\"btn btn-warning\">
+                    <i class=\"fas fa-edit\"></i> Modifier
+                </a>
+                <a href=\"";
+        // line 219
+        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reservations_index");
+        yield "\" class=\"btn btn-secondary\">
+                    <i class=\"fas fa-arrow-left\"></i> Retour à la liste
+                </a>
                     </div>
                 </div>
                 <div class=\"card-body\">
@@ -350,19 +355,19 @@ class __TwigTemplate_0e39be134ce43a6c15434a6dcf19466d extends Template
                                         <div class=\"col-6\">
                                             <p class=\"text-sm mb-1\">Reservation ID</p>
                                             <h6 class=\"mb-0\">";
-        // line 231
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["reservation"]) || array_key_exists("reservation", $context) ? $context["reservation"] : (function () { throw new RuntimeError('Variable "reservation" does not exist.', 231, $this->source); })()), "IdRes", [], "any", false, false, false, 231), "html", null, true);
+        // line 233
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["reservation"]) || array_key_exists("reservation", $context) ? $context["reservation"] : (function () { throw new RuntimeError('Variable "reservation" does not exist.', 233, $this->source); })()), "IdRes", [], "any", false, false, false, 233), "html", null, true);
         yield "</h6>
                                         </div>
                                         <div class=\"col-6\">
                                             <p class=\"text-sm mb-1\">Status</p>
                                             <span class=\"badge badge-sm bg-";
-        // line 235
-        yield (((CoreExtension::getAttribute($this->env, $this->source, (isset($context["reservation"]) || array_key_exists("reservation", $context) ? $context["reservation"] : (function () { throw new RuntimeError('Variable "reservation" does not exist.', 235, $this->source); })()), "statut", [], "any", false, false, false, 235) == "pending")) ? ("warning") : ((((CoreExtension::getAttribute($this->env, $this->source, (isset($context["reservation"]) || array_key_exists("reservation", $context) ? $context["reservation"] : (function () { throw new RuntimeError('Variable "reservation" does not exist.', 235, $this->source); })()), "statut", [], "any", false, false, false, 235) == "confirmed")) ? ("success") : ("danger"))));
+        // line 237
+        yield (((CoreExtension::getAttribute($this->env, $this->source, (isset($context["reservation"]) || array_key_exists("reservation", $context) ? $context["reservation"] : (function () { throw new RuntimeError('Variable "reservation" does not exist.', 237, $this->source); })()), "statut", [], "any", false, false, false, 237) == "pending")) ? ("warning") : ((((CoreExtension::getAttribute($this->env, $this->source, (isset($context["reservation"]) || array_key_exists("reservation", $context) ? $context["reservation"] : (function () { throw new RuntimeError('Variable "reservation" does not exist.', 237, $this->source); })()), "statut", [], "any", false, false, false, 237) == "confirmed")) ? ("success") : ("danger"))));
         yield "\">
                                                 ";
-        // line 236
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::capitalize($this->env->getCharset(), CoreExtension::getAttribute($this->env, $this->source, (isset($context["reservation"]) || array_key_exists("reservation", $context) ? $context["reservation"] : (function () { throw new RuntimeError('Variable "reservation" does not exist.', 236, $this->source); })()), "statut", [], "any", false, false, false, 236)), "html", null, true);
+        // line 238
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::capitalize($this->env->getCharset(), CoreExtension::getAttribute($this->env, $this->source, (isset($context["reservation"]) || array_key_exists("reservation", $context) ? $context["reservation"] : (function () { throw new RuntimeError('Variable "reservation" does not exist.', 238, $this->source); })()), "statut", [], "any", false, false, false, 238)), "html", null, true);
         yield "
                                             </span>
                                         </div>
@@ -371,8 +376,8 @@ class __TwigTemplate_0e39be134ce43a6c15434a6dcf19466d extends Template
                                         <div class=\"col-12\">
                                             <p class=\"text-sm mb-1\">Client Name</p>
                                             <h6 class=\"mb-0\">";
-        // line 243
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["reservation"]) || array_key_exists("reservation", $context) ? $context["reservation"] : (function () { throw new RuntimeError('Variable "reservation" does not exist.', 243, $this->source); })()), "NameRes", [], "any", false, false, false, 243), "html", null, true);
+        // line 245
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["reservation"]) || array_key_exists("reservation", $context) ? $context["reservation"] : (function () { throw new RuntimeError('Variable "reservation" does not exist.', 245, $this->source); })()), "NameRes", [], "any", false, false, false, 245), "html", null, true);
         yield "</h6>
                                         </div>
                                     </div>
@@ -380,8 +385,8 @@ class __TwigTemplate_0e39be134ce43a6c15434a6dcf19466d extends Template
                                         <div class=\"col-12\">
                                             <p class=\"text-sm mb-1\">Reservation Date</p>
                                             <h6 class=\"mb-0\">";
-        // line 249
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, (isset($context["reservation"]) || array_key_exists("reservation", $context) ? $context["reservation"] : (function () { throw new RuntimeError('Variable "reservation" does not exist.', 249, $this->source); })()), "DateRes", [], "any", false, false, false, 249), "Y-m-d"), "html", null, true);
+        // line 251
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, (isset($context["reservation"]) || array_key_exists("reservation", $context) ? $context["reservation"] : (function () { throw new RuntimeError('Variable "reservation" does not exist.', 251, $this->source); })()), "DateRes", [], "any", false, false, false, 251), "Y-m-d"), "html", null, true);
         yield "</h6>
                                         </div>
                                     </div>
@@ -396,10 +401,10 @@ class __TwigTemplate_0e39be134ce43a6c15434a6dcf19466d extends Template
                                         <div class=\"col-12\">
                                             <p class=\"text-sm mb-1\">Car Model</p>
                                             <h6 class=\"mb-0\">";
-        // line 262
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["reservation"]) || array_key_exists("reservation", $context) ? $context["reservation"] : (function () { throw new RuntimeError('Variable "reservation" does not exist.', 262, $this->source); })()), "IdVoiture", [], "any", false, false, false, 262), "marque", [], "any", false, false, false, 262), "html", null, true);
+        // line 264
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["reservation"]) || array_key_exists("reservation", $context) ? $context["reservation"] : (function () { throw new RuntimeError('Variable "reservation" does not exist.', 264, $this->source); })()), "IdVoiture", [], "any", false, false, false, 264), "marque", [], "any", false, false, false, 264), "html", null, true);
         yield " ";
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["reservation"]) || array_key_exists("reservation", $context) ? $context["reservation"] : (function () { throw new RuntimeError('Variable "reservation" does not exist.', 262, $this->source); })()), "IdVoiture", [], "any", false, false, false, 262), "modele", [], "any", false, false, false, 262), "html", null, true);
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["reservation"]) || array_key_exists("reservation", $context) ? $context["reservation"] : (function () { throw new RuntimeError('Variable "reservation" does not exist.', 264, $this->source); })()), "IdVoiture", [], "any", false, false, false, 264), "modele", [], "any", false, false, false, 264), "html", null, true);
         yield "</h6>
                                         </div>
                                     </div>
@@ -407,19 +412,19 @@ class __TwigTemplate_0e39be134ce43a6c15434a6dcf19466d extends Template
                                         <div class=\"col-6\">
                                             <p class=\"text-sm mb-1\">Registration Number</p>
                                             <h6 class=\"mb-0\">";
-        // line 268
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["reservation"]) || array_key_exists("reservation", $context) ? $context["reservation"] : (function () { throw new RuntimeError('Variable "reservation" does not exist.', 268, $this->source); })()), "IdVoiture", [], "any", false, false, false, 268), "immatriculation", [], "any", false, false, false, 268), "html", null, true);
+        // line 270
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["reservation"]) || array_key_exists("reservation", $context) ? $context["reservation"] : (function () { throw new RuntimeError('Variable "reservation" does not exist.', 270, $this->source); })()), "IdVoiture", [], "any", false, false, false, 270), "immatriculation", [], "any", false, false, false, 270), "html", null, true);
         yield "</h6>
                                         </div>
                                         <div class=\"col-6\">
                                             <p class=\"text-sm mb-1\">Car Status</p>
                                             <span class=\"badge badge-sm bg-";
-        // line 272
-        yield (((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["reservation"]) || array_key_exists("reservation", $context) ? $context["reservation"] : (function () { throw new RuntimeError('Variable "reservation" does not exist.', 272, $this->source); })()), "IdVoiture", [], "any", false, false, false, 272), "etat", [], "any", false, false, false, 272) == "available")) ? ("success") : ((((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["reservation"]) || array_key_exists("reservation", $context) ? $context["reservation"] : (function () { throw new RuntimeError('Variable "reservation" does not exist.', 272, $this->source); })()), "IdVoiture", [], "any", false, false, false, 272), "etat", [], "any", false, false, false, 272) == "maintenance")) ? ("warning") : ("danger"))));
+        // line 274
+        yield (((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["reservation"]) || array_key_exists("reservation", $context) ? $context["reservation"] : (function () { throw new RuntimeError('Variable "reservation" does not exist.', 274, $this->source); })()), "IdVoiture", [], "any", false, false, false, 274), "etat", [], "any", false, false, false, 274) == "available")) ? ("success") : ((((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["reservation"]) || array_key_exists("reservation", $context) ? $context["reservation"] : (function () { throw new RuntimeError('Variable "reservation" does not exist.', 274, $this->source); })()), "IdVoiture", [], "any", false, false, false, 274), "etat", [], "any", false, false, false, 274) == "maintenance")) ? ("warning") : ("danger"))));
         yield "\">
                                                 ";
-        // line 273
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::capitalize($this->env->getCharset(), CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["reservation"]) || array_key_exists("reservation", $context) ? $context["reservation"] : (function () { throw new RuntimeError('Variable "reservation" does not exist.', 273, $this->source); })()), "IdVoiture", [], "any", false, false, false, 273), "etat", [], "any", false, false, false, 273)), "html", null, true);
+        // line 275
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::capitalize($this->env->getCharset(), CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["reservation"]) || array_key_exists("reservation", $context) ? $context["reservation"] : (function () { throw new RuntimeError('Variable "reservation" does not exist.', 275, $this->source); })()), "IdVoiture", [], "any", false, false, false, 275), "etat", [], "any", false, false, false, 275)), "html", null, true);
         yield "
                                             </span>
                                         </div>
@@ -464,7 +469,7 @@ class __TwigTemplate_0e39be134ce43a6c15434a6dcf19466d extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  422 => 273,  418 => 272,  411 => 268,  400 => 262,  384 => 249,  375 => 243,  365 => 236,  361 => 235,  354 => 231,  336 => 216,  330 => 213,  303 => 189,  189 => 78,  166 => 58,  143 => 38,  120 => 18,  109 => 10,  105 => 9,  100 => 6,  87 => 5,  64 => 3,  41 => 1,);
+        return array (  427 => 275,  423 => 274,  416 => 270,  405 => 264,  389 => 251,  380 => 245,  370 => 238,  366 => 237,  359 => 233,  342 => 219,  336 => 216,  330 => 213,  303 => 189,  189 => 78,  166 => 58,  143 => 38,  120 => 18,  109 => 10,  105 => 9,  100 => 6,  87 => 5,  64 => 3,  41 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -681,13 +686,15 @@ class __TwigTemplate_0e39be134ce43a6c15434a6dcf19466d extends Template
                     <div class=\"d-flex justify-content-between align-items-center\">
                         <h6>Reservation Details</h6>
                         <div>
-                            <a href=\"{{ path('app_admin_reservations_edit', {'IdRes': reservation.IdRes}) }}\" class=\"btn btn-warning btn-sm\">
-                                <i class=\"fas fa-edit\"></i> Edit
-                            </a>
-                            <a href=\"{{ path('app_admin_reservations_index') }}\" class=\"btn btn-secondary btn-sm\">
-                                <i class=\"fas fa-arrow-left\"></i> Back to List
-                            </a>
-                        </div>
+                <a href=\"{{ path('app_reservations_pdf', {'idRes': reservation.idRes}) }}\" class=\"btn btn-success\">
+                    <i class=\"fas fa-file-pdf\"></i> Télécharger PDF
+                </a>
+                <a href=\"{{ path('app_reservations_edit', {'idRes': reservation.idRes}) }}\" class=\"btn btn-warning\">
+                    <i class=\"fas fa-edit\"></i> Modifier
+                </a>
+                <a href=\"{{ path('app_reservations_index') }}\" class=\"btn btn-secondary\">
+                    <i class=\"fas fa-arrow-left\"></i> Retour à la liste
+                </a>
                     </div>
                 </div>
                 <div class=\"card-body\">
@@ -754,6 +761,6 @@ class __TwigTemplate_0e39be134ce43a6c15434a6dcf19466d extends Template
         </div>
     </div>
 </div>
-{% endblock %} ", "reservations/admin/show.html.twig", "C:\\Users\\Msi\\Desktop\\piWeb\\templates\\reservations\\admin\\show.html.twig");
+{% endblock %} ", "reservations/admin/show.html.twig", "C:\\Users\\Msi\\Desktop\\copy\\templates\\reservations\\admin\\show.html.twig");
     }
 }

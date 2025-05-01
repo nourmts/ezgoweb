@@ -33,6 +33,7 @@ class __TwigTemplate_a0cb5bcc6cadd60dfc7a00db56a1968d extends Template
             'title' => [$this, 'block_title'],
             'page_title' => [$this, 'block_page_title'],
             'body' => [$this, 'block_body'],
+            'javascripts' => [$this, 'block_javascripts'],
         ];
     }
 
@@ -344,142 +345,235 @@ class __TwigTemplate_a0cb5bcc6cadd60dfc7a00db56a1968d extends Template
             <div class=\"col-12 col-lg-8\">
                 <div class=\"card mb-4\">
             <div class=\"card-header pb-0\">
+            <a href=\"";
+        // line 210
+        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_calendar");
+        yield "\" class=\"btn btn-primary btn-sm mb-0\">
+                            <i class=\"fas fa-plus me-2\"></i>calendrier
+                        </a>
                 <div class=\"d-flex justify-content-between align-items-center\">
                     <h6>Liste des Réservations</h6>
                 </div>
             </div>
-            <div class=\"card-body px-0 pt-0 pb-2\">
-                <div class=\"table-responsive p-0\">
-                    <table class=\"table align-items-center mb-0\">
+            
+<div class=\"card\">
+            <div class=\"card-body\">
+                <div class=\"mb-3\">
+                    <div class=\"input-group\">
+                        <input type=\"text\" id=\"searchInput\" class=\"form-control\" placeholder=\"Rechercher une réservation...\">
+                        <button class=\"btn btn-outline-secondary\" type=\"button\" id=\"searchButton\">
+                            <i class=\"fas fa-search\"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class=\"table-responsive\">
+                    <table class=\"table table-striped\">
                         <thead>
                             <tr>
-                                <th class=\"text-uppercase text-secondary text-xxs font-weight-bolder opacity-7\">Client</th>
-                                <th class=\"text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2\">Voiture</th>
-                                <th class=\"text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2\">Date</th>
-                                <th class=\"text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2\">Statut</th>
-                                <th class=\"text-secondary opacity-7\">Actions</th>
+                                <th>Client</th>
+                                <th>Véhicule</th>
+                                <th>Date de Réservation</th>
+                                <th>État</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
-                        ";
-        // line 227
-        if ((array_key_exists("reservations", $context) && (Twig\Extension\CoreExtension::length($this->env->getCharset(), (isset($context["reservations"]) || array_key_exists("reservations", $context) ? $context["reservations"] : (function () { throw new RuntimeError('Variable "reservations" does not exist.', 227, $this->source); })())) > 0))) {
-            // line 228
-            yield "                            ";
-            $context['_parent'] = $context;
-            $context['_seq'] = CoreExtension::ensureTraversable((isset($context["reservations"]) || array_key_exists("reservations", $context) ? $context["reservations"] : (function () { throw new RuntimeError('Variable "reservations" does not exist.', 228, $this->source); })()));
-            foreach ($context['_seq'] as $context["_key"] => $context["reservation"]) {
-                // line 229
-                yield "                                <tr>
-                                    <td>
-                                        <div class=\"d-flex px-2 py-1\">
-                                            <div class=\"d-flex flex-column justify-content-center\">
-                                                <h6 class=\"mb-0 text-sm\">";
-                // line 233
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "nameRes", [], "any", false, false, false, 233), "html", null, true);
-                yield "</h6>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class=\"d-flex px-2 py-1\">
-                                            <div class=\"d-flex flex-column justify-content-center\">
-                                                <h6 class=\"mb-0 text-sm\">
-                                                    ";
-                // line 241
-                if (CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "car", [], "any", false, false, false, 241)) {
-                    // line 242
-                    yield "                                                        ";
-                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "car", [], "any", false, false, false, 242), "marque", [], "any", false, false, false, 242), "html", null, true);
-                    yield "
-                                                        <small class=\"text-muted d-block\">";
-                    // line 243
-                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "car", [], "any", false, false, false, 243), "immatriculation", [], "any", false, false, false, 243), "html", null, true);
-                    yield "</small>
-                                                    ";
-                } else {
-                    // line 245
-                    yield "                                                        N/A
-                                                    ";
-                }
-                // line 247
-                yield "                                                </h6>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class=\"d-flex px-2 py-1\">
-                                            <div class=\"d-flex flex-column justify-content-center\">
-                                                <h6 class=\"mb-0 text-sm\">";
-                // line 254
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "dateRes", [], "any", false, false, false, 254), "d/m/Y H:i"), "html", null, true);
-                yield "</h6>
-                                            </div>
-                                        </div>
-                                    </td>
+                        <tbody id=\"reservationsTableBody\">
+                            ";
+        // line 241
+        $context['_parent'] = $context;
+        $context['_seq'] = CoreExtension::ensureTraversable((isset($context["reservations"]) || array_key_exists("reservations", $context) ? $context["reservations"] : (function () { throw new RuntimeError('Variable "reservations" does not exist.', 241, $this->source); })()));
+        $context['_iterated'] = false;
+        foreach ($context['_seq'] as $context["_key"] => $context["reservation"]) {
+            // line 242
+            yield "                                <tr>
+                                    <td>";
+            // line 243
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "nameRes", [], "any", false, false, false, 243), "html", null, true);
+            yield "</td>
+                                    <td>";
+            // line 244
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "car", [], "any", false, false, false, 244), "marque", [], "any", false, false, false, 244), "html", null, true);
+            yield " - ";
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "car", [], "any", false, false, false, 244), "immatriculation", [], "any", false, false, false, 244), "html", null, true);
+            yield "</td>
+                                    <td>";
+            // line 245
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "dateRes", [], "any", false, false, false, 245), "d/m/Y"), "html", null, true);
+            yield "</td>
                                     <td>
                                         <span class=\"badge bg-";
-                // line 259
-                yield (((CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "statut", [], "any", false, false, false, 259) == "en attente")) ? ("warning") : ((((CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "statut", [], "any", false, false, false, 259) == "confirmé")) ? ("success") : ("danger"))));
-                yield "\">
+            // line 247
+            yield (((CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "statut", [], "any", false, false, false, 247) == "confirmé")) ? ("success") : ((((CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "statut", [], "any", false, false, false, 247) == "annulé")) ? ("danger") : ("warning"))));
+            yield "\">
                                             ";
-                // line 260
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::capitalize($this->env->getCharset(), CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "statut", [], "any", false, false, false, 260)), "html", null, true);
-                yield "
+            // line 248
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "statut", [], "any", false, false, false, 248), "html", null, true);
+            yield "
                                         </span>
                                     </td>
-                                    <td class=\"align-middle\">
+                                    <td>
                                         <a href=\"";
-                // line 264
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reservations_show", ["idRes" => CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "id", [], "any", false, false, false, 264)]), "html", null, true);
-                yield "\" class=\"btn btn-link text-primary px-1 mb-0\">
+            // line 252
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reservations_show", ["idRes" => CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "idRes", [], "any", false, false, false, 252)]), "html", null, true);
+            yield "\" class=\"btn btn-sm btn-info\">
                                             <i class=\"fas fa-eye\"></i>
                                         </a>
                                         <a href=\"";
-                // line 267
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reservations_edit", ["idRes" => CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "id", [], "any", false, false, false, 267)]), "html", null, true);
-                yield "\" class=\"btn btn-link text-info px-1 mb-0\">
+            // line 255
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reservations_edit", ["idRes" => CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "idRes", [], "any", false, false, false, 255)]), "html", null, true);
+            yield "\" class=\"btn btn-sm btn-warning\">
                                             <i class=\"fas fa-edit\"></i>
                                         </a>
+                                        <a href=\"";
+            // line 258
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reservations_pdf", ["idRes" => CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "idRes", [], "any", false, false, false, 258)]), "html", null, true);
+            yield "\" class=\"btn btn-sm btn-success\">
+                                            <i class=\"fas fa-file-pdf\"></i>
+                                        </a>
                                         <form method=\"post\" action=\"";
-                // line 270
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reservations_delete", ["idRes" => CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "id", [], "any", false, false, false, 270)]), "html", null, true);
-                yield "\" style=\"display: inline;\">
+            // line 261
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reservations_delete", ["idRes" => CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "idRes", [], "any", false, false, false, 261)]), "html", null, true);
+            yield "\" class=\"d-inline\" onsubmit=\"return confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?');\">
                                             <input type=\"hidden\" name=\"_token\" value=\"";
-                // line 271
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderCsrfToken(("delete" . CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "id", [], "any", false, false, false, 271))), "html", null, true);
-                yield "\">
-                                            <button type=\"submit\" class=\"btn btn-link text-danger px-1 mb-0\" onclick=\"return confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?');\">
-                                                <i class=\"far fa-trash-alt\"></i>
+            // line 262
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderCsrfToken(("delete" . CoreExtension::getAttribute($this->env, $this->source, $context["reservation"], "idRes", [], "any", false, false, false, 262))), "html", null, true);
+            yield "\">
+                                            <button class=\"btn btn-sm btn-danger\">
+                                                <i class=\"fas fa-trash\"></i>
                                             </button>
                                         </form>
                                     </td>
                                 </tr>
                             ";
-            }
-            $_parent = $context['_parent'];
-            unset($context['_seq'], $context['_key'], $context['reservation'], $context['_parent']);
-            $context = array_intersect_key($context, $_parent) + $_parent;
-            // line 279
-            yield "                        ";
-        } else {
-            // line 280
-            yield "                            <tr>
-                                <td colspan=\"5\" class=\"text-center py-4\">
-                                    <p class=\"text-muted mb-0\">Aucune réservation trouvée</p>
-                                </td>
-                            </tr>
-                        ";
+            $context['_iterated'] = true;
         }
-        // line 286
+        // line 269
+        if (!$context['_iterated']) {
+            // line 270
+            yield "                                <tr>
+                                    <td colspan=\"5\" class=\"text-center\">Aucune réservation trouvée</td>
+                                </tr>
+                            ";
+        }
+        $_parent = $context['_parent'];
+        unset($context['_seq'], $context['_key'], $context['reservation'], $context['_parent'], $context['_iterated']);
+        $context = array_intersect_key($context, $_parent) + $_parent;
+        // line 274
         yield "                        </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-</div>
-";
+
+    ";
+        // line 281
+        yield from $this->unwrap()->yieldBlock('javascripts', $context, $blocks);
+        
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
+
+        
+        $__internal_5a27a8ba21ca79b61932376b2fa922d2->leave($__internal_5a27a8ba21ca79b61932376b2fa922d2_prof);
+
+        yield from [];
+    }
+
+    /**
+     * @return iterable<null|scalar|\Stringable>
+     */
+    public function block_javascripts(array $context, array $blocks = []): iterable
+    {
+        $macros = $this->macros;
+        $__internal_5a27a8ba21ca79b61932376b2fa922d2 = $this->extensions["Symfony\\Bundle\\WebProfilerBundle\\Twig\\WebProfilerExtension"];
+        $__internal_5a27a8ba21ca79b61932376b2fa922d2->enter($__internal_5a27a8ba21ca79b61932376b2fa922d2_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "javascripts"));
+
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f = $this->extensions["Symfony\\Bridge\\Twig\\Extension\\ProfilerExtension"];
+        $__internal_6f47bbe9983af81f1e7450e9a3e3768f->enter($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof = new \Twig\Profiler\Profile($this->getTemplateName(), "block", "javascripts"));
+
+        // line 282
+        yield "        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const searchInput = document.getElementById('searchInput');
+                const searchButton = document.getElementById('searchButton');
+                const tableBody = document.getElementById('reservationsTableBody');
+                let searchTimeout;
+
+                function performSearch() {
+                    const searchTerm = searchInput.value.trim();
+                    console.log('Searching for:', searchTerm);
+                    
+                    fetch(`/admin/reservations/search?q=\${encodeURIComponent(searchTerm)}`)
+                        .then(response => {
+                            console.log('Response status:', response.status);
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log('Received data:', data);
+                            tableBody.innerHTML = '';
+                            
+                            if (data.error) {
+                                tableBody.innerHTML = '<tr><td colspan=\"5\" class=\"text-center text-danger\">' + data.error + '</td></tr>';
+                                return;
+                            }
+                            
+                            if (data.length === 0) {
+                                tableBody.innerHTML = '<tr><td colspan=\"5\" class=\"text-center\">Aucune réservation trouvée</td></tr>';
+                                return;
+                            }
+
+                            data.forEach(reservation => {
+                                console.log('Processing reservation:', reservation);
+                                const row = document.createElement('tr');
+                                row.innerHTML = `
+                                    <td>\${reservation.nameRes || 'N/A'}</td>
+                                    <td>\${reservation.car ? reservation.car.marque + ' - ' + reservation.car.immatriculation : 'N/A'}</td>
+                                    <td>\${reservation.dateRes ? new Date(reservation.dateRes).toLocaleDateString() : 'N/A'}</td>
+                                    <td>
+                                        <span class=\"badge bg-\${reservation.statut === 'confirmé' ? 'success' : (reservation.statut === 'annulé' ? 'danger' : 'warning')}\">
+                                            \${reservation.statut || 'N/A'}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href=\"/admin/reservations/\${reservation.idRes}\" class=\"btn btn-sm btn-info\">
+                                            <i class=\"fas fa-eye\"></i>
+                                        </a>
+                                        <a href=\"/admin/reservations/\${reservation.idRes}/edit\" class=\"btn btn-sm btn-warning\">
+                                            <i class=\"fas fa-edit\"></i>
+                                        </a>
+                                        <a href=\"/admin/reservations/\${reservation.idRes}/pdf\" class=\"btn btn-sm btn-success\">
+                                            <i class=\"fas fa-file-pdf\"></i>
+                                        </a>
+                                        <form method=\"post\" action=\"/admin/reservations/\${reservation.idRes}/delete\" class=\"d-inline\" onsubmit=\"return confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?');\">
+                                            <button class=\"btn btn-sm btn-danger\">
+                                                <i class=\"fas fa-trash\"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                `;
+                                tableBody.appendChild(row);
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            tableBody.innerHTML = '<tr><td colspan=\"5\" class=\"text-center text-danger\">Une erreur est survenue lors de la recherche</td></tr>';
+                        });
+                }
+
+                // Debounce the search to avoid too many requests
+                function debounceSearch() {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(performSearch, 300); // Wait 300ms after last keypress
+                }
+
+                searchInput.addEventListener('input', debounceSearch);
+                searchButton.addEventListener('click', performSearch);
+            });
+        </script>
+        ";
         
         $__internal_6f47bbe9983af81f1e7450e9a3e3768f->leave($__internal_6f47bbe9983af81f1e7450e9a3e3768f_prof);
 
@@ -510,7 +604,7 @@ class __TwigTemplate_a0cb5bcc6cadd60dfc7a00db56a1968d extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  475 => 286,  467 => 280,  464 => 279,  450 => 271,  446 => 270,  440 => 267,  434 => 264,  427 => 260,  423 => 259,  415 => 254,  406 => 247,  402 => 245,  397 => 243,  392 => 242,  390 => 241,  379 => 233,  373 => 229,  368 => 228,  366 => 227,  327 => 191,  213 => 80,  190 => 60,  167 => 40,  144 => 20,  133 => 12,  129 => 11,  124 => 8,  111 => 7,  88 => 5,  65 => 3,  42 => 1,);
+        return array (  495 => 282,  472 => 281,  463 => 274,  454 => 270,  452 => 269,  440 => 262,  436 => 261,  430 => 258,  424 => 255,  418 => 252,  411 => 248,  407 => 247,  402 => 245,  396 => 244,  392 => 243,  389 => 242,  384 => 241,  350 => 210,  328 => 191,  214 => 80,  191 => 60,  168 => 40,  145 => 20,  134 => 12,  130 => 11,  125 => 8,  112 => 7,  89 => 5,  66 => 3,  43 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -724,89 +818,160 @@ class __TwigTemplate_a0cb5bcc6cadd60dfc7a00db56a1968d extends Template
             <div class=\"col-12 col-lg-8\">
                 <div class=\"card mb-4\">
             <div class=\"card-header pb-0\">
+            <a href=\"{{ path('app_calendar') }}\" class=\"btn btn-primary btn-sm mb-0\">
+                            <i class=\"fas fa-plus me-2\"></i>calendrier
+                        </a>
                 <div class=\"d-flex justify-content-between align-items-center\">
                     <h6>Liste des Réservations</h6>
                 </div>
             </div>
-            <div class=\"card-body px-0 pt-0 pb-2\">
-                <div class=\"table-responsive p-0\">
-                    <table class=\"table align-items-center mb-0\">
+            
+<div class=\"card\">
+            <div class=\"card-body\">
+                <div class=\"mb-3\">
+                    <div class=\"input-group\">
+                        <input type=\"text\" id=\"searchInput\" class=\"form-control\" placeholder=\"Rechercher une réservation...\">
+                        <button class=\"btn btn-outline-secondary\" type=\"button\" id=\"searchButton\">
+                            <i class=\"fas fa-search\"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class=\"table-responsive\">
+                    <table class=\"table table-striped\">
                         <thead>
                             <tr>
-                                <th class=\"text-uppercase text-secondary text-xxs font-weight-bolder opacity-7\">Client</th>
-                                <th class=\"text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2\">Voiture</th>
-                                <th class=\"text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2\">Date</th>
-                                <th class=\"text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2\">Statut</th>
-                                <th class=\"text-secondary opacity-7\">Actions</th>
+                                <th>Client</th>
+                                <th>Véhicule</th>
+                                <th>Date de Réservation</th>
+                                <th>État</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
-                        {% if reservations is defined and reservations|length > 0 %}
+                        <tbody id=\"reservationsTableBody\">
                             {% for reservation in reservations %}
                                 <tr>
+                                    <td>{{ reservation.nameRes }}</td>
+                                    <td>{{ reservation.car.marque }} - {{ reservation.car.immatriculation }}</td>
+                                    <td>{{ reservation.dateRes|date('d/m/Y') }}</td>
                                     <td>
-                                        <div class=\"d-flex px-2 py-1\">
-                                            <div class=\"d-flex flex-column justify-content-center\">
-                                                <h6 class=\"mb-0 text-sm\">{{ reservation.nameRes }}</h6>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class=\"d-flex px-2 py-1\">
-                                            <div class=\"d-flex flex-column justify-content-center\">
-                                                <h6 class=\"mb-0 text-sm\">
-                                                    {% if reservation.car %}
-                                                        {{ reservation.car.marque }}
-                                                        <small class=\"text-muted d-block\">{{ reservation.car.immatriculation }}</small>
-                                                    {% else %}
-                                                        N/A
-                                                    {% endif %}
-                                                </h6>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class=\"d-flex px-2 py-1\">
-                                            <div class=\"d-flex flex-column justify-content-center\">
-                                                <h6 class=\"mb-0 text-sm\">{{ reservation.dateRes|date('d/m/Y H:i') }}</h6>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class=\"badge bg-{{ reservation.statut == 'en attente' ? 'warning' : (reservation.statut == 'confirmé' ? 'success' : 'danger') }}\">
-                                            {{ reservation.statut|capitalize }}
+                                        <span class=\"badge bg-{{ reservation.statut == 'confirmé' ? 'success' : (reservation.statut == 'annulé' ? 'danger' : 'warning') }}\">
+                                            {{ reservation.statut }}
                                         </span>
                                     </td>
-                                    <td class=\"align-middle\">
-                                        <a href=\"{{ path('app_reservations_show', {'idRes': reservation.id}) }}\" class=\"btn btn-link text-primary px-1 mb-0\">
+                                    <td>
+                                        <a href=\"{{ path('app_reservations_show', {'idRes': reservation.idRes}) }}\" class=\"btn btn-sm btn-info\">
                                             <i class=\"fas fa-eye\"></i>
                                         </a>
-                                        <a href=\"{{ path('app_reservations_edit', {'idRes': reservation.id}) }}\" class=\"btn btn-link text-info px-1 mb-0\">
+                                        <a href=\"{{ path('app_reservations_edit', {'idRes': reservation.idRes}) }}\" class=\"btn btn-sm btn-warning\">
                                             <i class=\"fas fa-edit\"></i>
                                         </a>
-                                        <form method=\"post\" action=\"{{ path('app_reservations_delete', {'idRes': reservation.id}) }}\" style=\"display: inline;\">
-                                            <input type=\"hidden\" name=\"_token\" value=\"{{ csrf_token('delete' ~ reservation.id) }}\">
-                                            <button type=\"submit\" class=\"btn btn-link text-danger px-1 mb-0\" onclick=\"return confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?');\">
-                                                <i class=\"far fa-trash-alt\"></i>
+                                        <a href=\"{{ path('app_reservations_pdf', {'idRes': reservation.idRes}) }}\" class=\"btn btn-sm btn-success\">
+                                            <i class=\"fas fa-file-pdf\"></i>
+                                        </a>
+                                        <form method=\"post\" action=\"{{ path('app_reservations_delete', {'idRes': reservation.idRes}) }}\" class=\"d-inline\" onsubmit=\"return confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?');\">
+                                            <input type=\"hidden\" name=\"_token\" value=\"{{ csrf_token('delete' ~ reservation.idRes) }}\">
+                                            <button class=\"btn btn-sm btn-danger\">
+                                                <i class=\"fas fa-trash\"></i>
                                             </button>
                                         </form>
                                     </td>
                                 </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan=\"5\" class=\"text-center\">Aucune réservation trouvée</td>
+                                </tr>
                             {% endfor %}
-                        {% else %}
-                            <tr>
-                                <td colspan=\"5\" class=\"text-center py-4\">
-                                    <p class=\"text-muted mb-0\">Aucune réservation trouvée</p>
-                                </td>
-                            </tr>
-                        {% endif %}
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-</div>
-{% endblock %} ", "reservations/index.html.twig", "C:\\Users\\Msi\\Desktop\\piWeb\\templates\\reservations\\index.html.twig");
+
+    {% block javascripts %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const searchInput = document.getElementById('searchInput');
+                const searchButton = document.getElementById('searchButton');
+                const tableBody = document.getElementById('reservationsTableBody');
+                let searchTimeout;
+
+                function performSearch() {
+                    const searchTerm = searchInput.value.trim();
+                    console.log('Searching for:', searchTerm);
+                    
+                    fetch(`/admin/reservations/search?q=\${encodeURIComponent(searchTerm)}`)
+                        .then(response => {
+                            console.log('Response status:', response.status);
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log('Received data:', data);
+                            tableBody.innerHTML = '';
+                            
+                            if (data.error) {
+                                tableBody.innerHTML = '<tr><td colspan=\"5\" class=\"text-center text-danger\">' + data.error + '</td></tr>';
+                                return;
+                            }
+                            
+                            if (data.length === 0) {
+                                tableBody.innerHTML = '<tr><td colspan=\"5\" class=\"text-center\">Aucune réservation trouvée</td></tr>';
+                                return;
+                            }
+
+                            data.forEach(reservation => {
+                                console.log('Processing reservation:', reservation);
+                                const row = document.createElement('tr');
+                                row.innerHTML = `
+                                    <td>\${reservation.nameRes || 'N/A'}</td>
+                                    <td>\${reservation.car ? reservation.car.marque + ' - ' + reservation.car.immatriculation : 'N/A'}</td>
+                                    <td>\${reservation.dateRes ? new Date(reservation.dateRes).toLocaleDateString() : 'N/A'}</td>
+                                    <td>
+                                        <span class=\"badge bg-\${reservation.statut === 'confirmé' ? 'success' : (reservation.statut === 'annulé' ? 'danger' : 'warning')}\">
+                                            \${reservation.statut || 'N/A'}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href=\"/admin/reservations/\${reservation.idRes}\" class=\"btn btn-sm btn-info\">
+                                            <i class=\"fas fa-eye\"></i>
+                                        </a>
+                                        <a href=\"/admin/reservations/\${reservation.idRes}/edit\" class=\"btn btn-sm btn-warning\">
+                                            <i class=\"fas fa-edit\"></i>
+                                        </a>
+                                        <a href=\"/admin/reservations/\${reservation.idRes}/pdf\" class=\"btn btn-sm btn-success\">
+                                            <i class=\"fas fa-file-pdf\"></i>
+                                        </a>
+                                        <form method=\"post\" action=\"/admin/reservations/\${reservation.idRes}/delete\" class=\"d-inline\" onsubmit=\"return confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?');\">
+                                            <button class=\"btn btn-sm btn-danger\">
+                                                <i class=\"fas fa-trash\"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                `;
+                                tableBody.appendChild(row);
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            tableBody.innerHTML = '<tr><td colspan=\"5\" class=\"text-center text-danger\">Une erreur est survenue lors de la recherche</td></tr>';
+                        });
+                }
+
+                // Debounce the search to avoid too many requests
+                function debounceSearch() {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(performSearch, 300); // Wait 300ms after last keypress
+                }
+
+                searchInput.addEventListener('input', debounceSearch);
+                searchButton.addEventListener('click', performSearch);
+            });
+        </script>
+        {% endblock %}
+{% endblock %} ", "reservations/index.html.twig", "C:\\Users\\Msi\\Desktop\\copy\\templates\\reservations\\index.html.twig");
     }
 }

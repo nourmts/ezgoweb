@@ -208,60 +208,49 @@ class __TwigTemplate_54bb029d7560daa4d8528ee16a4beb57 extends Template
 
         // line 88
         yield "    <!-- Section Hero Voiture -->
-    <section class=\"car-hero\">
-        <div class=\"container\">
-            <nav aria-label=\"fil d'Ariane\">
-                <ol class=\"breadcrumb\">
-                    <li class=\"breadcrumb-item\"><a href=\"";
-        // line 93
-        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_index");
-        yield "\" class=\"text-white\">Accueil</a></li>
-                    <li class=\"breadcrumb-item\"><a href=\"";
-        // line 94
-        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("front_voiture_index");
-        yield "\" class=\"text-white\">Véhicules</a></li>
-                    <li class=\"breadcrumb-item active text-white\" aria-current=\"page\">";
-        // line 95
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 95, $this->source); })()), "marque", [], "any", false, false, false, 95), "html", null, true);
-        yield "</li>
-                </ol>
-            </nav>
+    <section class=\"hero-wrap hero-wrap-2 js-fullheight\" style=\"background-image: url('/assets/images/bg_2.jpg');\" data-stellar-background-ratio=\"0.5\">
+      <div class=\"overlay\"></div>
+      <div class=\"container\">
+        <div class=\"row no-gutters slider-text js-fullheight align-items-end justify-content-start\">
+          <div class=\"col-md-9 ftco-animate pb-5\">
+          \t<p class=\"breadcrumbs\"><span class=\"mr-2\"><a href=\"index.html\">Home <i class=\"ion-ios-arrow-forward\"></i></a></span> <span>About us <i class=\"ion-ios-arrow-forward\"></i></span></p>
+           
             <div class=\"row align-items-center\">
                 <div class=\"col-lg-8\">
                     <h1 class=\"display-4 fw-bold mb-3\">";
-        // line 100
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 100, $this->source); })()), "marque", [], "any", false, false, false, 100), "html", null, true);
+        // line 98
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 98, $this->source); })()), "marque", [], "any", false, false, false, 98), "html", null, true);
         yield "</h1>
                     <p class=\"lead mb-4\">Découvrez le confort et les performances de notre véhicule premium.</p>
                     <span class=\"badge bg-";
-        // line 102
-        yield (((CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 102, $this->source); })()), "etat", [], "any", false, false, false, 102) == "disponible")) ? ("success") : ((((CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 102, $this->source); })()), "etat", [], "any", false, false, false, 102) == "maintenance")) ? ("warning") : ("danger"))));
+        // line 100
+        yield (((CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 100, $this->source); })()), "etat", [], "any", false, false, false, 100) == "disponible")) ? ("success") : ((((CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 100, $this->source); })()), "etat", [], "any", false, false, false, 100) == "maintenance")) ? ("warning") : ("danger"))));
         yield " mb-3\">
                         ";
-        // line 103
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::capitalize($this->env->getCharset(), CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 103, $this->source); })()), "etat", [], "any", false, false, false, 103)), "html", null, true);
+        // line 101
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::capitalize($this->env->getCharset(), CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 101, $this->source); })()), "etat", [], "any", false, false, false, 101)), "html", null, true);
         yield "
                     </span>
                 </div>
                 <div class=\"col-lg-4 text-end\">
                     ";
-        // line 107
-        if ((CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 107, $this->source); })()), "etat", [], "any", false, false, false, 107) == "disponible")) {
-            // line 108
+        // line 105
+        if ((CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 105, $this->source); })()), "etat", [], "any", false, false, false, 105) == "disponible")) {
+            // line 106
             yield "                        <a href=\"";
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reservations_new", ["id" => CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 108, $this->source); })()), "id", [], "any", false, false, false, 108)]), "html", null, true);
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reservations_new", ["id" => CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 106, $this->source); })()), "id", [], "any", false, false, false, 106)]), "html", null, true);
             yield "\" class=\"btn btn-primary btn-lg\">
                             <i class=\"fas fa-calendar-check me-2\"></i> Réserver
                         </a>
                     ";
         } else {
-            // line 112
+            // line 110
             yield "                        <button class=\"btn btn-secondary btn-lg\" disabled>
                             <i class=\"fas fa-ban me-2\"></i> Non Disponible
                         </button>
                     ";
         }
-        // line 116
+        // line 114
         yield "                </div>
             </div>
         </div>
@@ -274,25 +263,25 @@ class __TwigTemplate_54bb029d7560daa4d8528ee16a4beb57 extends Template
                 <div class=\"col-lg-8\">
                     <div class=\"car-image\">
                         ";
-        // line 127
-        if (CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 127, $this->source); })()), "image", [], "any", false, false, false, 127)) {
+        // line 125
+        if (CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 125, $this->source); })()), "image", [], "any", false, false, false, 125)) {
+            // line 126
+            yield "                            <img src=\"";
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl(("uploads/cars/" . CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 126, $this->source); })()), "image", [], "any", false, false, false, 126))), "html", null, true);
+            yield "\" alt=\"";
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 126, $this->source); })()), "marque", [], "any", false, false, false, 126), "html", null, true);
+            yield "\" class=\"img-fluid\">
+                        ";
+        } else {
             // line 128
             yield "                            <img src=\"";
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl(("uploads/cars/" . CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 128, $this->source); })()), "image", [], "any", false, false, false, 128))), "html", null, true);
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("assets/images/car-placeholder.jpg"), "html", null, true);
             yield "\" alt=\"";
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 128, $this->source); })()), "marque", [], "any", false, false, false, 128), "html", null, true);
             yield "\" class=\"img-fluid\">
                         ";
-        } else {
-            // line 130
-            yield "                            <img src=\"";
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("assets/images/car-placeholder.jpg"), "html", null, true);
-            yield "\" alt=\"";
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 130, $this->source); })()), "marque", [], "any", false, false, false, 130), "html", null, true);
-            yield "\" class=\"img-fluid\">
-                        ";
         }
-        // line 132
+        // line 130
         yield "                    </div>
                     
                     <div class=\"car-details\">
@@ -302,26 +291,26 @@ class __TwigTemplate_54bb029d7560daa4d8528ee16a4beb57 extends Template
                                 <div class=\"detail-item\">
                                     <span class=\"label\">Marque:</span>
                                     <span class=\"value\">";
-        // line 140
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 140, $this->source); })()), "marque", [], "any", false, false, false, 140), "html", null, true);
+        // line 138
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 138, $this->source); })()), "marque", [], "any", false, false, false, 138), "html", null, true);
         yield "</span>
                                 </div>
                                 <div class=\"detail-item\">
                                     <span class=\"label\">Immatriculation:</span>
                                     <span class=\"value\">";
-        // line 144
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 144, $this->source); })()), "immatriculation", [], "any", false, false, false, 144), "html", null, true);
+        // line 142
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 142, $this->source); })()), "immatriculation", [], "any", false, false, false, 142), "html", null, true);
         yield "</span>
                                 </div>
                                 <div class=\"detail-item\">
                                     <span class=\"label\">État:</span>
                                     <span class=\"badge bg-";
-        // line 148
-        yield (((CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 148, $this->source); })()), "etat", [], "any", false, false, false, 148) == "disponible")) ? ("success") : ((((CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 148, $this->source); })()), "etat", [], "any", false, false, false, 148) == "maintenance")) ? ("warning") : ("danger"))));
+        // line 146
+        yield (((CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 146, $this->source); })()), "etat", [], "any", false, false, false, 146) == "disponible")) ? ("success") : ((((CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 146, $this->source); })()), "etat", [], "any", false, false, false, 146) == "maintenance")) ? ("warning") : ("danger"))));
         yield "\">
                                         ";
-        // line 149
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::capitalize($this->env->getCharset(), CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 149, $this->source); })()), "etat", [], "any", false, false, false, 149)), "html", null, true);
+        // line 147
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::capitalize($this->env->getCharset(), CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 147, $this->source); })()), "etat", [], "any", false, false, false, 147)), "html", null, true);
         yield "
                                     </span>
                                 </div>
@@ -330,12 +319,12 @@ class __TwigTemplate_54bb029d7560daa4d8528ee16a4beb57 extends Template
                                 <div class=\"detail-item\">
                                     <span class=\"label\">Type de Contrat:</span>
                                     <span class=\"badge bg-";
-        // line 156
-        yield (((CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 156, $this->source); })()), "contrat", [], "any", false, false, false, 156) == "premium")) ? ("danger") : ((((CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 156, $this->source); })()), "contrat", [], "any", false, false, false, 156) == "standard")) ? ("primary") : ("success"))));
+        // line 154
+        yield (((CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 154, $this->source); })()), "contrat", [], "any", false, false, false, 154) == "premium")) ? ("danger") : ((((CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 154, $this->source); })()), "contrat", [], "any", false, false, false, 154) == "standard")) ? ("primary") : ("success"))));
         yield "\">
                                         ";
-        // line 157
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::capitalize($this->env->getCharset(), CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 157, $this->source); })()), "contrat", [], "any", false, false, false, 157)), "html", null, true);
+        // line 155
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::capitalize($this->env->getCharset(), CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 155, $this->source); })()), "contrat", [], "any", false, false, false, 155)), "html", null, true);
         yield "
                                     </span>
                                 </div>
@@ -370,13 +359,13 @@ class __TwigTemplate_54bb029d7560daa4d8528ee16a4beb57 extends Template
                     <div class=\"car-details\">
                         <h3>Réservation</h3>
                         ";
-        // line 190
-        if ((CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 190, $this->source); })()), "etat", [], "any", false, false, false, 190) == "disponible")) {
-            // line 191
+        // line 188
+        if ((CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 188, $this->source); })()), "etat", [], "any", false, false, false, 188) == "disponible")) {
+            // line 189
             yield "                            <p>Ce véhicule est disponible à la réservation. Cliquez sur le bouton ci-dessous pour le réserver pour vos dates souhaitées.</p>
                             <a href=\"";
-            // line 192
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reservations_new", ["id" => CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 192, $this->source); })()), "id", [], "any", false, false, false, 192)]), "html", null, true);
+            // line 190
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_reservations_new", ["id" => CoreExtension::getAttribute($this->env, $this->source, (isset($context["voiture"]) || array_key_exists("voiture", $context) ? $context["voiture"] : (function () { throw new RuntimeError('Variable "voiture" does not exist.', 190, $this->source); })()), "id", [], "any", false, false, false, 190)]), "html", null, true);
             yield "\" class=\"btn btn-primary w-100 mb-3\">
                                 <i class=\"fas fa-calendar-check me-2\"></i> Réserver Maintenant
                             </a>
@@ -385,20 +374,20 @@ class __TwigTemplate_54bb029d7560daa4d8528ee16a4beb57 extends Template
                             </div>
                         ";
         } else {
-            // line 199
+            // line 197
             yield "                            <div class=\"alert alert-warning\">
                                 <i class=\"fas fa-exclamation-triangle me-2\"></i> Ce véhicule n'est actuellement pas disponible à la réservation.
                             </div>
                             <p>Veuillez revenir plus tard ou consulter nos autres véhicules disponibles.</p>
                             <a href=\"";
-            // line 203
+            // line 201
             yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("front_voiture_index");
             yield "\" class=\"btn btn-outline-primary w-100\">
                                 <i class=\"fas fa-car me-2\"></i> Voir Autres Véhicules
                             </a>
                         ";
         }
-        // line 207
+        // line 205
         yield "                    </div>
                     
                     <div class=\"car-details\">
@@ -451,7 +440,7 @@ class __TwigTemplate_54bb029d7560daa4d8528ee16a4beb57 extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  402 => 207,  395 => 203,  389 => 199,  379 => 192,  376 => 191,  374 => 190,  338 => 157,  334 => 156,  324 => 149,  320 => 148,  313 => 144,  306 => 140,  296 => 132,  288 => 130,  280 => 128,  278 => 127,  265 => 116,  259 => 112,  251 => 108,  249 => 107,  242 => 103,  238 => 102,  233 => 100,  225 => 95,  221 => 94,  217 => 93,  210 => 88,  197 => 87,  109 => 9,  102 => 6,  89 => 5,  65 => 3,  42 => 1,);
+        return array (  391 => 205,  384 => 201,  378 => 197,  368 => 190,  365 => 189,  363 => 188,  327 => 155,  323 => 154,  313 => 147,  309 => 146,  302 => 142,  295 => 138,  285 => 130,  277 => 128,  269 => 126,  267 => 125,  254 => 114,  248 => 110,  240 => 106,  238 => 105,  231 => 101,  227 => 100,  222 => 98,  210 => 88,  197 => 87,  109 => 9,  102 => 6,  89 => 5,  65 => 3,  42 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -544,15 +533,13 @@ class __TwigTemplate_54bb029d7560daa4d8528ee16a4beb57 extends Template
 
 {% block body %}
     <!-- Section Hero Voiture -->
-    <section class=\"car-hero\">
-        <div class=\"container\">
-            <nav aria-label=\"fil d'Ariane\">
-                <ol class=\"breadcrumb\">
-                    <li class=\"breadcrumb-item\"><a href=\"{{ path('app_index') }}\" class=\"text-white\">Accueil</a></li>
-                    <li class=\"breadcrumb-item\"><a href=\"{{ path('front_voiture_index') }}\" class=\"text-white\">Véhicules</a></li>
-                    <li class=\"breadcrumb-item active text-white\" aria-current=\"page\">{{ voiture.marque }}</li>
-                </ol>
-            </nav>
+    <section class=\"hero-wrap hero-wrap-2 js-fullheight\" style=\"background-image: url('/assets/images/bg_2.jpg');\" data-stellar-background-ratio=\"0.5\">
+      <div class=\"overlay\"></div>
+      <div class=\"container\">
+        <div class=\"row no-gutters slider-text js-fullheight align-items-end justify-content-start\">
+          <div class=\"col-md-9 ftco-animate pb-5\">
+          \t<p class=\"breadcrumbs\"><span class=\"mr-2\"><a href=\"index.html\">Home <i class=\"ion-ios-arrow-forward\"></i></a></span> <span>About us <i class=\"ion-ios-arrow-forward\"></i></span></p>
+           
             <div class=\"row align-items-center\">
                 <div class=\"col-lg-8\">
                     <h1 class=\"display-4 fw-bold mb-3\">{{ voiture.marque }}</h1>
@@ -683,6 +670,6 @@ class __TwigTemplate_54bb029d7560daa4d8528ee16a4beb57 extends Template
             </div>
         </div>
     </section>
-{% endblock %} ", "voiture/front/show.html.twig", "C:\\Users\\Msi\\Desktop\\piWeb\\templates\\voiture\\front\\show.html.twig");
+{% endblock %} ", "voiture/front/show.html.twig", "C:\\Users\\Msi\\Desktop\\copy\\templates\\voiture\\front\\show.html.twig");
     }
 }

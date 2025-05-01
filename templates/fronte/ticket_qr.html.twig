@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Votre Ticket{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="text-center mb-0">Votre Ticket</h3>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <img src="{{ qr_code }}" alt="QR Code du ticket" class="img-fluid" style="max-width: 300px;">
+                        <p class="mt-2">Scannez ce QR code pour voir les détails de votre ticket</p>
+                    </div>
+                    
+                    <div class="ticket-info">
+                        <h4>Détails du ticket</h4>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <strong>Numéro de ticket:</strong> {{ ticket.id }}
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Bus:</strong> {{ ticket.bus }}
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Prix:</strong> {{ ticket.prix }} DT
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Date d'achat:</strong> {{ ticket.date }}
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <a href="{{ path('app_index') }}" class="btn btn-primary">Retour à l'accueil</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

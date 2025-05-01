@@ -219,24 +219,16 @@ class __TwigTemplate_1f7048801e87942fde945750577ec7b8 extends Template
 
         // line 100
         yield "    <!-- En-tête de Page -->
-    <section class=\"page-header\">
-        <div class=\"container\">
-            <nav aria-label=\"fil d'Ariane\">
-                <ol class=\"breadcrumb\">
-                    <li class=\"breadcrumb-item\"><a href=\"";
-        // line 105
-        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_index");
-        yield "\" class=\"text-white\">Accueil</a></li>
-                    <li class=\"breadcrumb-item active text-white\" aria-current=\"page\">Véhicules</li>
-                </ol>
-            </nav>
-            <div class=\"row align-items-center\">
-                <div class=\"col-lg-8\">
-                    <h1 class=\"display-4 fw-bold mb-3\">Nos Véhicules</h1>
-                    <p class=\"lead mb-0\">Découvrez notre sélection de véhicules pour tous vos besoins de déplacement.</p>
-                </div>
-            </div>
+  <section class=\"hero-wrap hero-wrap-2 js-fullheight\" style=\"background-image: url('/assets/images/bg_2.jpg');\" data-stellar-background-ratio=\"0.5\">
+      <div class=\"overlay\"></div>
+      <div class=\"container\">
+        <div class=\"row no-gutters slider-text js-fullheight align-items-end justify-content-start\">
+          <div class=\"col-md-9 ftco-animate pb-5\">
+          \t<p class=\"breadcrumbs\"><span class=\"mr-2\"><a href=\"index.html\">Home <i class=\"ion-ios-arrow-forward\"></i></a></span> <span>About us <i class=\"ion-ios-arrow-forward\"></i></span></p>
+            <h1 class=\"mb-3 bread\">Choose Your Car</h1>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- Section Filtres -->
@@ -249,20 +241,20 @@ class __TwigTemplate_1f7048801e87942fde945750577ec7b8 extends Template
                         <select class=\"form-select\" id=\"etat\" name=\"etat\">
                             <option value=\"\">Tous les états</option>
                             <option value=\"disponible\" ";
-        // line 127
-        if ((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 127, $this->source); })()), "request", [], "any", false, false, false, 127), "query", [], "any", false, false, false, 127), "get", ["etat"], "method", false, false, false, 127) == "disponible")) {
+        // line 122
+        if ((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 122, $this->source); })()), "request", [], "any", false, false, false, 122), "query", [], "any", false, false, false, 122), "get", ["etat"], "method", false, false, false, 122) == "disponible")) {
             yield "selected";
         }
         yield ">Disponible</option>
                             <option value=\"maintenance\" ";
-        // line 128
-        if ((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 128, $this->source); })()), "request", [], "any", false, false, false, 128), "query", [], "any", false, false, false, 128), "get", ["etat"], "method", false, false, false, 128) == "maintenance")) {
+        // line 123
+        if ((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 123, $this->source); })()), "request", [], "any", false, false, false, 123), "query", [], "any", false, false, false, 123), "get", ["etat"], "method", false, false, false, 123) == "maintenance")) {
             yield "selected";
         }
         yield ">En Maintenance</option>
                             <option value=\"reserve\" ";
-        // line 129
-        if ((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 129, $this->source); })()), "request", [], "any", false, false, false, 129), "query", [], "any", false, false, false, 129), "get", ["etat"], "method", false, false, false, 129) == "reserve")) {
+        // line 124
+        if ((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 124, $this->source); })()), "request", [], "any", false, false, false, 124), "query", [], "any", false, false, false, 124), "get", ["etat"], "method", false, false, false, 124) == "reserve")) {
             yield "selected";
         }
         yield ">Réservé</option>
@@ -273,20 +265,20 @@ class __TwigTemplate_1f7048801e87942fde945750577ec7b8 extends Template
                         <select class=\"form-select\" id=\"contrat\" name=\"contrat\">
                             <option value=\"\">Tous les contrats</option>
                             <option value=\"premium\" ";
-        // line 136
-        if ((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 136, $this->source); })()), "request", [], "any", false, false, false, 136), "query", [], "any", false, false, false, 136), "get", ["contrat"], "method", false, false, false, 136) == "premium")) {
+        // line 131
+        if ((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 131, $this->source); })()), "request", [], "any", false, false, false, 131), "query", [], "any", false, false, false, 131), "get", ["contrat"], "method", false, false, false, 131) == "premium")) {
             yield "selected";
         }
         yield ">Premium</option>
                             <option value=\"standard\" ";
-        // line 137
-        if ((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 137, $this->source); })()), "request", [], "any", false, false, false, 137), "query", [], "any", false, false, false, 137), "get", ["contrat"], "method", false, false, false, 137) == "standard")) {
+        // line 132
+        if ((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 132, $this->source); })()), "request", [], "any", false, false, false, 132), "query", [], "any", false, false, false, 132), "get", ["contrat"], "method", false, false, false, 132) == "standard")) {
             yield "selected";
         }
         yield ">Standard</option>
                             <option value=\"economique\" ";
-        // line 138
-        if ((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 138, $this->source); })()), "request", [], "any", false, false, false, 138), "query", [], "any", false, false, false, 138), "get", ["contrat"], "method", false, false, false, 138) == "economique")) {
+        // line 133
+        if ((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, (isset($context["app"]) || array_key_exists("app", $context) ? $context["app"] : (function () { throw new RuntimeError('Variable "app" does not exist.', 133, $this->source); })()), "request", [], "any", false, false, false, 133), "query", [], "any", false, false, false, 133), "get", ["contrat"], "method", false, false, false, 133) == "economique")) {
             yield "selected";
         }
         yield ">Économique</option>
@@ -301,93 +293,100 @@ class __TwigTemplate_1f7048801e87942fde945750577ec7b8 extends Template
             </div>
         </div>
     </section>
-
+    <div>
+                        <a href=\"";
+        // line 146
+        yield $this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("front_voiture_statistics");
+        yield "\" class=\"btn btn-primary w-100\">
+                                            <i class=\"fas fa-info-circle me-2\"></i> Voir les statistics
+                         </a>
+    </div>
     <!-- Section Véhicules -->
     <section class=\"py-5\">
         <div class=\"container\">
             ";
-        // line 154
-        if ((Twig\Extension\CoreExtension::length($this->env->getCharset(), (isset($context["voitures"]) || array_key_exists("voitures", $context) ? $context["voitures"] : (function () { throw new RuntimeError('Variable "voitures" does not exist.', 154, $this->source); })())) > 0)) {
-            // line 155
+        // line 153
+        if ((Twig\Extension\CoreExtension::length($this->env->getCharset(), (isset($context["voitures"]) || array_key_exists("voitures", $context) ? $context["voitures"] : (function () { throw new RuntimeError('Variable "voitures" does not exist.', 153, $this->source); })())) > 0)) {
+            // line 154
             yield "                <div class=\"row\">
                     ";
-            // line 156
+            // line 155
             $context['_parent'] = $context;
-            $context['_seq'] = CoreExtension::ensureTraversable((isset($context["voitures"]) || array_key_exists("voitures", $context) ? $context["voitures"] : (function () { throw new RuntimeError('Variable "voitures" does not exist.', 156, $this->source); })()));
+            $context['_seq'] = CoreExtension::ensureTraversable((isset($context["voitures"]) || array_key_exists("voitures", $context) ? $context["voitures"] : (function () { throw new RuntimeError('Variable "voitures" does not exist.', 155, $this->source); })()));
             foreach ($context['_seq'] as $context["_key"] => $context["voiture"]) {
-                // line 157
+                // line 156
                 yield "                        <div class=\"col-md-6 col-lg-4\">
                             <div class=\"car-card\">
                                 ";
-                // line 159
-                if (CoreExtension::getAttribute($this->env, $this->source, $context["voiture"], "image", [], "any", false, false, false, 159)) {
-                    // line 160
+                // line 158
+                if (CoreExtension::getAttribute($this->env, $this->source, $context["voiture"], "image", [], "any", false, false, false, 158)) {
+                    // line 159
                     yield "                                    <img src=\"";
-                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl(("uploads/cars/" . CoreExtension::getAttribute($this->env, $this->source, $context["voiture"], "image", [], "any", false, false, false, 160))), "html", null, true);
+                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl(("uploads/cars/" . CoreExtension::getAttribute($this->env, $this->source, $context["voiture"], "image", [], "any", false, false, false, 159))), "html", null, true);
                     yield "\" class=\"card-img-top car-image\" alt=\"";
-                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["voiture"], "marque", [], "any", false, false, false, 160), "html", null, true);
+                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["voiture"], "marque", [], "any", false, false, false, 159), "html", null, true);
                     yield "\">
                                 ";
                 } else {
-                    // line 162
+                    // line 161
                     yield "                                    <img src=\"";
                     yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\AssetExtension']->getAssetUrl("assets/images/car-placeholder.jpg"), "html", null, true);
                     yield "\" class=\"card-img-top car-image\" alt=\"";
-                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["voiture"], "marque", [], "any", false, false, false, 162), "html", null, true);
+                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["voiture"], "marque", [], "any", false, false, false, 161), "html", null, true);
                     yield "\">
                                 ";
                 }
-                // line 164
+                // line 163
                 yield "                                <span class=\"badge bg-";
-                yield (((CoreExtension::getAttribute($this->env, $this->source, $context["voiture"], "etat", [], "any", false, false, false, 164) == "disponible")) ? ("success") : ((((CoreExtension::getAttribute($this->env, $this->source, $context["voiture"], "etat", [], "any", false, false, false, 164) == "maintenance")) ? ("warning") : ("danger"))));
+                yield (((CoreExtension::getAttribute($this->env, $this->source, $context["voiture"], "etat", [], "any", false, false, false, 163) == "disponible")) ? ("success") : ((((CoreExtension::getAttribute($this->env, $this->source, $context["voiture"], "etat", [], "any", false, false, false, 163) == "maintenance")) ? ("warning") : ("danger"))));
                 yield " car-badge\">
                                     ";
-                // line 165
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::capitalize($this->env->getCharset(), CoreExtension::getAttribute($this->env, $this->source, $context["voiture"], "etat", [], "any", false, false, false, 165)), "html", null, true);
+                // line 164
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::capitalize($this->env->getCharset(), CoreExtension::getAttribute($this->env, $this->source, $context["voiture"], "etat", [], "any", false, false, false, 164)), "html", null, true);
                 yield "
                                 </span>
                                 <div class=\"card-body\">
                                     <h5 class=\"card-title\">";
-                // line 168
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["voiture"], "marque", [], "any", false, false, false, 168), "html", null, true);
+                // line 167
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["voiture"], "marque", [], "any", false, false, false, 167), "html", null, true);
                 yield "</h5>
                                     <p class=\"card-text\">
                                         <small class=\"text-muted\">
                                             <i class=\"fas fa-hashtag me-1\"></i>";
-                // line 171
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["voiture"], "immatriculation", [], "any", false, false, false, 171), "html", null, true);
+                // line 170
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["voiture"], "immatriculation", [], "any", false, false, false, 170), "html", null, true);
                 yield "
                                         </small>
                                     </p>
                                     <p class=\"card-text\">
                                         <span class=\"badge bg-";
-                // line 175
-                yield (((CoreExtension::getAttribute($this->env, $this->source, $context["voiture"], "contrat", [], "any", false, false, false, 175) == "premium")) ? ("danger") : ((((CoreExtension::getAttribute($this->env, $this->source, $context["voiture"], "contrat", [], "any", false, false, false, 175) == "standard")) ? ("primary") : ("success"))));
+                // line 174
+                yield (((CoreExtension::getAttribute($this->env, $this->source, $context["voiture"], "contrat", [], "any", false, false, false, 174) == "premium")) ? ("danger") : ((((CoreExtension::getAttribute($this->env, $this->source, $context["voiture"], "contrat", [], "any", false, false, false, 174) == "standard")) ? ("primary") : ("success"))));
                 yield "\">
                                             ";
-                // line 176
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::capitalize($this->env->getCharset(), CoreExtension::getAttribute($this->env, $this->source, $context["voiture"], "contrat", [], "any", false, false, false, 176)), "html", null, true);
+                // line 175
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(Twig\Extension\CoreExtension::capitalize($this->env->getCharset(), CoreExtension::getAttribute($this->env, $this->source, $context["voiture"], "contrat", [], "any", false, false, false, 175)), "html", null, true);
                 yield "
                                         </span>
                                     </p>
                                     ";
-                // line 179
-                if ((CoreExtension::getAttribute($this->env, $this->source, $context["voiture"], "etat", [], "any", false, false, false, 179) == "disponible")) {
-                    // line 180
+                // line 178
+                if ((CoreExtension::getAttribute($this->env, $this->source, $context["voiture"], "etat", [], "any", false, false, false, 178) == "disponible")) {
+                    // line 179
                     yield "                                        <a href=\"";
-                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("front_voiture_show", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["voiture"], "id", [], "any", false, false, false, 180)]), "html", null, true);
+                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("front_voiture_show", ["id" => CoreExtension::getAttribute($this->env, $this->source, $context["voiture"], "id", [], "any", false, false, false, 179)]), "html", null, true);
                     yield "\" class=\"btn btn-primary w-100\">
                                             <i class=\"fas fa-info-circle me-2\"></i> Voir Détails
                                         </a>
                                     ";
                 } else {
-                    // line 184
+                    // line 183
                     yield "                                        <button class=\"btn btn-secondary w-100\" disabled>
                                             <i class=\"fas fa-ban me-2\"></i> Non Disponible
                                         </button>
                                     ";
                 }
-                // line 188
+                // line 187
                 yield "                                </div>
                             </div>
                         </div>
@@ -396,46 +395,46 @@ class __TwigTemplate_1f7048801e87942fde945750577ec7b8 extends Template
             $_parent = $context['_parent'];
             unset($context['_seq'], $context['_key'], $context['voiture'], $context['_parent']);
             $context = array_intersect_key($context, $_parent) + $_parent;
-            // line 192
+            // line 191
             yield "                </div>
                 
                 <!-- Pagination -->
                 ";
-            // line 195
-            if ((CoreExtension::getAttribute($this->env, $this->source, ($context["voitures"] ?? null), "haveToPaginate", [], "any", true, true, false, 195) && CoreExtension::getAttribute($this->env, $this->source, (isset($context["voitures"]) || array_key_exists("voitures", $context) ? $context["voitures"] : (function () { throw new RuntimeError('Variable "voitures" does not exist.', 195, $this->source); })()), "haveToPaginate", [], "any", false, false, false, 195))) {
-                // line 196
+            // line 194
+            if ((CoreExtension::getAttribute($this->env, $this->source, ($context["voitures"] ?? null), "haveToPaginate", [], "any", true, true, false, 194) && CoreExtension::getAttribute($this->env, $this->source, (isset($context["voitures"]) || array_key_exists("voitures", $context) ? $context["voitures"] : (function () { throw new RuntimeError('Variable "voitures" does not exist.', 194, $this->source); })()), "haveToPaginate", [], "any", false, false, false, 194))) {
+                // line 195
                 yield "                    <div class=\"d-flex justify-content-center mt-4\">
                         <nav aria-label=\"Navigation des pages\">
                             <ul class=\"pagination\">
                                 ";
-                // line 199
-                if ((CoreExtension::getAttribute($this->env, $this->source, (isset($context["voitures"]) || array_key_exists("voitures", $context) ? $context["voitures"] : (function () { throw new RuntimeError('Variable "voitures" does not exist.', 199, $this->source); })()), "currentPage", [], "any", false, false, false, 199) > 1)) {
-                    // line 200
+                // line 198
+                if ((CoreExtension::getAttribute($this->env, $this->source, (isset($context["voitures"]) || array_key_exists("voitures", $context) ? $context["voitures"] : (function () { throw new RuntimeError('Variable "voitures" does not exist.', 198, $this->source); })()), "currentPage", [], "any", false, false, false, 198) > 1)) {
+                    // line 199
                     yield "                                    <li class=\"page-item\">
                                         <a class=\"page-link\" href=\"";
-                    // line 201
-                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("front_voiture_index", ["page" => (CoreExtension::getAttribute($this->env, $this->source, (isset($context["voitures"]) || array_key_exists("voitures", $context) ? $context["voitures"] : (function () { throw new RuntimeError('Variable "voitures" does not exist.', 201, $this->source); })()), "currentPage", [], "any", false, false, false, 201) - 1)]), "html", null, true);
+                    // line 200
+                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("front_voiture_index", ["page" => (CoreExtension::getAttribute($this->env, $this->source, (isset($context["voitures"]) || array_key_exists("voitures", $context) ? $context["voitures"] : (function () { throw new RuntimeError('Variable "voitures" does not exist.', 200, $this->source); })()), "currentPage", [], "any", false, false, false, 200) - 1)]), "html", null, true);
                     yield "\" aria-label=\"Précédent\">
                                             <span aria-hidden=\"true\">&laquo;</span>
                                         </a>
                                     </li>
                                 ";
                 }
-                // line 206
+                // line 205
                 yield "                                
                                 ";
-                // line 207
+                // line 206
                 $context['_parent'] = $context;
-                $context['_seq'] = CoreExtension::ensureTraversable(range(1, CoreExtension::getAttribute($this->env, $this->source, (isset($context["voitures"]) || array_key_exists("voitures", $context) ? $context["voitures"] : (function () { throw new RuntimeError('Variable "voitures" does not exist.', 207, $this->source); })()), "lastPage", [], "any", false, false, false, 207)));
+                $context['_seq'] = CoreExtension::ensureTraversable(range(1, CoreExtension::getAttribute($this->env, $this->source, (isset($context["voitures"]) || array_key_exists("voitures", $context) ? $context["voitures"] : (function () { throw new RuntimeError('Variable "voitures" does not exist.', 206, $this->source); })()), "lastPage", [], "any", false, false, false, 206)));
                 foreach ($context['_seq'] as $context["_key"] => $context["i"]) {
-                    // line 208
+                    // line 207
                     yield "                                    <li class=\"page-item ";
-                    if (($context["i"] == CoreExtension::getAttribute($this->env, $this->source, (isset($context["voitures"]) || array_key_exists("voitures", $context) ? $context["voitures"] : (function () { throw new RuntimeError('Variable "voitures" does not exist.', 208, $this->source); })()), "currentPage", [], "any", false, false, false, 208))) {
+                    if (($context["i"] == CoreExtension::getAttribute($this->env, $this->source, (isset($context["voitures"]) || array_key_exists("voitures", $context) ? $context["voitures"] : (function () { throw new RuntimeError('Variable "voitures" does not exist.', 207, $this->source); })()), "currentPage", [], "any", false, false, false, 207))) {
                         yield "active";
                     }
                     yield "\">
                                         <a class=\"page-link\" href=\"";
-                    // line 209
+                    // line 208
                     yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("front_voiture_index", ["page" => $context["i"]]), "html", null, true);
                     yield "\">";
                     yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($context["i"], "html", null, true);
@@ -446,38 +445,38 @@ class __TwigTemplate_1f7048801e87942fde945750577ec7b8 extends Template
                 $_parent = $context['_parent'];
                 unset($context['_seq'], $context['_key'], $context['i'], $context['_parent']);
                 $context = array_intersect_key($context, $_parent) + $_parent;
-                // line 212
+                // line 211
                 yield "                                
                                 ";
-                // line 213
-                if ((CoreExtension::getAttribute($this->env, $this->source, (isset($context["voitures"]) || array_key_exists("voitures", $context) ? $context["voitures"] : (function () { throw new RuntimeError('Variable "voitures" does not exist.', 213, $this->source); })()), "currentPage", [], "any", false, false, false, 213) < CoreExtension::getAttribute($this->env, $this->source, (isset($context["voitures"]) || array_key_exists("voitures", $context) ? $context["voitures"] : (function () { throw new RuntimeError('Variable "voitures" does not exist.', 213, $this->source); })()), "lastPage", [], "any", false, false, false, 213))) {
-                    // line 214
+                // line 212
+                if ((CoreExtension::getAttribute($this->env, $this->source, (isset($context["voitures"]) || array_key_exists("voitures", $context) ? $context["voitures"] : (function () { throw new RuntimeError('Variable "voitures" does not exist.', 212, $this->source); })()), "currentPage", [], "any", false, false, false, 212) < CoreExtension::getAttribute($this->env, $this->source, (isset($context["voitures"]) || array_key_exists("voitures", $context) ? $context["voitures"] : (function () { throw new RuntimeError('Variable "voitures" does not exist.', 212, $this->source); })()), "lastPage", [], "any", false, false, false, 212))) {
+                    // line 213
                     yield "                                    <li class=\"page-item\">
                                         <a class=\"page-link\" href=\"";
-                    // line 215
-                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("front_voiture_index", ["page" => (CoreExtension::getAttribute($this->env, $this->source, (isset($context["voitures"]) || array_key_exists("voitures", $context) ? $context["voitures"] : (function () { throw new RuntimeError('Variable "voitures" does not exist.', 215, $this->source); })()), "currentPage", [], "any", false, false, false, 215) + 1)]), "html", null, true);
+                    // line 214
+                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("front_voiture_index", ["page" => (CoreExtension::getAttribute($this->env, $this->source, (isset($context["voitures"]) || array_key_exists("voitures", $context) ? $context["voitures"] : (function () { throw new RuntimeError('Variable "voitures" does not exist.', 214, $this->source); })()), "currentPage", [], "any", false, false, false, 214) + 1)]), "html", null, true);
                     yield "\" aria-label=\"Suivant\">
                                             <span aria-hidden=\"true\">&raquo;</span>
                                         </a>
                                     </li>
                                 ";
                 }
-                // line 220
+                // line 219
                 yield "                            </ul>
                         </nav>
                     </div>
                 ";
             }
-            // line 224
+            // line 223
             yield "            ";
         } else {
-            // line 225
+            // line 224
             yield "                <div class=\"alert alert-info text-center\">
                     <i class=\"fas fa-info-circle me-2\"></i> Aucun véhicule ne correspond à vos critères de recherche.
                 </div>
             ";
         }
-        // line 229
+        // line 228
         yield "        </div>
     </section>
 ";
@@ -511,7 +510,7 @@ class __TwigTemplate_1f7048801e87942fde945750577ec7b8 extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  481 => 229,  475 => 225,  472 => 224,  466 => 220,  458 => 215,  455 => 214,  453 => 213,  450 => 212,  439 => 209,  432 => 208,  428 => 207,  425 => 206,  417 => 201,  414 => 200,  412 => 199,  407 => 196,  405 => 195,  400 => 192,  391 => 188,  385 => 184,  377 => 180,  375 => 179,  369 => 176,  365 => 175,  358 => 171,  352 => 168,  346 => 165,  341 => 164,  333 => 162,  325 => 160,  323 => 159,  319 => 157,  315 => 156,  312 => 155,  310 => 154,  289 => 138,  283 => 137,  277 => 136,  265 => 129,  259 => 128,  253 => 127,  228 => 105,  221 => 100,  208 => 99,  108 => 9,  101 => 6,  88 => 5,  65 => 3,  42 => 1,);
+        return array (  480 => 228,  474 => 224,  471 => 223,  465 => 219,  457 => 214,  454 => 213,  452 => 212,  449 => 211,  438 => 208,  431 => 207,  427 => 206,  424 => 205,  416 => 200,  413 => 199,  411 => 198,  406 => 195,  404 => 194,  399 => 191,  390 => 187,  384 => 183,  376 => 179,  374 => 178,  368 => 175,  364 => 174,  357 => 170,  351 => 167,  345 => 164,  340 => 163,  332 => 161,  324 => 159,  322 => 158,  318 => 156,  314 => 155,  311 => 154,  309 => 153,  299 => 146,  281 => 133,  275 => 132,  269 => 131,  257 => 124,  251 => 123,  245 => 122,  221 => 100,  208 => 99,  108 => 9,  101 => 6,  88 => 5,  65 => 3,  42 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -616,21 +615,16 @@ class __TwigTemplate_1f7048801e87942fde945750577ec7b8 extends Template
 
 {% block body %}
     <!-- En-tête de Page -->
-    <section class=\"page-header\">
-        <div class=\"container\">
-            <nav aria-label=\"fil d'Ariane\">
-                <ol class=\"breadcrumb\">
-                    <li class=\"breadcrumb-item\"><a href=\"{{ path('app_index') }}\" class=\"text-white\">Accueil</a></li>
-                    <li class=\"breadcrumb-item active text-white\" aria-current=\"page\">Véhicules</li>
-                </ol>
-            </nav>
-            <div class=\"row align-items-center\">
-                <div class=\"col-lg-8\">
-                    <h1 class=\"display-4 fw-bold mb-3\">Nos Véhicules</h1>
-                    <p class=\"lead mb-0\">Découvrez notre sélection de véhicules pour tous vos besoins de déplacement.</p>
-                </div>
-            </div>
+  <section class=\"hero-wrap hero-wrap-2 js-fullheight\" style=\"background-image: url('/assets/images/bg_2.jpg');\" data-stellar-background-ratio=\"0.5\">
+      <div class=\"overlay\"></div>
+      <div class=\"container\">
+        <div class=\"row no-gutters slider-text js-fullheight align-items-end justify-content-start\">
+          <div class=\"col-md-9 ftco-animate pb-5\">
+          \t<p class=\"breadcrumbs\"><span class=\"mr-2\"><a href=\"index.html\">Home <i class=\"ion-ios-arrow-forward\"></i></a></span> <span>About us <i class=\"ion-ios-arrow-forward\"></i></span></p>
+            <h1 class=\"mb-3 bread\">Choose Your Car</h1>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- Section Filtres -->
@@ -665,7 +659,11 @@ class __TwigTemplate_1f7048801e87942fde945750577ec7b8 extends Template
             </div>
         </div>
     </section>
-
+    <div>
+                        <a href=\"{{ path('front_voiture_statistics') }}\" class=\"btn btn-primary w-100\">
+                                            <i class=\"fas fa-info-circle me-2\"></i> Voir les statistics
+                         </a>
+    </div>
     <!-- Section Véhicules -->
     <section class=\"py-5\">
         <div class=\"container\">
@@ -746,6 +744,6 @@ class __TwigTemplate_1f7048801e87942fde945750577ec7b8 extends Template
             {% endif %}
         </div>
     </section>
-{% endblock %} ", "voiture/front/index.html.twig", "C:\\Users\\Msi\\Desktop\\piWeb\\templates\\voiture\\front\\index.html.twig");
+{% endblock %} ", "voiture/front/index.html.twig", "C:\\Users\\Msi\\Desktop\\copy\\templates\\voiture\\front\\index.html.twig");
     }
 }

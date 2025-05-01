@@ -506,6 +506,89 @@ class __TwigTemplate_2aed2b8af730a6718b98d272b347fc98 extends Template
             </div>
         </div>
 
+
+
+
+ <div class=\"row justify-content-center\">
+            <div class=\"col-12 col-lg-8\">
+<!-- Chart.js + plugin -->
+<script src=\"https://cdn.jsdelivr.net/npm/chart.js\"></script>
+<script src=\"https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels\"></script>
+
+<canvas id=\"myChart\" width=\"300\" height=\"300\"></canvas>
+
+<script>
+    const ctx = document.getElementById('myChart');
+
+    const data = {
+        labels: ";
+        // line 313
+        yield json_encode(Twig\Extension\CoreExtension::map($this->env, (isset($context["stats"]) || array_key_exists("stats", $context) ? $context["stats"] : (function () { throw new RuntimeError('Variable "stats" does not exist.', 313, $this->source); })()), function ($__s__) use ($context, $macros) { $context["s"] = $__s__; return CoreExtension::getAttribute($this->env, $this->source, (isset($context["s"]) || array_key_exists("s", $context) ? $context["s"] : (function () { throw new RuntimeError('Variable "s" does not exist.', 313, $this->source); })()), "categorie", [], "any", false, false, false, 313); }));
+        yield ",
+        datasets: [{
+            data: ";
+        // line 315
+        yield json_encode(Twig\Extension\CoreExtension::map($this->env, (isset($context["stats"]) || array_key_exists("stats", $context) ? $context["stats"] : (function () { throw new RuntimeError('Variable "stats" does not exist.', 315, $this->source); })()), function ($__s__) use ($context, $macros) { $context["s"] = $__s__; return CoreExtension::getAttribute($this->env, $this->source, (isset($context["s"]) || array_key_exists("s", $context) ? $context["s"] : (function () { throw new RuntimeError('Variable "s" does not exist.', 315, $this->source); })()), "count", [], "any", false, false, false, 315); }));
+        yield ",
+            backgroundColor: [
+                'rgba(54, 162, 235, 0.6)',
+                'rgba(255, 99, 132, 0.6)',
+                'rgba(75, 192, 192, 0.6)',
+                'rgba(153, 102, 255, 0.6)',
+                'rgba(255, 159, 64, 0.6)',
+                'rgba(255, 206, 86, 0.6)'
+            ],
+            borderWidth: 1,
+            borderColor: '#fff'
+        }]
+    };
+
+    const chart = new Chart(ctx, {
+        type: 'pie',  // ou 'doughnut' pour un cercle avec un trou au centre
+        data: data,
+        options: {
+            responsive: false,  // désactive la mise à l'échelle automatique
+            layout: {
+                padding: 20  // réduit l'espace autour du cercle
+            },
+            plugins: {
+                datalabels: {
+                    // Centrer le texte au centre du graphique
+                    formatter: (value, ctx) => {
+                        const dataArr = ctx.chart.data.datasets[0].data;
+                        const total = dataArr.reduce((a, b) => a + b, 0);
+                        const percentage = ((value / total) * 100).toFixed(1) + '%';
+                        return percentage; // Affiche uniquement le pourcentage au centre
+                    },
+                    color: '#000',  // couleur du texte central
+                    font: {
+                        size: 18,  // taille du texte au centre
+                        weight: 'bold'
+                    },
+                    // Positionner les labels au centre
+                    anchor: 'center',
+                    align: 'center'
+                },
+                legend: {
+                    position: 'bottom', // Positionner la légende en bas
+                    labels: {
+                        boxWidth: 12,
+                        font: {
+                            size: 12
+                        }
+                    }
+                }
+            }
+        },
+        plugins: [ChartDataLabels]
+    });
+</script>
+
+
+</div>
+</div>
+
+
         <div class=\"row justify-content-center\">
             <div class=\"col-12 col-lg-7\">
                 <div class=\"card mb-4\">
@@ -528,68 +611,68 @@ class __TwigTemplate_2aed2b8af730a6718b98d272b347fc98 extends Template
                                 </thead>
                                 <tbody class=\"bg-white\">
                                     ";
-        // line 319
-        if ((array_key_exists("buses", $context) && (Twig\Extension\CoreExtension::length($this->env->getCharset(), (isset($context["buses"]) || array_key_exists("buses", $context) ? $context["buses"] : (function () { throw new RuntimeError('Variable "buses" does not exist.', 319, $this->source); })())) > 0))) {
-            // line 320
+        // line 396
+        if ((array_key_exists("buses", $context) && (Twig\Extension\CoreExtension::length($this->env->getCharset(), (isset($context["buses"]) || array_key_exists("buses", $context) ? $context["buses"] : (function () { throw new RuntimeError('Variable "buses" does not exist.', 396, $this->source); })())) > 0))) {
+            // line 397
             yield "                                        ";
             $context['_parent'] = $context;
-            $context['_seq'] = CoreExtension::ensureTraversable((isset($context["buses"]) || array_key_exists("buses", $context) ? $context["buses"] : (function () { throw new RuntimeError('Variable "buses" does not exist.', 320, $this->source); })()));
+            $context['_seq'] = CoreExtension::ensureTraversable((isset($context["buses"]) || array_key_exists("buses", $context) ? $context["buses"] : (function () { throw new RuntimeError('Variable "buses" does not exist.', 397, $this->source); })()));
             foreach ($context['_seq'] as $context["_key"] => $context["bu"]) {
-                // line 321
+                // line 398
                 yield "                                            <tr>
                                                 <td>
                                                     <p class=\"text-xs font-weight-bold mb-0 ps-2\">";
-                // line 323
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["bu"], "imatriculation", [], "any", false, false, false, 323), "html", null, true);
+                // line 400
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["bu"], "imatriculation", [], "any", false, false, false, 400), "html", null, true);
                 yield "</p>
                                                 </td>
                                                 <td>
                                                     <p class=\"text-xs font-weight-bold mb-0 ps-2\">";
-                // line 326
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["bu"], "idStation", [], "any", false, false, false, 326), "html", null, true);
+                // line 403
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["bu"], "idStation", [], "any", false, false, false, 403), "html", null, true);
                 yield "</p>
                                                 </td>
                                                 <td>
                                                     <p class=\"text-xs font-weight-bold mb-0 ps-2\">";
-                // line 329
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["bu"], "nbPlace", [], "any", false, false, false, 329), "html", null, true);
+                // line 406
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["bu"], "nbPlace", [], "any", false, false, false, 406), "html", null, true);
                 yield "</p>
                                                 </td>
                                                 <td>
                                                     <p class=\"text-xs font-weight-bold mb-0 ps-2\">";
-                // line 332
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["bu"], "categorie", [], "any", false, false, false, 332), "html", null, true);
+                // line 409
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["bu"], "categorie", [], "any", false, false, false, 409), "html", null, true);
                 yield "</p>
                                                 </td>
                                                 <td>
                                                     <p class=\"text-xs font-weight-bold mb-0 ps-2\">";
-                // line 335
-                yield ((CoreExtension::getAttribute($this->env, $this->source, $context["bu"], "dateArrive", [], "any", false, false, false, 335)) ? ($this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, $context["bu"], "dateArrive", [], "any", false, false, false, 335), "Y-m-d"), "html", null, true)) : (""));
+                // line 412
+                yield ((CoreExtension::getAttribute($this->env, $this->source, $context["bu"], "dateArrive", [], "any", false, false, false, 412)) ? ($this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, $context["bu"], "dateArrive", [], "any", false, false, false, 412), "Y-m-d"), "html", null, true)) : (""));
                 yield "</p>
                                                 </td>
                                                 <td>
                                                     <p class=\"text-xs font-weight-bold mb-0 ps-2\">";
-                // line 338
-                yield ((CoreExtension::getAttribute($this->env, $this->source, $context["bu"], "dateSortie", [], "any", false, false, false, 338)) ? ($this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, $context["bu"], "dateSortie", [], "any", false, false, false, 338), "Y-m-d"), "html", null, true)) : (""));
+                // line 415
+                yield ((CoreExtension::getAttribute($this->env, $this->source, $context["bu"], "dateSortie", [], "any", false, false, false, 415)) ? ($this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, $context["bu"], "dateSortie", [], "any", false, false, false, 415), "Y-m-d"), "html", null, true)) : (""));
                 yield "</p>
                                                 </td>
                                                 <td class=\"align-middle\">
                                                     <div class=\"d-flex justify-content-start gap-2 ps-2\">
                                                         <form method=\"post\" action=\"";
-                // line 342
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_bus_delete", ["imatriculation" => CoreExtension::getAttribute($this->env, $this->source, $context["bu"], "imatriculation", [], "any", false, false, false, 342)]), "html", null, true);
+                // line 419
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_bus_delete", ["imatriculation" => CoreExtension::getAttribute($this->env, $this->source, $context["bu"], "imatriculation", [], "any", false, false, false, 419)]), "html", null, true);
                 yield "\" onsubmit=\"return handleDelete(event);\">
                                                             <input type=\"hidden\" name=\"_token\" value=\"";
-                // line 343
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderCsrfToken(("delete" . CoreExtension::getAttribute($this->env, $this->source, $context["bu"], "imatriculation", [], "any", false, false, false, 343))), "html", null, true);
+                // line 420
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getRuntime('Symfony\Component\Form\FormRenderer')->renderCsrfToken(("delete" . CoreExtension::getAttribute($this->env, $this->source, $context["bu"], "imatriculation", [], "any", false, false, false, 420))), "html", null, true);
                 yield "\">
                                                             <button type=\"submit\" class=\"btn btn-link text-danger text-gradient px-3 mb-0\">
                                                                 <i class=\"fas fa-trash me-2\"></i>Supprimer
                                                             </button>
                                                         </form>
                                                         <a href=\"";
-                // line 348
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_modifier_bus", ["imatriculation" => CoreExtension::getAttribute($this->env, $this->source, $context["bu"], "imatriculation", [], "any", false, false, false, 348)]), "html", null, true);
+                // line 425
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Symfony\Bridge\Twig\Extension\RoutingExtension']->getPath("app_modifier_bus", ["imatriculation" => CoreExtension::getAttribute($this->env, $this->source, $context["bu"], "imatriculation", [], "any", false, false, false, 425)]), "html", null, true);
                 yield "\" class=\"btn btn-link text-dark px-3 mb-0\">
                                                             <i class=\"fas fa-edit me-2\"></i>Modifier
                                                         </a>
@@ -601,10 +684,10 @@ class __TwigTemplate_2aed2b8af730a6718b98d272b347fc98 extends Template
             $_parent = $context['_parent'];
             unset($context['_seq'], $context['_key'], $context['bu'], $context['_parent']);
             $context = array_intersect_key($context, $_parent) + $_parent;
-            // line 355
+            // line 432
             yield "                                    ";
         } else {
-            // line 356
+            // line 433
             yield "                                        <tr>
                                             <td colspan=\"5\" class=\"text-center py-4\">
                                                 <p class=\"text-sm mb-0\">Aucune station trouvée</p>
@@ -612,7 +695,7 @@ class __TwigTemplate_2aed2b8af730a6718b98d272b347fc98 extends Template
                                         </tr>
                                     ";
         }
-        // line 362
+        // line 439
         yield "                                </tbody>
                             </table>
                         </div>
@@ -654,7 +737,7 @@ class __TwigTemplate_2aed2b8af730a6718b98d272b347fc98 extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  616 => 362,  608 => 356,  605 => 355,  592 => 348,  584 => 343,  580 => 342,  573 => 338,  567 => 335,  561 => 332,  555 => 329,  549 => 326,  543 => 323,  539 => 321,  534 => 320,  532 => 319,  501 => 291,  497 => 290,  491 => 287,  487 => 286,  483 => 285,  476 => 281,  472 => 280,  468 => 279,  461 => 275,  457 => 274,  453 => 273,  446 => 269,  442 => 268,  438 => 267,  431 => 263,  427 => 262,  423 => 261,  417 => 258,  413 => 257,  408 => 254,  402 => 253,  393 => 250,  388 => 249,  383 => 248,  379 => 247,  357 => 228,  263 => 137,  239 => 116,  215 => 95,  192 => 75,  169 => 55,  146 => 35,  135 => 27,  131 => 26,  119 => 17,  113 => 14,  107 => 11,  100 => 6,  87 => 5,  64 => 3,  41 => 1,);
+        return array (  699 => 439,  691 => 433,  688 => 432,  675 => 425,  667 => 420,  663 => 419,  656 => 415,  650 => 412,  644 => 409,  638 => 406,  632 => 403,  626 => 400,  622 => 398,  617 => 397,  615 => 396,  531 => 315,  526 => 313,  501 => 291,  497 => 290,  491 => 287,  487 => 286,  483 => 285,  476 => 281,  472 => 280,  468 => 279,  461 => 275,  457 => 274,  453 => 273,  446 => 269,  442 => 268,  438 => 267,  431 => 263,  427 => 262,  423 => 261,  417 => 258,  413 => 257,  408 => 254,  402 => 253,  393 => 250,  388 => 249,  383 => 248,  379 => 247,  357 => 228,  263 => 137,  239 => 116,  215 => 95,  192 => 75,  169 => 55,  146 => 35,  135 => 27,  131 => 26,  119 => 17,  113 => 14,  107 => 11,  100 => 6,  87 => 5,  64 => 3,  41 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -956,6 +1039,83 @@ class __TwigTemplate_2aed2b8af730a6718b98d272b347fc98 extends Template
             </div>
         </div>
 
+
+
+
+ <div class=\"row justify-content-center\">
+            <div class=\"col-12 col-lg-8\">
+<!-- Chart.js + plugin -->
+<script src=\"https://cdn.jsdelivr.net/npm/chart.js\"></script>
+<script src=\"https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels\"></script>
+
+<canvas id=\"myChart\" width=\"300\" height=\"300\"></canvas>
+
+<script>
+    const ctx = document.getElementById('myChart');
+
+    const data = {
+        labels: {{ stats|map(s => s.categorie)|json_encode|raw }},
+        datasets: [{
+            data: {{ stats|map(s => s.count)|json_encode|raw }},
+            backgroundColor: [
+                'rgba(54, 162, 235, 0.6)',
+                'rgba(255, 99, 132, 0.6)',
+                'rgba(75, 192, 192, 0.6)',
+                'rgba(153, 102, 255, 0.6)',
+                'rgba(255, 159, 64, 0.6)',
+                'rgba(255, 206, 86, 0.6)'
+            ],
+            borderWidth: 1,
+            borderColor: '#fff'
+        }]
+    };
+
+    const chart = new Chart(ctx, {
+        type: 'pie',  // ou 'doughnut' pour un cercle avec un trou au centre
+        data: data,
+        options: {
+            responsive: false,  // désactive la mise à l'échelle automatique
+            layout: {
+                padding: 20  // réduit l'espace autour du cercle
+            },
+            plugins: {
+                datalabels: {
+                    // Centrer le texte au centre du graphique
+                    formatter: (value, ctx) => {
+                        const dataArr = ctx.chart.data.datasets[0].data;
+                        const total = dataArr.reduce((a, b) => a + b, 0);
+                        const percentage = ((value / total) * 100).toFixed(1) + '%';
+                        return percentage; // Affiche uniquement le pourcentage au centre
+                    },
+                    color: '#000',  // couleur du texte central
+                    font: {
+                        size: 18,  // taille du texte au centre
+                        weight: 'bold'
+                    },
+                    // Positionner les labels au centre
+                    anchor: 'center',
+                    align: 'center'
+                },
+                legend: {
+                    position: 'bottom', // Positionner la légende en bas
+                    labels: {
+                        boxWidth: 12,
+                        font: {
+                            size: 12
+                        }
+                    }
+                }
+            }
+        },
+        plugins: [ChartDataLabels]
+    });
+</script>
+
+
+</div>
+</div>
+
+
         <div class=\"row justify-content-center\">
             <div class=\"col-12 col-lg-7\">
                 <div class=\"card mb-4\">
@@ -1031,6 +1191,6 @@ class __TwigTemplate_2aed2b8af730a6718b98d272b347fc98 extends Template
 
     
 {% endblock %}
-", "back/bus/gestion_bus.html.twig", "C:\\Users\\Msi\\Desktop\\piWeb\\templates\\back\\bus\\gestion_bus.html.twig");
+", "back/bus/gestion_bus.html.twig", "C:\\Users\\Msi\\Desktop\\copy\\templates\\back\\bus\\gestion_bus.html.twig");
     }
 }

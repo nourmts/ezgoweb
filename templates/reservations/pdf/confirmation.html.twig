@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmation de Réservation - EzGo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 20px;
+        }
+        .title {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+        .info-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .info-section h2 {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 5px;
+        }
+        .info-row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .info-label {
+            width: 150px;
+            font-weight: bold;
+            color: #666;
+        }
+        .info-value {
+            flex: 1;
+        }
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            border-top: 2px solid #eee;
+            padding-top: 20px;
+        }
+        .confirmation-number {
+            background-color: #f0f0f0;
+            padding: 10px;
+            text-align: center;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="title">Confirmation de Réservation</div>
+        <div class="subtitle">EzGo - Location de Voitures</div>
+    </div>
+
+    <div class="confirmation-number">
+        Numéro de Confirmation: #{{ reservation.idRes }}
+    </div>
+
+    <div class="info-section">
+        <h2>Informations de la Réservation</h2>
+        <div class="info-row">
+            <div class="info-label">Client:</div>
+            <div class="info-value">{{ reservation.nameRes }}</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Date de Réservation:</div>
+            <div class="info-value">{{ reservation.dateRes|date('d/m/Y') }}</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Statut:</div>
+            <div class="info-value">
+                <span style="color: {{ reservation.statut == 'confirmé' ? 'green' : (reservation.statut == 'annulé' ? 'red' : 'orange') }}">
+                    {{ reservation.statut }}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-section">
+        <h2>Informations du Véhicule</h2>
+        <div class="info-row">
+            <div class="info-label">Marque:</div>
+            <div class="info-value">{{ reservation.car.marque }}</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">Immatriculation:</div>
+            <div class="info-value">{{ reservation.car.immatriculation }}</div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Merci d'avoir choisi EzGo pour votre location de voiture.</p>
+        <p>Pour toute question, contactez-nous au +XX XX XX XX XX</p>
+        <p>© {{ "now"|date("Y") }} EzGo. Tous droits réservés.</p>
+    </div>
+</body>
+</html> 

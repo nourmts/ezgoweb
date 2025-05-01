@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<title>Bus</title>
+
+{% block body %}
+    <h1>Bus</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Imatriculation</th>
+                <td>{{ bu.imatriculation }}</td>
+            </tr>
+            <tr>
+                <th>IdStation</th>
+                <td>{{ bu.idStation }}</td>
+            </tr>
+            <tr>
+                <th>Nb_place</th>
+                <td>{{ bu.nbPlace }}</td>
+            </tr>
+            <tr>
+                <th>Date_arrive</th>
+                <td>{{ bu.dateArrive ? bu.dateArrive|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Date_sortie</th>
+                <td>{{ bu.dateSortie ? bu.dateSortie|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_bus_index') }}">back to list</a>
+
+    <a href="{{ path('app_bus_edit', {'imatriculation': bu.imatriculation}) }}">edit</a>
+
+    {{ include('bus/_delete_form.html.twig') }}
+{% endblock %}
