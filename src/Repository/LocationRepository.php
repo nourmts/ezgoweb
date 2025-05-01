@@ -40,4 +40,47 @@ class LocationRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function getLocationsParPartenaire(): array
+    {
+        $qb = $this->createQueryBuilder('l')
+            ->select('p.idPartenaire as partenaire_id, p.nom as partenaire, COUNT(l.idLocation) as nombre_locations')
+            ->leftJoin('l.partenaire', 'p')
+            ->groupBy('p.idPartenaire, p.nom')
+            ->orderBy('nombre_locations', 'DESC');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getServicesParPartenaire(): array
+    {
+        $qb = $this->createQueryBuilder('l')
+            ->select('p.idPartenaire as partenaire_id, p.nom as partenaire, COUNT(DISTINCT l.service) as nombre_services')
+            ->leftJoin('l.partenaire', 'p')
+            ->groupBy('p.idPartenaire, p.nom')
+            ->orderBy('nombre_services', 'DESC');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getMarquesPlusDemandees(): array
+    {
+        $qb = $this->createQueryBuilder('l')
+            ->select('l.marque, COUNT(l.idLocation) as nombre_locations')
+            ->groupBy('l.marque')
+            ->orderBy('nombre_locations', 'DESC')
+            ->setMaxResults(10);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getRepartitionServices(): array
+    {
+        $qb = $this->createQueryBuilder('l')
+            ->select('l.service, COUNT(l.idLocation) as nombre_locations')
+            ->groupBy('l.service')
+            ->orderBy('nombre_locations', 'DESC');
+
+        return $qb->getQuery()->getResult();
+    }
 }

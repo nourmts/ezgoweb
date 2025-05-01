@@ -35,6 +35,9 @@
             "./migrations/.gitignore"
         ]
     },
+    "knplabs/knp-snappy-bundle": {
+        "version": "v1.10.4"
+    },
     "phpunit/phpunit": {
         "version": "9.6",
         "recipe": {

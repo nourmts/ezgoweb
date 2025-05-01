@@ -35,6 +35,10 @@
             color: #000;
             font-weight: bold;
         }
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+        }
         .btn-creer {
             background: #ff6b35;
             color: white;
@@ -148,6 +152,14 @@
                 <a href="{{ path('app_partenaire_index') }}" class="btn-creer">
                     <i class="fas fa-plus"></i>
                     <span>Créer une Location</span>
+                </a>
+                <a href="{{ path('app_statistiques') }}" class="btn-creer">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Statistiques</span>
+                </a>
+                <a href="{{ path('app_code_promo_new') }}" class="btn-creer">
+                    <i class="fas fa-tag"></i>
+                    <span>Créer un code promo</span>
                 </a>
             </div>
         </div>

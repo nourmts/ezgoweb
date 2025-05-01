@@ -1,0 +1,117 @@
+ <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Statistiques des locations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #666;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .date {
+            text-align: right;
+            color: #666;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Statistiques des locations</h1>
+    <div class="date">Généré le {{ date|date('d/m/Y H:i') }}</div>
+
+    <h2>Locations par partenaire</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Partenaire</th>
+                <th>Nombre de locations</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in data.locationsParPartenaire %}
+                <tr>
+                    <td>{{ item.partenaire }}</td>
+                    <td>{{ item.nombre_locations }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Services par partenaire</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Partenaire</th>
+                <th>Nombre de services</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in data.servicesParPartenaire %}
+                <tr>
+                    <td>{{ item.partenaire }}</td>
+                    <td>{{ item.nombre_services }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Marques les plus demandées</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Marque</th>
+                <th>Nombre de locations</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in data.marquesPlusDemandees %}
+                <tr>
+                    <td>{{ item.marque }}</td>
+                    <td>{{ item.nombre_locations }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Répartition des services</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Service</th>
+                <th>Nombre de locations</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in data.repartitionServices %}
+                <tr>
+                    <td>{{ item.service }}</td>
+                    <td>{{ item.nombre_locations }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

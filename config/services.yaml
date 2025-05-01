@@ -1,3 +1,9 @@
+parameters:
+    # ... existing parameters ...
+    twilio.account_sid: '%env(TWILIO_ACCOUNT_SID)%'
+    twilio.auth_token: '%env(TWILIO_AUTH_TOKEN)%'
+    twilio.phone_number: '%env(TWILIO_PHONE_NUMBER)%'
+
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -21,3 +27,9 @@ services:
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
+
+    App\Service\SmsService:
+        arguments:
+            $twilioSid: '%twilio.account_sid%'
+            $twilioAuthToken: '%twilio.auth_token%'
+            $twilioPhoneNumber: '%twilio.phone_number%'
