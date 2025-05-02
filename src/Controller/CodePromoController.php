@@ -45,35 +45,42 @@ class CodePromoController extends AbstractController
             $entityManager->persist($codePromo);
             $entityManager->flush();
 
-            if (!$this->smsService->isConfigured()) {
-                $this->addFlash('warning', 'Le code promo a été créé mais Twilio n\'est pas configuré. Les SMS n\'ont pas été envoyés.');
-                return $this->redirectToRoute('app_code_promo_index');
-            }
-
             // Récupérer tous les utilisateurs
             $users = $this->userRepository->findAll();
             $smsCount = 0;
             $errorCount = 0;
-            
+
             // Envoyer un SMS à chaque utilisateur ayant un numéro de téléphone
             foreach ($users as $user) {
                 if ($user->getNumTel()) {
                     try {
-                        $message = sprintf(
-                            "Bonjour ! Un nouveau code promo est disponible : %s. Profitez d'une réduction de %s%% !",
-                            $codePromo->getCode(),
-                            $codePromo->getPourcentage()
-                        );
+                        // Formater le numéro de téléphone pour Twilio (ajouter +216 pour la Tunisie)
+                        $phoneNumber = '+216' . $user->getNumTel();
                         
-                        $this->smsService->sendSms((string)$user->getNumTel(), $message);
+                        // Créer un message personnalisé
+                        $message = sprintf(
+                            "Bonjour %s ! Un nouveau code promo est disponible sur EzGo : %s. Profitez d'une réduction de %d%% ! Valable jusqu'au %s",
+                            $user->getPrenom(),
+                            $codePromo->getCode(),
+                            $codePromo->getPourcentage(),
+                            $codePromo->getDateExpiration() ? $codePromo->getDateExpiration()->format('d/m/Y') : 'durée illimitée'
+                        );
+
+                        // Envoyer le SMS
+                        $this->smsService->sendSms($phoneNumber, $message);
                         $smsCount++;
                     } catch (\Exception $e) {
                         $errorCount++;
-                        $this->addFlash('error', "Erreur lors de l'envoi du SMS au {$user->getNumTel()}: {$e->getMessage()}");
+                        $this->addFlash('error', sprintf(
+                            "Erreur lors de l'envoi du SMS au %s : %s",
+                            $user->getNumTel(),
+                            $e->getMessage()
+                        ));
                     }
                 }
             }
 
+            // Afficher un message de succès avec le nombre de SMS envoyés
             if ($smsCount > 0) {
                 $this->addFlash('success', sprintf(
                     'Le code promo a été créé avec succès. %d SMS envoyé(s), %d erreur(s).',
@@ -108,9 +115,7 @@ class CodePromoController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $codePromo->setUtilisations($codePromo->getUtilisations() + 1);
             $entityManager->flush();
-
             $this->addFlash('success', 'Le code promo a été modifié avec succès.');
             return $this->redirectToRoute('app_code_promo_index');
         }
@@ -128,8 +133,6 @@ class CodePromoController extends AbstractController
             $entityManager->remove($codePromo);
             $entityManager->flush();
             $this->addFlash('success', 'Le code promo a été supprimé avec succès.');
-        } else {
-            $this->addFlash('error', 'Une erreur est survenue lors de la suppression du code promo.');
         }
 
         return $this->redirectToRoute('app_code_promo_index');

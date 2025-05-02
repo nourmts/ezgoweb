@@ -33,7 +33,7 @@ class User
     private ?string $mdp = null;
 
     #[ORM\Column]
-    private ?int $numTel = null;
+    private ?string $numTel = null;
 
     #[ORM\Column(length: 100)]
     private ?string $genre = null;
@@ -112,12 +112,12 @@ class User
         return $this;
     }
 
-    public function getNumTel(): ?int
+    public function getNumTel(): ?string
     {
-        return $this->numTel;
+        return $this->numTel ? (string)$this->numTel : null;
     }
 
-    public function setNumTel(int $numTel): static
+    public function setNumTel(string $numTel): static
     {
         $this->numTel = $numTel;
         return $this;

@@ -9,6 +9,9 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Range;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 class CodePromoType extends AbstractType
 {
@@ -16,12 +19,30 @@ class CodePromoType extends AbstractType
     {
         $builder
             ->add('code', TextType::class, [
-                'label' => 'Code promo',
-                'attr' => ['placeholder' => 'Entrez le code promo']
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Le code promo ne peut pas être vide',
+                    ]),
+                ],
+                'attr' => [
+                    'placeholder' => 'Entrez un code promo unique'
+                ]
             ])
             ->add('pourcentage', IntegerType::class, [
-                'label' => 'Pourcentage de réduction',
-                'attr' => ['min' => 0, 'max' => 100]
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Le pourcentage ne peut pas être vide',
+                    ]),
+                    new Range([
+                        'min' => 0,
+                        'max' => 100,
+                        'notInRangeMessage' => 'Le pourcentage doit être entre {{ min }}% et {{ max }}%',
+                    ]),
+                ],
+                'attr' => [
+                    'min' => 0,
+                    'max' => 100
+                ]
             ])
             ->add('dateExpiration', DateTimeType::class, [
                 'label' => 'Date d\'expiration',
@@ -31,7 +52,7 @@ class CodePromoType extends AbstractType
             ->add('utilisationsMax', IntegerType::class, [
                 'label' => 'Nombre maximum d\'utilisations',
                 'required' => false,
-                'attr' => ['min' => 0]
+                'attr' => ['min' => 1]
             ])
         ;
     }
@@ -40,6 +61,12 @@ class CodePromoType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => CodePromo::class,
+            'constraints' => [
+                new UniqueEntity([
+                    'fields' => ['code'],
+                    'message' => 'Ce code promo existe déjà. Veuillez en choisir un autre.',
+                ]),
+            ],
         ]);
     }
 } 

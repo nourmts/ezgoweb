@@ -23,7 +23,7 @@ class PartenaireController extends AbstractController
     }
 
     #[Route('/', name: 'app_partenaire_index', methods: ['GET'])]
-    public function index(PartenaireRepository $partenaireRepository): Response
+    public function index(PartenaireRepository $partenaireRepository): Response 
     {
         return $this->render('partenaire/index.html.twig', [
             'partenaires' => $partenaireRepository->findAll(),
