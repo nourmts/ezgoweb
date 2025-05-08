@@ -1,0 +1,24 @@
+<div class="form-container">
+    {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
+
+        <div class="form-group mb-3">
+            {{ form_label(form.nom, 'NOM', {'label_attr': {'class': 'form-control-label'}}) }}
+            {{ form_widget(form.nom, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le nom de la station'}}) }}
+        </div>
+
+        <div class="form-group mb-3">
+            {{ form_label(form.region, 'REGION', {'label_attr': {'class': 'form-control-label'}}) }}
+            {{ form_widget(form.region, {'attr': {'class': 'form-control', 'placeholder': 'Entrez la région'}}) }}
+        </div>
+
+        <div class="form-group mb-3">
+            {{ form_label(form.cordonnes, 'CORDONNES', {'label_attr': {'class': 'form-control-label'}}) }}
+            {{ form_widget(form.cordonnes, {'attr': {'class': 'form-control', 'placeholder': 'Entrez les coordonnées'}}) }}
+        </div>
+
+        <div class="text-center">
+            <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+        </div>
+
+    {{ form_end(form) }}
+</div>

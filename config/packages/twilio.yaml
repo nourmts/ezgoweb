@@ -1,0 +1,4 @@
+parameters:
+    twilio.account_sid: '%env(TWILIO_ACCOUNT_SID)%'
+    twilio.auth_token: '%env(TWILIO_AUTH_TOKEN)%'
+    twilio.from_number: '%env(TWILIO_FROM_NUMBER)%' 

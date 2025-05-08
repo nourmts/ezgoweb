@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Asset Test</title>
+    <link rel="stylesheet" href="{{ asset('template_back/assets/css/soft-ui-dashboard.css', 'app') }}">
+    <style>
+        .test-box {
+            width: 200px;
+            height: 200px;
+            background-color: #5e72e4;
+            margin: 50px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">Asset Test Page</h1>
+    <div class="test-box">If this box is blue, CSS is working!</div>
+    
+    <script src="{{ asset('template_back/assets/js/core/popper.min.js', 'app') }}"></script>
+    <script src="{{ asset('template_back/assets/js/core/bootstrap.min.js', 'app') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('JS is working!');
+            alert('If you see this alert, JavaScript is working!');
+        });
+    </script>
+</body>
+</html> 

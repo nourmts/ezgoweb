@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des codes promo{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>Liste des codes promo</h1>
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">{{ message }}</div>
+        {% endfor %}
+
+        <a href="{{ path('app_code_promo_new') }}" class="btn btn-primary mb-3">Créer un nouveau code promo</a>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Pourcentage</th>
+                    <th>Date d'expiration</th>
+                    <th>Utilisations</th>
+                    <th>Utilisations max</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for code_promo in code_promos %}
+                <tr>
+                    <td>{{ code_promo.code }}</td>
+                    <td>{{ code_promo.pourcentage }}%</td>
+                    <td>{{ code_promo.dateExpiration ? code_promo.dateExpiration|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ code_promo.utilisations }}</td>
+                    <td>{{ code_promo.utilisationsMax ?? 'Illimité' }}</td>
+                    <td>
+                        <a href="{{ path('app_code_promo_show', {'id': code_promo.id}) }}" class="btn btn-info btn-sm">Voir</a>
+                        <a href="{{ path('app_code_promo_edit', {'id': code_promo.id}) }}" class="btn btn-warning btn-sm">Modifier</a>
+                        <form method="post" action="{{ path('app_code_promo_delete', {'id': code_promo.id}) }}" style="display: inline-block">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ code_promo.id) }}">
+                            <button class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce code promo ?')">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">Aucun code promo trouvé</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %} 

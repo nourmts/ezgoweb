@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<title>Bus index</title>
+
+{% block body %}
+    <h1>Bus index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Imatriculation</th>
+                <th>IdStation</th>
+                <th>Nb_place</th>
+                <th>Date_arrive</th>
+                <th>Date_sortie</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for bu in buses %}
+            <tr>
+                <td>{{ bu.imatriculation }}</td>
+                <td>{{ bu.idStation }}</td>
+                <td>{{ bu.nbPlace }}</td>
+                <td>{{ bu.dateArrive ? bu.dateArrive|date('Y-m-d') : '' }}</td>
+                <td>{{ bu.dateSortie ? bu.dateSortie|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_bus_show', {'imatriculation': bu.imatriculation}) }}">show</a>
+                    <a href="{{ path('app_bus_edit', {'imatriculation': bu.imatriculation}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_bus_new') }}">Create new</a>
+{% endblock %}

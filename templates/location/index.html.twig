@@ -1,0 +1,238 @@
+{% extends 'fronte/base.html.twig' %}
+
+{% block title %}Nos Locations{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .location-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .title-section {
+            display: flex;
+            flex-direction: column;
+        }
+        .road-text {
+            color: #ff6b35;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            margin: 0;
+            color: #000;
+            font-weight: bold;
+        }
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+        }
+        .btn-creer {
+            background: #ff6b35;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        .btn-creer:hover {
+            background: #ff8c5a;
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+        }
+        .table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 0.5rem;
+            margin-top: 1rem;
+        }
+        .table th, .table td {
+            padding: 1rem;
+            text-align: left;
+            vertical-align: middle;
+        }
+        .table th {
+            font-weight: 600;
+            color: #495057;
+            border-bottom: 2px solid #dee2e6;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+        }
+        .table tbody tr {
+            background-color: #fff;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .table tbody tr:hover {
+            background-color: #f8f9fa;
+            transform: translateY(-2px);
+        }
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-start;
+        }
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            color: white;
+            text-decoration: none;
+            margin: 0 2px;
+        }
+        .action-btn i {
+            font-size: 1rem;
+        }
+        .view-btn {
+            background-color: #00BCD4;
+        }
+        .view-btn:hover {
+            background-color: #0097A7;
+        }
+        .edit-btn {
+            background-color: #FFC107;
+        }
+        .edit-btn:hover {
+            background-color: #FFA000;
+        }
+        .delete-btn {
+            background-color: #FF5252;
+        }
+        .delete-btn:hover {
+            background-color: #D32F2F;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .empty-message {
+            text-align: center;
+            padding: 2rem;
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+        .price-column {
+            font-weight: 600;
+            color: #2d3436;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="location-container">
+        <div class="header">
+            <div class="title-section">
+                <span class="road-text">road</span>
+                <h1>Nos Locations</h1>
+            </div>
+            <div class="btn-group">
+                <a href="{{ path('app_partenaire_index') }}" class="btn-creer">
+                    <i class="fas fa-plus"></i>
+                    <span>Créer une Location</span>
+                </a>
+                <a href="{{ path('app_statistiques') }}" class="btn-creer">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Statistiques</span>
+                </a>
+                <a href="{{ path('app_code_promo_new') }}" class="btn-creer">
+                    <i class="fas fa-tag"></i>
+                    <span>Créer un code promo</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Date de début</th>
+                        <th>Date de fin</th>
+                        <th>Service</th>
+                        <th>Marque</th>
+                        <th>Prix Total</th>
+                        <th>Partenaire</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for location in locations %}
+                        <tr>
+                            <td>{{ location.idLocation }}</td>
+                            <td>{{ location.dateDebut|date('d/m/Y') }}</td>
+                            <td>{{ location.dateFin|date('d/m/Y') }}</td>
+                            <td>{{ location.service }}</td>
+                            <td>{{ location.marque }}</td>
+                            <td class="price-column">{{ location.prixTotal }} DT</td>
+                            <td>{{ location.partenaire.nom }}</td>
+                            <td class="action-buttons">
+                                <a href="{{ path('app_location_show', {'idLocation': location.idLocation}) }}" 
+                                   class="action-btn view-btn" 
+                                   data-bs-toggle="tooltip" 
+                                   title="Voir les détails">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{{ path('app_location_edit', {'idLocation': location.idLocation}) }}" 
+                                   class="action-btn edit-btn" 
+                                   data-bs-toggle="tooltip" 
+                                   title="Modifier">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </a>
+                                <form method="post" action="{{ path('app_location_delete', {'idLocation': location.idLocation}) }}" 
+                                      style="display: inline-block" 
+                                      onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette location?');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ location.idLocation) }}">
+                                    <button type="submit" 
+                                            class="action-btn delete-btn" 
+                                            data-bs-toggle="tooltip" 
+                                            title="Supprimer">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="8" class="empty-message">Aucune location trouvée</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
+{% endblock %}

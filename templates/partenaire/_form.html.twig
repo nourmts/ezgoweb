@@ -1,0 +1,52 @@
+{{ form_start(form, {'attr': {'id': 'edit_partenaire_form'}}) }}
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            {{ form_label(form.nom) }}
+            {{ form_widget(form.nom) }}
+            {{ form_errors(form.nom) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.telephone) }}
+            {{ form_widget(form.telephone, {
+                'attr': {
+                    'class': 'form-control',
+                    'placeholder': '+216XXXXXXXX'
+                }
+            }) }}
+            <small class="form-text text-muted">Format: +216 suivi de 8 chiffres</small>
+            {{ form_errors(form.telephone) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.email) }}
+            {{ form_widget(form.email) }}
+            {{ form_errors(form.email) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.specialite) }}
+            {{ form_widget(form.specialite) }}
+            {{ form_errors(form.specialite) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.regions) }}
+            {{ form_widget(form.regions) }}
+            <small class="form-text text-muted">Maintenez Ctrl (Windows) ou Cmd (Mac) pour sélectionner plusieurs régions</small>
+            {{ form_errors(form.regions) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.tarif) }}
+            {{ form_widget(form.tarif) }}
+            {{ form_errors(form.tarif) }}
+        </div>
+
+        {% if not is_edit_form|default(false) %}
+            <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+        {% endif %}
+    </div>
+</div>
+{{ form_end(form) }}
