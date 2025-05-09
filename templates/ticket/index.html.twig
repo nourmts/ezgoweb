@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<title>Ticket index</title>
+
+{% block body %}
+    <h1>Ticket index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Ticketid</th>
+                <th>Bus_id</th>
+                <th>Prix</th>
+                <th>DateAchat</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ticket in tickets %}
+            <tr>
+                <td>{{ ticket.ticketid }}</td>
+                <td>{{ ticket.busId }}</td>
+                <td>{{ ticket.prix }}</td>
+                <td>{{ ticket.dateAchat ? ticket.dateAchat|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_ticket_show', {'ticketid': ticket.ticketid}) }}">show</a>
+                    <a href="{{ path('app_ticket_edit', {'ticketid': ticket.ticketid}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_ticket_new') }}">Create new</a>
+{% endblock %}

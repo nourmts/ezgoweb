@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmation de ticket</title>
+    <style>
+        .ticket-info {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .qr-code {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="ticket-info">
+        <h1 style="color: #2c3e50;">Merci pour votre achat!</h1>
+        
+        <h2>Détails du ticket</h2>
+        <ul>
+            <li><strong>Numéro:</strong> {{ ticket.ticketid }}</li>
+            <li><strong>Bus:</strong> {{ bus.imatriculation }}</li>
+            <li><strong>Prix:</strong> {{ ticket.prix }} DT</li>
+            <li><strong>Date:</strong> {{ ticket.dateAchat|date('d/m/Y H:i') }}</li>
+        </ul>
+    </div>
+    
+    <div class="qr-code">
+        <h3>QR Code de validation</h3>
+        <img src="{{ qrCode }}" alt="QR Code du ticket" style="max-width: 300px;">
+        <p>Présentez ce code à l'embarquement</p>
+    </div>
+</body>
+</html> 

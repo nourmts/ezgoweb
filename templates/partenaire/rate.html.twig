@@ -1,0 +1,74 @@
+{% extends 'base_front.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+            gap: 5px;
+            margin: 20px 0;
+        }
+        .star-rating input {
+            display: none;
+        }
+        .star-rating label {
+            font-size: 2rem;
+            color: #ccc;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .star-rating label:hover,
+        .star-rating label:hover ~ label,
+        .star-rating input:checked ~ label {
+            color: #ffc700;
+        }
+        .rating-value {
+            font-size: 1.2rem;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <h2>Noter {{ partenaire.nom }}</h2>
+    
+    {{ form_start(form) }}
+        <div class="mb-4">
+            <div class="star-rating">
+                {% for child in form.note %}
+                    {{ form_widget(child) }}
+                    {{ form_label(child, null, {'label_attr': {'class': 'star'}}) }}
+                {% endfor %}
+                <span class="rating-value">(0/5)</span>
+            </div>
+            {{ form_errors(form.note) }}
+        </div>
+        
+        <div class="mb-4">
+            {{ form_row(form.comment) }}
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Envoyer la note</button>
+    {{ form_end(form) }}
+</div>
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const stars = document.querySelectorAll('.star-rating input');
+        const ratingValue = document.querySelector('.rating-value');
+        
+        stars.forEach(star => {
+            star.addEventListener('change', function() {
+                ratingValue.textContent = `(${this.value}/5)`;
+            });
+        });
+    });
+    </script>
+{% endblock %}
+{% endblock %}

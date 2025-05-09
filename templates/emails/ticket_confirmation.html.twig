@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmation Ticket</title>
+</head>
+<body>
+    <h1>Ticket Confirmé</h1>
+
+    <p>Merci pour votre achat ! Voici les détails :</p>
+
+    <ul>
+        <li><strong>ID Ticket :</strong> {{ ticket.ticketid }}</li>
+        <li><strong>Prix :</strong> {{ ticket.prix }} DT</li>
+        <li><strong>Date :</strong> {{ ticket.dateAchat|date('Y-m-d H:i:s') }}</li>
+    </ul>
+
+    <h2>QR Code :</h2>
+    <img src="data:image/png;base64,{{ qrImage }}" alt="QR Code du ticket">
+
+    <p>Présentez ce QR code à bord du bus.</p>
+
+    <button onclick="window.print()">🖨️ Imprimer</button>
+</body>
+</html>

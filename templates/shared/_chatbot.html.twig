@@ -1,0 +1,349 @@
+<style>
+    /* Styles pour le chatbot */
+    #chatbot-container {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
+
+    #chatbot-button {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: #007bff;
+        color: white;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        font-size: 24px;
+        text-align: center;
+    }
+
+    #chatbot-button i {
+        font-size: 24px !important;
+        color: white !important;
+        display: block !important;
+    }
+
+    #chatbot-window {
+        position: fixed;
+        bottom: 90px;
+        right: 20px;
+        width: 350px;
+        height: 450px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        display: none;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    #chatbot-header {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    #chatbot-close {
+        cursor: pointer;
+        font-size: 18px;
+    }
+
+    #chatbot-messages {
+        flex-grow: 1;
+        padding: 15px;
+        overflow-y: auto;
+    }
+
+    .chatbot-message {
+        margin-bottom: 10px;
+        padding: 8px 12px;
+        border-radius: 18px;
+        max-width: 80%;
+        word-wrap: break-word;
+    }
+
+    .user-message {
+        background-color: #e1f5fe;
+        margin-left: auto;
+        border-bottom-right-radius: 4px;
+    }
+
+    .bot-message {
+        background-color: #f5f5f5;
+        margin-right: auto;
+        border-bottom-left-radius: 4px;
+    }
+
+    #chatbot-input-container {
+        padding: 10px;
+        border-top: 1px solid #eee;
+        display: flex;
+    }
+
+    #chatbot-input {
+        flex-grow: 1;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        outline: none;
+    }
+
+    #chatbot-send {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        margin-left: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #chatbot-suggestions {
+        padding: 10px;
+        border-top: 1px solid #eee;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+
+    .chatbot-suggestion {
+        background-color: #e1f5fe;
+        border: 1px solid #b3e5fc;
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 12px;
+        cursor: pointer;
+        white-space: nowrap;
+    }
+
+    .chatbot-typing {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .typing-dot {
+        width: 8px;
+        height: 8px;
+        background-color: #999;
+        border-radius: 50%;
+        margin: 0 2px;
+        animation: typing-animation 1.4s infinite ease-in-out;
+    }
+
+    .typing-dot:nth-child(1) { animation-delay: 0s; }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes typing-animation {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+    }
+</style>
+
+<!-- Chatbot AI -->
+<div id="chatbot-container">
+    <div id="chatbot-button">
+        <i class="fas fa-robot" aria-hidden="true"></i>
+    </div>
+    <div id="chatbot-window">
+        <div id="chatbot-header">
+            <h5 class="m-0">Assistant IA</h5>
+            <span id="chatbot-close">&times;</span>
+        </div>
+        <div id="chatbot-messages">
+            <div class="chatbot-message bot-message">
+                Bonjour ! Je suis votre assistant virtuel. Comment puis-je vous aider aujourd'hui ?
+            </div>
+        </div>
+        <div id="chatbot-suggestions">
+            <!-- Les suggestions seront ajoutées dynamiquement ici -->
+        </div>
+        <div id="chatbot-input-container">
+            <input type="text" id="chatbot-input" placeholder="Posez votre question...">
+            <button id="chatbot-send">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Script principal pour le chatbot - s'exécute une fois que le DOM est chargé
+    document.addEventListener('DOMContentLoaded', function () {
+        // Vérifier si le chatbot est déjà initialisé
+        if (window.chatbotInitialized) return;
+        window.chatbotInitialized = true;
+        
+        const chatbotButton = document.getElementById('chatbot-button');
+        const chatbotWindow = document.getElementById('chatbot-window');
+        const chatbotClose = document.getElementById('chatbot-close');
+        const chatbotMessages = document.getElementById('chatbot-messages');
+        const chatbotInput = document.getElementById('chatbot-input');
+        const chatbotSend = document.getElementById('chatbot-send');
+        const chatbotSuggestions = document.getElementById('chatbot-suggestions');
+        
+        // Récupérer l'ID de réclamation s'il existe
+        let reclamationId = '{{ reclamation_id|default("") }}';
+        
+        // Si l'ID n'est pas disponible via la variable passée, essayons de le récupérer de l'URL
+        if (!reclamationId && window.location.pathname.includes('/reclamation/')) {
+            const matches = window.location.pathname.match(/\/reclamation\/(\d+)/);
+            if (matches && matches[1]) {
+                reclamationId = matches[1];
+            }
+        }
+        
+        console.log("Chatbot initialisé avec reclamationId:", reclamationId);
+
+        // Ouvrir/fermer la fenêtre du chatbot
+        chatbotButton.addEventListener('click', function() {
+            console.log("Bouton chatbot cliqué");
+            chatbotWindow.style.display = 'flex';
+            // Charger les suggestions au premier clic
+            loadSuggestions();
+        });
+
+        chatbotClose.addEventListener('click', function() {
+            chatbotWindow.style.display = 'none';
+        });
+
+        // Envoi de message au clic sur le bouton
+        chatbotSend.addEventListener('click', sendMessage);
+
+        // Envoi de message en appuyant sur Entrée
+        chatbotInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Fonction pour envoyer un message
+        function sendMessage() {
+            const message = chatbotInput.value.trim();
+            if (!message) return;
+
+            console.log("Envoi du message:", message);
+
+            // Ajouter le message de l'utilisateur à l'interface
+            addMessage(message, 'user');
+            chatbotInput.value = '';
+
+            // Afficher l'indicateur "en train d'écrire"
+            const typingIndicator = document.createElement('div');
+            typingIndicator.className = 'chatbot-typing bot-message';
+            typingIndicator.innerHTML = `
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            `;
+            chatbotMessages.appendChild(typingIndicator);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+
+            // Envoyer la requête à l'API
+            fetch('/api/chatbot/ask', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    question: message,
+                    reclamationId: reclamationId
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Réponse reçue:', data);
+                
+                // Supprimer l'indicateur de typing
+                chatbotMessages.removeChild(typingIndicator);
+                
+                if (data.success) {
+                    // Ajouter la réponse du bot
+                    addMessage(data.answer, 'bot');
+                } else {
+                    // Afficher un message d'erreur
+                    addMessage("Je suis désolé, je n'ai pas pu traiter votre demande. Veuillez réessayer plus tard.", 'bot');
+                }
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                
+                // Supprimer l'indicateur de typing
+                if (typingIndicator.parentNode) {
+                    chatbotMessages.removeChild(typingIndicator);
+                }
+                
+                // Afficher un message d'erreur
+                addMessage("Une erreur est survenue. Veuillez réessayer plus tard.", 'bot');
+            });
+        }
+
+        // Fonction pour ajouter un message à l'interface
+        function addMessage(content, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chatbot-message ${sender}-message`;
+            messageDiv.textContent = content;
+            
+            chatbotMessages.appendChild(messageDiv);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+        
+        // Charger les suggestions de questions
+        function loadSuggestions() {
+            // Vider les suggestions actuelles
+            chatbotSuggestions.innerHTML = '';
+            
+            // Appeler l'API pour obtenir des suggestions
+            fetch(`/api/chatbot/suggestions?reclamationId=${reclamationId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Ajouter les suggestions générales
+                        if (data.suggestions.general) {
+                            data.suggestions.general.forEach(suggestion => {
+                                addSuggestion(suggestion);
+                            });
+                        }
+                        
+                        // Ajouter les suggestions spécifiques à la catégorie si elles existent
+                        if (data.suggestions.categorie) {
+                            data.suggestions.categorie.forEach(suggestion => {
+                                addSuggestion(suggestion);
+                            });
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur lors du chargement des suggestions:', error);
+                });
+        }
+        
+        // Ajouter une suggestion à l'interface
+        function addSuggestion(text) {
+            const suggestionSpan = document.createElement('span');
+            suggestionSpan.className = 'chatbot-suggestion';
+            suggestionSpan.textContent = text;
+            
+            // Ajouter un gestionnaire de clic pour utiliser la suggestion
+            suggestionSpan.addEventListener('click', function() {
+                chatbotInput.value = text;
+                sendMessage();
+            });
+            
+            chatbotSuggestions.appendChild(suggestionSpan);
+        }
+    });
+</script> 

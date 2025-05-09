@@ -1,0 +1,113 @@
+{% extends 'fronte/base.html.twig' %}
+
+{% block title %}Confirmation de Réservation - EzGo{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .confirmation-section {
+            padding: 80px 0;
+            background: linear-gradient(rgba(51, 51, 51, 0.8), rgba(51, 51, 51, 0.8)), url('{{ asset('assets/images/confirmation-bg.jpg') }}');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+        }
+        .confirmation-card {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .confirmation-icon {
+            font-size: 4rem;
+            color: #28a745;
+            margin-bottom: 20px;
+        }
+        .confirmation-title {
+            color: var(--dark-color);
+            margin-bottom: 20px;
+        }
+        .confirmation-details {
+            margin: 30px 0;
+            text-align: left;
+            color: #000;
+        }
+        .detail-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+        .detail-label {
+            font-weight: 600;
+            color: #000;
+        }
+        .btn-primary {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+            padding: 12px 30px;
+        }
+        .btn-primary:hover {
+            background-color: #ff5a1f;
+            border-color: #ff5a1f;
+        }
+        .btn-outline-primary {
+            color: var(--accent-color);
+            border-color: var(--accent-color);
+            padding: 12px 30px;
+        }
+        .btn-outline-primary:hover {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <section class="confirmation-section">
+        <div class="container">
+            <div class="confirmation-card">
+                <i class="fas fa-check-circle confirmation-icon"></i>
+                <h1 class="confirmation-title">Réservation Confirmée !</h1>
+                
+                <div class="confirmation-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Véhicule :</span>
+                        <span>{{ reservation.car.marque }} ({{ reservation.car.immatriculation }})</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Nom du client :</span>
+                        <span>{{ reservation.nameRes }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Date de réservation :</span>
+                        <span>{{ reservation.dateRes|date('d/m/Y H:i') }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Statut :</span>
+                        <span class="badge bg-{{ reservation.statut == 'confirmé' ? 'success' : (reservation.statut == 'en attente' ? 'warning' : 'danger') }}">
+                            {{ reservation.statut|capitalize }}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-3">
+                    <a href="{{ path('front_voiture_index') }}" class="btn btn-primary">
+                        <i class="fas fa-car me-2"></i> Voir nos véhicules
+                    </a>
+                    <a href="{{ path('app_home') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-home me-2"></i> Retour à l'accueil
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %} 

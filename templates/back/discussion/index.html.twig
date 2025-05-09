@@ -1,0 +1,100 @@
+{% extends 'back/baseback.html.twig' %}
+
+{% block title %}Discussion - Réclamation #{{ reclamation.idReclamation }}{% endblock %}
+
+{% block current_page %}Discussion{% endblock %}
+{% block page_title %}Discussion - Réclamation #{{ reclamation.idReclamation }}{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="card mb-4">
+        <div class="card-header pb-0">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5>Détails de la réclamation</h5>
+            <a href="{{ path('app_back_homedashboard') }}" class="btn btn-sm btn-outline-primary">Retour</a>
+          </div>
+        </div>
+        <div class="card-body">
+          <p><strong>Réclamation :</strong> {{ reclamation.reclamation }}</p>
+          <p><strong>Catégorie :</strong> {{ reclamation.categorie ?? 'Non spécifiée' }}</p>
+          <p>
+            <strong>État :</strong> 
+            <span class="badge {% if reclamation.etat == 'traité' %}bg-success{% elseif reclamation.etat == 'en cours' %}bg-warning{% else %}bg-danger{% endif %}">
+              {{ reclamation.etat }}
+            </span>
+          </p>
+          
+          {% if is_granted('ROLE_ADMIN') and reclamation.etat != 'traité' %}
+            <a href="{{ path('app_back_reclamation_marquer_traite', {id: reclamation.idReclamation}) }}" class="btn btn-success btn-lg">
+              <i class="fas fa-check-circle me-2"></i> Marquer comme traité
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Liste des discussions -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="card mb-4">
+        <div class="card-header pb-0">
+          <h5>Historique des messages</h5>
+        </div>
+        <div class="card-body pt-0 pb-2">
+          <div class="discussions">
+            {% for discussion in discussions %}
+              <div class="discussion p-3 mb-3 {% if discussion.auteur == 'Admin' %}bg-light{% else %}bg-gradient-light{% endif %} border-radius-md">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="font-weight-bold {% if discussion.auteur == 'Admin' %}text-primary{% else %}text-info{% endif %}">{{ discussion.auteur }}</span>
+                  <span class="text-xs text-secondary">{{ discussion.date|date('d/m/Y H:i') }}</span>
+                </div>
+                <p class="mb-0">{{ discussion.message }}</p>
+              </div>
+            {% else %}
+              <div class="text-center p-4">
+                <p class="opacity-8">Aucun message pour cette réclamation.</p>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Formulaire d'ajout de message -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header pb-0">
+          <h5>Ajouter un message</h5>
+        </div>
+        <div class="card-body">
+          <form method="post" action="{{ path('app_back_discussion', {id: reclamation.idReclamation}) }}">
+            <div class="form-group">
+              <textarea name="message" rows="4" class="form-control" placeholder="Écrivez votre message ici..."></textarea>
+            </div>
+            <div class="text-end mt-3">
+              <button type="submit" class="btn bg-gradient-primary">Envoyer le message</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Faire défiler jusqu'au dernier message
+    const discussions = document.querySelector('.discussions');
+    if (discussions) {
+      discussions.scrollTop = discussions.scrollHeight;
+    }
+  });
+</script>
+{% endblock %} 

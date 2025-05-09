@@ -1,0 +1,841 @@
+{% extends 'back/baseback.html.twig' %}
+
+{% block title %}Accueil du Dashboard{% endblock %}
+
+{% block current_page %}Tableau de bord{% endblock %}
+{% block page_title %}Tableau de bord{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<style>
+  .stats-card {
+    transition: all 0.3s ease;
+  }
+  .stats-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+  .date-picker-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1rem;
+  }
+  .date-picker-container .form-control {
+    max-width: 160px;
+  }
+  .chart-container {
+    position: relative;
+    margin: auto;
+    height: 300px;
+    width: 100%;
+  }
+  .search-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+  .search-input {
+    flex-grow: 1;
+  }
+  .category-filter {
+    min-width: 200px;
+  }
+  .loading-spinner {
+    display: none;
+    width: 25px;
+    height: 25px;
+    margin-left: 10px;
+  }
+  .fadeIn {
+    animation: fadeIn 0.5s;
+  }
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  .badge-status {
+    min-width: 90px;
+    text-align: center;
+  }
+  #reclamationsTable tbody tr {
+    transition: background-color 0.3s;
+  }
+  #reclamationsTable tbody tr:hover {
+    background-color: rgba(0,0,0,0.03);
+  }
+</style>
+{% endblock %}
+
+{% block hero %}
+ <div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <div class="card stats-card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Réclamations totales</p>
+                    <h5 class="font-weight-bolder mb-0">
+                      {{ reclamations|length }}
+                    </h5>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                    <i class="fas fa-clipboard-list text-lg opacity-10" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <div class="card stats-card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Réclamations en cours</p>
+                    <h5 class="font-weight-bolder mb-0">
+                      {{ reclamations|filter(r => r.etat == 'en cours')|length }}
+                    </h5>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon icon-shape bg-gradient-warning shadow text-center border-radius-md">
+                    <i class="fas fa-spinner text-lg opacity-10" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <div class="card stats-card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Réclamations traitées</p>
+                    <h5 class="font-weight-bolder mb-0">
+                      {{ reclamations|filter(r => r.etat == 'traité')|length }}
+                    </h5>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon icon-shape bg-gradient-success shadow text-center border-radius-md">
+                    <i class="fas fa-check text-lg opacity-10" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6">
+          <div class="card stats-card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Nouvelles réclamations</p>
+                    <h5 class="font-weight-bolder mb-0">
+                      {{ reclamations|filter(r => r.etat == 'non traité')|length }}
+                    </h5>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon icon-shape bg-gradient-danger shadow text-center border-radius-md">
+                    <i class="fas fa-exclamation-circle text-lg opacity-10" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Liste des réclamations -->
+      <div class="row mt-4">
+        <div class="col-12">
+          <div class="card mb-4">
+            <div class="card-header pb-0">
+              <h6 class="mb-3">Liste des réclamations</h6>
+              <div class="search-container">
+                <div class="search-input">
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                    <input type="text" id="searchInput" class="form-control" placeholder="Rechercher...">
+                  </div>
+                </div>
+                <div class="category-filter">
+                  <select id="categoryFilter" class="form-select">
+                    <option value="">Toutes les catégories</option>
+                    {% if categories is defined and categories is not empty %}
+                      {% for category in categories %}
+                        <option value="{{ category }}">{{ category }}</option>
+                      {% endfor %}
+                    {% endif %}
+                  </select>
+                </div>
+                <div class="align-self-end">
+                  <div class="spinner-border text-primary loading-spinner" id="searchSpinner" role="status">
+                    <span class="visually-hidden">Chargement...</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body px-0 pt-0 pb-2">
+              <div class="table-responsive p-0">
+                <table class="table align-items-center mb-0" id="reclamationsTable">
+                  <thead>
+                    <tr>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Catégorie</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Réclamation</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">État</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Date</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for reclamation in reclamations %}
+                    <tr>
+                      <td>
+                        <div class="d-flex px-2 py-1">
+                          <div class="d-flex flex-column justify-content-center">
+                            <h6 class="mb-0 text-sm">#{{ reclamation.idReclamation }}</h6>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <p class="text-xs font-weight-bold mb-0">{{ reclamation.categorie|default('Non définie') }}</p>
+                      </td>
+                      <td>
+                        <p class="text-xs text-secondary mb-0">{{ reclamation.reclamation|length > 50 ? reclamation.reclamation|slice(0, 50) ~ '...' : reclamation.reclamation }}</p>
+                      </td>
+                      <td>
+                        <span class="badge badge-sm badge-status {% if reclamation.etat == 'traité' %}bg-gradient-success{% elseif reclamation.etat == 'en cours' %}bg-gradient-warning{% else %}bg-gradient-danger{% endif %}">
+                          {{ reclamation.etat }}
+                        </span>
+                      </td>
+                      <td>
+                        <p class="text-xs text-secondary mb-0">{{ reclamation.date ? reclamation.date|date('d/m/Y') : 'N/A' }}</p>
+                      </td>
+                      <td class="align-middle text-center">
+                        <button class="btn btn-link text-secondary mb-0 view-discussion" data-id="{{ reclamation.idReclamation }}" title="Voir les discussions">
+                          <i class="fas fa-comments"></i>
+                        </button>
+                        {% if reclamation.etat == 'nouvelle' %}
+                        <button class="btn btn-link text-secondary mb-0 start-discussion" data-id="{{ reclamation.idReclamation }}" title="Démarrer la discussion">
+                          <i class="fas fa-play text-success"></i>
+                        </button>
+                        {% endif %}
+                        <button class="btn btn-link text-danger mb-0 delete-reclamation" data-id="{{ reclamation.idReclamation }}" data-bs-toggle="modal" data-bs-target="#deleteModal" title="Supprimer">
+                          <i class="fas fa-trash text-danger"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                      <td colspan="6" class="text-center py-5">
+                        <p class="text-secondary mb-0">Aucune réclamation trouvée</p>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Graphique des statistiques -->
+      <div class="row mt-4">
+        <div class="col-lg-6">
+          <div class="card z-index-2">
+            <div class="card-header pb-0">
+              <h6>Statistiques des réclamations</h6>
+              <div class="date-picker-container">
+                <div>
+                  <label for="startDate" class="form-label small">Date de début</label>
+                  <input type="text" id="startDate" class="form-control form-control-sm" placeholder="Date de début">
+                </div>
+                <div>
+                  <label for="endDate" class="form-label small">Date de fin</label>
+                  <input type="text" id="endDate" class="form-control form-control-sm" placeholder="Date de fin">
+                </div>
+                <div class="mt-4">
+                  <button id="applyDateFilter" class="btn btn-sm btn-primary">Appliquer</button>
+                  <button id="resetDateFilter" class="btn btn-sm btn-outline-secondary">Réinitialiser</button>
+                </div>
+              </div>
+            </div>
+            <div class="card-body p-3">
+              <div class="chart-container">
+                <canvas id="pieChart"></canvas>
+              </div>
+              <div class="text-center mt-4" id="noDataMessage" style="display: none;">
+                <p class="text-muted">Aucune donnée disponible pour cette période</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="card z-index-2">
+            <div class="card-header pb-0">
+              <h6>Réclamations par catégorie</h6>
+            </div>
+            <div class="card-body p-3">
+              <div class="chart-container">
+                <canvas id="categoryChart"></canvas>
+              </div>
+              <div class="text-center mt-4" id="noCategoryDataMessage" style="display: none;">
+                <p class="text-muted">Aucune donnée disponible pour les catégories</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    {# Inclusion du chatbot IA pour l'assistance aux admins #}
+    {% include 'shared/_chatbot.html.twig' %}
+{% endblock %}
+
+{% block body %}
+  <!-- Modal de confirmation de suppression -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Confirmer la suppression</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        </div>
+        <div class="modal-body">
+          Êtes-vous sûr de vouloir supprimer cette réclamation ? Cette action est irréversible.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+          <button type="button" class="btn btn-danger" id="confirmDelete">Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/fr.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Configuration de Flatpickr pour les champs date
+  flatpickr("#startDate", {
+      locale: "fr",
+    dateFormat: "d/m/Y",
+      maxDate: "today"
+    });
+    
+  flatpickr("#endDate", {
+      locale: "fr",
+    dateFormat: "d/m/Y",
+      maxDate: "today"
+    });
+    
+  // Initier les graphiques
+  initPieChart();
+  initCategoryChart();
+  
+  // Gestion de la recherche avec AJAX
+  const searchInput = document.getElementById('searchInput');
+  const categoryFilter = document.getElementById('categoryFilter');
+  const searchSpinner = document.getElementById('searchSpinner');
+  let searchTimeout;
+  
+  // Fonction de recherche
+  function performSearch() {
+    clearTimeout(searchTimeout);
+    searchSpinner.style.display = 'inline-block';
+    
+    searchTimeout = setTimeout(() => {
+      const searchValue = searchInput.value.trim();
+      const categoryValue = categoryFilter.value;
+      
+      // Construction de l'URL avec les paramètres
+      let url = '{{ path('app_back_search_reclamations') }}?';
+      if (searchValue) {
+        url += `q=${encodeURIComponent(searchValue)}&`;
+      }
+      if (categoryValue) {
+        url += `category=${encodeURIComponent(categoryValue)}`;
+      }
+      
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          updateReclamationsTable(data);
+          searchSpinner.style.display = 'none';
+        })
+        .catch(error => {
+          console.error('Erreur lors de la recherche:', error);
+          searchSpinner.style.display = 'none';
+        });
+    }, 300); // Délai pour éviter trop de requêtes
+  }
+  
+  // Mettre à jour le tableau des réclamations
+  function updateReclamationsTable(reclamations) {
+    const tableBody = document.querySelector('#reclamationsTable tbody');
+    tableBody.innerHTML = '';
+    
+    if (reclamations.length === 0) {
+      const emptyRow = document.createElement('tr');
+      emptyRow.innerHTML = `
+        <td colspan="6" class="text-center py-5">
+          <p class="text-secondary mb-0">Aucune réclamation trouvée</p>
+        </td>
+      `;
+      tableBody.appendChild(emptyRow);
+      return;
+    }
+    
+    reclamations.forEach(reclamation => {
+      const row = document.createElement('tr');
+      row.classList.add('fadeIn');
+      
+      // Définir la classe de badge en fonction de l'état
+      let badgeClass = 'bg-gradient-danger';
+      if (reclamation.etat === 'traité') {
+        badgeClass = 'bg-gradient-success';
+      } else if (reclamation.etat === 'en cours') {
+        badgeClass = 'bg-gradient-warning';
+      } else if (reclamation.etat === 'non traité') {
+        badgeClass = 'bg-gradient-danger';
+      }
+      
+      row.innerHTML = `
+        <td>
+          <div class="d-flex px-2 py-1">
+            <div class="d-flex flex-column justify-content-center">
+              <h6 class="mb-0 text-sm">#${reclamation.id}</h6>
+            </div>
+          </div>
+        </td>
+        <td>
+          <p class="text-xs font-weight-bold mb-0">${reclamation.categorie || 'Non définie'}</p>
+        </td>
+        <td>
+          <p class="text-xs text-secondary mb-0">${reclamation.reclamationShort}</p>
+        </td>
+        <td>
+          <span class="badge badge-sm badge-status ${badgeClass}">
+            ${reclamation.etat}
+          </span>
+        </td>
+        <td>
+          <p class="text-xs text-secondary mb-0">${reclamation.date}</p>
+        </td>
+        <td class="align-middle text-center">
+          <button class="btn btn-link text-secondary mb-0 view-discussion" data-id="${reclamation.id}" title="Voir les discussions">
+            <i class="fas fa-comments"></i>
+          </button>
+          ${reclamation.etat === 'nouvelle' ? `
+          <button class="btn btn-link text-secondary mb-0 start-discussion" data-id="${reclamation.id}" title="Démarrer la discussion">
+            <i class="fas fa-play text-success"></i>
+          </button>
+          ` : ''}
+          <button class="btn btn-link text-danger mb-0 delete-reclamation" data-id="${reclamation.id}" data-bs-toggle="modal" data-bs-target="#deleteModal" title="Supprimer">
+            <i class="fas fa-trash text-danger"></i>
+          </button>
+        </td>
+      `;
+      
+      tableBody.appendChild(row);
+    });
+    
+    // Réattacher les event listeners aux boutons
+    attachEventListeners();
+  }
+  
+  // Événements de recherche
+  searchInput.addEventListener('input', performSearch);
+  categoryFilter.addEventListener('change', performSearch);
+  
+  // Graphique en camembert des états de réclamation
+  function initPieChart() {
+    const ctx = document.getElementById('pieChart').getContext('2d');
+    let pieChart = null;
+    
+    // Fonction pour charger et afficher les données
+    function loadPieChartData(startDate = null, endDate = null) {
+      // Construction de l'URL avec les paramètres de date si fournis
+      let url = '{{ path('app_back_stats_by_status') }}';
+      const params = [];
+      
+      if (startDate) {
+        params.push(`startDate=${encodeURIComponent(startDate)}`);
+      }
+      
+      if (endDate) {
+        params.push(`endDate=${encodeURIComponent(endDate)}`);
+      }
+      
+      if (params.length > 0) {
+        url += '?' + params.join('&');
+      }
+      
+      // Requête AJAX pour récupérer les données filtrées
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          // Si le graphique existe déjà, le détruire
+          if (pieChart) {
+            pieChart.destroy();
+          }
+          
+          // Préparer les données pour le graphique
+          const labels = [];
+          const values = [];
+          const colors = [];
+          const borderColors = [];
+          
+          data.forEach(item => {
+            labels.push(item.etat);
+            values.push(item.count);
+            
+            // Définir les couleurs en fonction de l'état
+            if (item.etat === 'non traité') {
+              colors.push('rgba(255, 99, 132, 0.8)');
+              borderColors.push('rgb(255, 99, 132)');
+            } else if (item.etat === 'en cours') {
+              colors.push('rgba(255, 205, 86, 0.8)');
+              borderColors.push('rgb(255, 205, 86)');
+            } else if (item.etat === 'traité') {
+              colors.push('rgba(75, 192, 192, 0.8)');
+              borderColors.push('rgb(75, 192, 192)');
+            } else {
+              // Couleur par défaut pour les autres états éventuels
+              colors.push('rgba(54, 162, 235, 0.8)');
+              borderColors.push('rgb(54, 162, 235)');
+            }
+          });
+          
+          // Afficher ou masquer le message "Aucune donnée"
+          document.getElementById('noDataMessage').style.display = values.length === 0 ? 'block' : 'none';
+          
+          if (values.length === 0) {
+            return; // Ne pas créer de graphique s'il n'y a pas de données
+          }
+          
+          // Créer le graphique
+          pieChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+              labels: labels,
+              datasets: [{
+                data: values,
+                backgroundColor: colors,
+                borderColor: borderColors,
+                borderWidth: 1
+              }]
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: 'bottom'
+                },
+                tooltip: {
+                  callbacks: {
+                    label: function(context) {
+                      const label = context.label || '';
+                      const value = context.raw || 0;
+                      const total = context.dataset.data.reduce((acc, val) => acc + val, 0);
+                      const percentage = total ? Math.round((value / total) * 100) : 0;
+                      return `${label}: ${value} (${percentage}%)`;
+                    }
+                  }
+                }
+              }
+            }
+          });
+        })
+        .catch(error => {
+          console.error('Erreur lors du chargement des données du graphique:', error);
+          document.getElementById('noDataMessage').style.display = 'block';
+        });
+    }
+    
+    // Chargement initial du graphique
+    loadPieChartData();
+    
+    // Mettre à jour le graphique avec un filtre de date
+    document.getElementById('applyDateFilter').addEventListener('click', function() {
+      const startDate = document.getElementById('startDate').value;
+      const endDate = document.getElementById('endDate').value;
+      
+      if (!startDate && !endDate) {
+        alert('Veuillez sélectionner au moins une date.');
+        return;
+      }
+      
+      loadPieChartData(startDate, endDate);
+    });
+    
+    // Réinitialiser le filtre de date
+    document.getElementById('resetDateFilter').addEventListener('click', function() {
+      document.getElementById('startDate').value = '';
+      document.getElementById('endDate').value = '';
+      
+      // Recharger le graphique avec toutes les données
+      loadPieChartData();
+    });
+  }
+  
+  // Graphique des réclamations par catégorie
+  function initCategoryChart() {
+    fetch('{{ path('app_back_stats_by_category') }}')
+      .then(response => response.json())
+      .then(data => {
+        if (data.length === 0) {
+          document.getElementById('noCategoryDataMessage').style.display = 'block';
+          return;
+        }
+        
+        const labels = data.map(item => item.categorie);
+        const values = data.map(item => item.count);
+        
+        const ctx = document.getElementById('categoryChart').getContext('2d');
+        const categoryChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Nombre de réclamations',
+              data: values,
+              backgroundColor: 'rgba(54, 162, 235, 0.8)',
+              borderColor: 'rgb(54, 162, 235)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                display: false
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  precision: 0
+                }
+              }
+            }
+          }
+        });
+      })
+      .catch(error => {
+        console.error('Erreur lors du chargement des statistiques par catégorie:', error);
+        document.getElementById('noCategoryDataMessage').style.display = 'block';
+      });
+  }
+  
+  // Gestion de la suppression
+  let reclamationIdToDelete = null;
+  const csrfToken = "{{ csrf_token('delete_reclamation') }}";
+  
+  document.querySelectorAll('.delete-reclamation').forEach(button => {
+    button.addEventListener('click', function() {
+      reclamationIdToDelete = this.getAttribute('data-id');
+    });
+  });
+  
+  document.getElementById('confirmDelete').addEventListener('click', function() {
+    if (!reclamationIdToDelete) return;
+    
+    const formData = new FormData();
+    formData.append('_token', csrfToken);
+    
+        fetch(`/reclamation/delete/${reclamationIdToDelete}`, {
+          method: 'DELETE',
+          headers: {
+        'X-CSRF-TOKEN': csrfToken
+          },
+          body: JSON.stringify({
+            _token: csrfToken
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+        // Fermer le modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+        modal.hide();
+        
+        // Supprimer la ligne du tableau
+        const row = document.querySelector(`.delete-reclamation[data-id="${reclamationIdToDelete}"]`).closest('tr');
+        row.classList.add('fadeOut');
+        setTimeout(() => {
+          row.remove();
+          
+          // Si plus aucune réclamation, afficher un message
+          if (document.querySelector('#reclamationsTable tbody tr') === null) {
+            const tbody = document.querySelector('#reclamationsTable tbody');
+            const emptyRow = document.createElement('tr');
+            emptyRow.innerHTML = `
+              <td colspan="6" class="text-center py-5">
+                <p class="text-secondary mb-0">Aucune réclamation trouvée</p>
+              </td>
+            `;
+            tbody.appendChild(emptyRow);
+          }
+          
+          // Mettre à jour les statistiques
+          initPieChart();
+          initCategoryChart();
+        }, 300);
+      } else {
+        alert('Erreur lors de la suppression: ' + data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Erreur:', error);
+      alert('Une erreur est survenue lors de la suppression.');
+    });
+  });
+  
+  // Fonction pour mettre à jour le bouton "démarrer discussion"
+  function updateStartDiscussionButton(row, shouldHide) {
+    const startButton = row.querySelector('.start-discussion');
+    if (startButton && shouldHide) {
+      startButton.style.display = 'none';
+    }
+  }
+
+  // Fonction pour gérer les boutons "voir discussion" et "démarrer discussion"
+  function handleDiscussionButtons() {
+    // Gérer les boutons "voir discussion"
+    document.querySelectorAll('.view-discussion').forEach(button => {
+      button.addEventListener('click', function() {
+        const reclamationId = this.getAttribute('data-id');
+        const row = this.closest('tr');
+        const statusBadge = row.querySelector('.badge-status');
+        const currentStatus = statusBadge.textContent.trim();
+        
+        // Ne faire la requête que si l'état n'est pas déjà "en cours"
+        if (currentStatus !== 'en cours') {
+          // Mettre à jour visuellement l'état immédiatement pour une meilleure UX
+          statusBadge.className = 'badge badge-sm badge-status bg-gradient-warning';
+          statusBadge.textContent = 'en cours';
+          
+          // Cacher le bouton "démarrer discussion" si présent
+          updateStartDiscussionButton(row, true);
+          
+          // Mettre à jour l'état de la réclamation en "en cours" avant d'ouvrir la discussion
+          fetch(`/reclamation/start/${reclamationId}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-TOKEN': csrfToken
+            }
+          })
+          .then(response => response.json())
+          .then(data => {
+            // Mettre à jour les graphiques de statistiques
+            initPieChart();
+            initCategoryChart();
+            
+            // Rediriger vers la page de discussion
+            window.location.href = `/reclamation/${reclamationId}/discussion`;
+          })
+          .catch(error => {
+            console.error('Erreur:', error);
+            // En cas d'erreur, on redirige quand même
+            window.location.href = `/reclamation/${reclamationId}/discussion`;
+          });
+        } else {
+          // Si déjà en cours, simplement rediriger
+          window.location.href = `/reclamation/${reclamationId}/discussion`;
+        }
+      });
+    });
+
+    // Gérer les boutons "démarrer discussion"
+    document.querySelectorAll('.start-discussion').forEach(button => {
+      button.addEventListener('click', function() {
+        const reclamationId = this.getAttribute('data-id');
+        const row = this.closest('tr');
+        const statusBadge = row.querySelector('.badge-status');
+        
+        // Mettre à jour visuellement l'état immédiatement
+        statusBadge.className = 'badge badge-sm badge-status bg-gradient-warning';
+        statusBadge.textContent = 'en cours';
+        
+        // Cacher le bouton "démarrer discussion"
+        this.style.display = 'none';
+        
+        // Mettre à jour l'état de la réclamation en "en cours"
+        fetch(`/reclamation/start/${reclamationId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            // Mettre à jour les graphiques de statistiques
+            initPieChart();
+            initCategoryChart();
+            
+            // Rediriger vers la page de discussion
+            window.location.href = `/reclamation/${reclamationId}/discussion`;
+        } else {
+            alert('Erreur: ' + (data.message || 'Impossible de démarrer la discussion.'));
+            // Rétablir l'état précédent en cas d'erreur
+            statusBadge.className = 'badge badge-sm badge-status bg-gradient-danger';
+            statusBadge.textContent = 'non traité';
+            this.style.display = 'inline-block'; // Réafficher le bouton
+          }
+        })
+        .catch(error => {
+          console.error('Erreur:', error);
+          alert('Une erreur est survenue lors du démarrage de la discussion.');
+          // Rétablir l'état précédent en cas d'erreur
+          statusBadge.className = 'badge badge-sm badge-status bg-gradient-danger';
+          statusBadge.textContent = 'non traité';
+          this.style.display = 'inline-block'; // Réafficher le bouton
+        });
+      });
+    });
+  }
+  
+  // Fonction pour attacher les event listeners après l'actualisation du tableau
+  function attachEventListeners() {
+    document.querySelectorAll('.delete-reclamation').forEach(button => {
+      button.addEventListener('click', function() {
+        reclamationIdToDelete = this.getAttribute('data-id');
+      });
+    });
+    
+    // Attacher les gestionnaires pour les boutons de discussion
+    handleDiscussionButtons();
+  }
+  
+  // Initialiser les event listeners
+  attachEventListeners();
+  handleDiscussionButtons();
+  });
+</script>
+{% endblock %}
+

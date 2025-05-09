@@ -1,0 +1,231 @@
+{% extends 'back/base.html.twig' %}
+
+{% block title %}Statistiques des Bus{% endblock %}
+
+{% block body %}
+<div class="container-fluid py-4">
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Bus</p>
+                                <h5 class="font-weight-bolder">{{ detailedStats.total_buses }}</h5>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
+                                <i class="ni ni-bus-front-12 text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Bus Actifs</p>
+                                <h5 class="font-weight-bolder">{{ detailedStats.active_buses }}</h5>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-success shadow-success text-center rounded-circle">
+                                <i class="ni ni-check-bold text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Capacité Totale</p>
+                                <h5 class="font-weight-bolder">{{ detailedStats.total_capacity }}</h5>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-warning shadow-warning text-center rounded-circle">
+                                <i class="ni ni-single-copy-04 text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Capacité Moyenne</p>
+                                <h5 class="font-weight-bolder">{{ detailedStats.avg_capacity|round }}</h5>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-info shadow-info text-center rounded-circle">
+                                <i class="ni ni-chart-bar-32 text-lg opacity-10" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="row">
+        <!-- Category Distribution -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header pb-0">
+                    <h6>Distribution par Catégorie</h6>
+                </div>
+                <div class="card-body">
+                    <div id="column_chart" style="width: 100%; height: 400px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Percentage Distribution -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header pb-0">
+                    <h6>Répartition en Pourcentage</h6>
+                </div>
+                <div class="card-body">
+                    <div id="pie_chart" style="width: 100%; height: 400px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Station Distribution -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header pb-0">
+                    <h6>Distribution par Station</h6>
+                </div>
+                <div class="card-body">
+                    <div id="station_chart" style="width: 100%; height: 400px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Capacity Analysis -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header pb-0">
+                    <h6>Analyse des Capacités</h6>
+                </div>
+                <div class="card-body">
+                    <div id="capacity_chart" style="width: 100%; height: 400px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monthly Trends -->
+        <div class="col-md-12 mb-4">
+            <div class="card">
+                <div class="card-header pb-0">
+                    <h6>Tendances Mensuelles</h6>
+                </div>
+                <div class="card-body">
+                    <div id="monthly_chart" style="width: 100%; height: 400px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Load Google Charts -->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', {'packages':['corechart', 'bar']});
+    google.charts.setOnLoadCallback(drawCharts);
+
+    function drawCharts() {
+        // Data for charts
+        var categoryData = google.visualization.arrayToDataTable({{ stats | raw }});
+        var percentageData = google.visualization.arrayToDataTable({{ percentageStats | raw }});
+        var stationData = google.visualization.arrayToDataTable({{ stationStats | raw }});
+        var capacityData = google.visualization.arrayToDataTable({{ capacityStats | raw }});
+
+        // Monthly data
+        var monthlyData = new google.visualization.DataTable();
+        monthlyData.addColumn('string', 'Mois');
+        monthlyData.addColumn('number', 'Nombre de Bus');
+        {% for stat in monthlyStats %}
+        monthlyData.addRow(['{{ stat.year }}-{{ stat.month }}', {{ stat.count }}]);
+        {% endfor %}
+
+        // Chart options
+        var columnOptions = {
+            title: 'Distribution par Catégorie',
+            hAxis: {title: 'Catégorie'},
+            vAxis: {title: 'Nombre de bus'},
+            legend: {position: 'none'},
+            colors: ['#1b9e77'],
+            animation: {duration: 1000, easing: 'out'}
+        };
+
+        var pieOptions = {
+            title: 'Répartition en Pourcentage',
+            pieHole: 0.4,
+            colors: ['#1b9e77', '#d95f02', '#7570b3', '#e7298a'],
+            legend: {position: 'right'},
+            animation: {duration: 1000, easing: 'out'}
+        };
+
+        var stationOptions = {
+            title: 'Distribution par Station',
+            bars: 'horizontal',
+            legend: {position: 'none'},
+            colors: ['#1b9e77'],
+            animation: {duration: 1000, easing: 'out'}
+        };
+
+        var capacityOptions = {
+            title: 'Analyse des Capacités par Catégorie',
+            seriesType: 'bars',
+            series: {1: {type: 'line'}},
+            colors: ['#1b9e77', '#d95f02', '#7570b3'],
+            animation: {duration: 1000, easing: 'out'}
+        };
+
+        var monthlyOptions = {
+            title: 'Tendances Mensuelles',
+            curveType: 'function',
+            legend: {position: 'bottom'},
+            colors: ['#1b9e77'],
+            animation: {duration: 1000, easing: 'out'}
+        };
+
+        // Draw charts
+        var columnChart = new google.visualization.ColumnChart(document.getElementById('column_chart'));
+        columnChart.draw(categoryData, columnOptions);
+
+        var pieChart = new google.visualization.PieChart(document.getElementById('pie_chart'));
+        pieChart.draw(percentageData, pieOptions);
+
+        var stationChart = new google.visualization.BarChart(document.getElementById('station_chart'));
+        stationChart.draw(stationData, stationOptions);
+
+        var capacityChart = new google.visualization.ComboChart(document.getElementById('capacity_chart'));
+        capacityChart.draw(capacityData, capacityOptions);
+
+        var monthlyChart = new google.visualization.LineChart(document.getElementById('monthly_chart'));
+        monthlyChart.draw(monthlyData, monthlyOptions);
+    }
+</script>
+{% endblock %} 

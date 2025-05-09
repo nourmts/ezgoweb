@@ -1,0 +1,144 @@
+{{ form_start(form, {'attr': {'class': 'row g-3 needs-validation', 'id': 'location-form'}}) }}
+    <div class="col-md-6">
+        {{ form_label(form.dateDebut, 'Date de début', {'label_attr': {'class': 'form-label required'}}) }}
+        {{ form_widget(form.dateDebut, {'attr': {'class': 'form-control' ~ (form.dateDebut.vars.errors|length ? ' is-invalid' : '')}}) }}
+        <div class="invalid-feedback">
+            {{ form_errors(form.dateDebut)|striptags }}
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        {{ form_label(form.dateFin, 'Date de fin', {'label_attr': {'class': 'form-label required'}}) }}
+        {{ form_widget(form.dateFin, {'attr': {'class': 'form-control' ~ (form.dateFin.vars.errors|length ? ' is-invalid' : '')}}) }}
+        <div class="invalid-feedback">
+            {{ form_errors(form.dateFin)|striptags }}
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        {{ form_label(form.partenaire, 'Partenaire', {'label_attr': {'class': 'form-label required'}}) }}
+        {{ form_widget(form.partenaire, {
+            'attr': {
+                'class': 'form-control' ~ (form.partenaire.vars.errors|length ? ' is-invalid' : ''),
+                'data-action': 'change->location#onPartenaireChange'
+            }
+        }) }}
+        <div class="invalid-feedback">
+            {{ form_errors(form.partenaire)|striptags }}
+        </div>
+    </div>
+
+    <div class="col-md-6" id="service-container">
+        {{ form_label(form.service, 'Service', {'label_attr': {'class': 'form-label required'}}) }}
+        {{ form_widget(form.service, {'attr': {'class': 'form-control' ~ (form.service.vars.errors|length ? ' is-invalid' : '')}}) }}
+        <div class="invalid-feedback">
+            {{ form_errors(form.service)|striptags }}
+        </div>
+    </div>
+
+    <div class="col-md-6" id="marque-container">
+        {{ form_label(form.marque, 'Marque', {'label_attr': {'class': 'form-label required'}}) }}
+        {{ form_widget(form.marque, {'attr': {'class': 'form-control' ~ (form.marque.vars.errors|length ? ' is-invalid' : '')}}) }}
+        <div class="invalid-feedback">
+            {{ form_errors(form.marque)|striptags }}
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group">
+            <label class="form-label">Prix Total</label>
+            <div class="price-display">
+                <span id="prix-total">0.00</span> DT
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 mt-4">
+        <button type="submit" class="btn btn-primary">{{ button_label|default('Créer la Location') }}</button>
+        <a href="{{ path('app_location_index') }}" class="btn btn-secondary">Retour</a>
+    </div>
+{{ form_end(form) }}
+
+{% block javascripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('location-form');
+    const partenaireSelect = form.querySelector('[name="location[partenaire]"]');
+    const serviceSelect = form.querySelector('[name="location[service]"]');
+    const marqueSelect = form.querySelector('[name="location[marque]"]');
+    const dateDebutInput = form.querySelector('[name="location[dateDebut]"]');
+    const dateFinInput = form.querySelector('[name="location[dateFin]"]');
+    const prixTotalDisplay = document.getElementById('prix-total');
+
+    function reloadForm() {
+        const formData = new FormData(form);
+        const params = new URLSearchParams(formData);
+
+        fetch(window.location.pathname + '?' + params.toString(), {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.text())
+        .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            
+            // Mettre à jour les conteneurs de service et marque
+            const newServiceContainer = doc.getElementById('service-container');
+            const newMarqueContainer = doc.getElementById('marque-container');
+            
+            if (newServiceContainer) {
+                document.getElementById('service-container').innerHTML = newServiceContainer.innerHTML;
+            }
+            if (newMarqueContainer) {
+                document.getElementById('marque-container').innerHTML = newMarqueContainer.innerHTML;
+            }
+
+            // Recalculer le prix total
+            calculatePrixTotal();
+        });
+    }
+
+    function calculatePrixTotal() {
+        const partenaireId = partenaireSelect.value;
+        const dateDebut = dateDebutInput.value;
+        const dateFin = dateFinInput.value;
+
+        if (!partenaireId || !dateDebut || !dateFin) {
+            prixTotalDisplay.textContent = '0.00';
+            return;
+        }
+
+        fetch(`/api/partenaire/${partenaireId}/tarif`)
+            .then(response => response.json())
+            .then(data => {
+                const tarif = data.tarif;
+                const debut = new Date(dateDebut);
+                const fin = new Date(dateFin);
+                const diffTime = Math.abs(fin - debut);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+                const prixTotal = (tarif * diffDays).toFixed(2);
+                prixTotalDisplay.textContent = prixTotal;
+            })
+            .catch(error => {
+                console.error('Erreur lors du calcul du prix:', error);
+                prixTotalDisplay.textContent = '0.00';
+            });
+    }
+
+    // Écouteurs d'événements
+    partenaireSelect.addEventListener('change', function() {
+        reloadForm();
+    });
+
+    dateDebutInput.addEventListener('change', calculatePrixTotal);
+    dateFinInput.addEventListener('change', calculatePrixTotal);
+
+    // Calculer le prix initial si les données sont présentes
+    if (partenaireSelect.value && dateDebutInput.value && dateFinInput.value) {
+        calculatePrixTotal();
+    }
+});
+</script>
+{% endblock %}
